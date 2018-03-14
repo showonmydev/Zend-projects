@@ -1,0 +1,68 @@
+<style type="text/css">
+.proposal_send_by_name p{ margin-bottom:0px; padding-left:5px; text-transform:capitalize;}
+.capitalize{ text-transform:capitalize;}
+</style>
+<?php 
+$all_proposal=$this->view_proposal;
+$all_proposal_sender=$this->all_proposal_sender;
+//prd($all_proposal);
+?>
+<div class="container overflow ">
+	<div class="view_proposal_div">
+    	<? foreach($all_proposal as $key => $proposals){?>
+            <div class="col-sm-4">
+                <h3 class="capitalize"><?=$proposals['job_title'];?></h3>
+            </div>
+            <div class="col-sm-8">
+                    <div class="table-responsive">
+                        <p class="capitalize"><?=$proposals['proposal_description'];?></p>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td><i class="fa fa-star"></i></td>
+                                    <td>Job Service</td>
+                                    <td><?=$proposals['service'];?></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-sitemap"></i></td>
+                                    <td>Job Service Category</td>
+                                    <td ><?=$proposals['category_name'];?></td>
+                                </tr>
+                                 <tr>
+                                    <td><i class="fa fa-sitemap"></i></td>
+                                    <td>Job Service Sub Category</td>
+                                    <td><?=$proposals['sub_cat_name'];?></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-money"></i></td>
+                                    <td>Job Budget ($)</td>
+                                    <td><?=$proposals['proposal_credit'];?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+            
+            <div class="col-sm-12">
+            	<h3>All Proposals</h3>
+            	<? foreach($all_proposal_sender as $key => $all_proposal_sender){?>
+                <div class="proposal_lists_view_pro_page">
+                	<img class="img-responsive img-thumbnail display_inline"  style="width:60px;" src="<?php echo getUserImage($all_proposal_sender['user_image'],'160') ;?>" />
+                    <div class="proposal_send_by_name display_inline">
+                    	<p><?=$all_proposal_sender['user_name'];?></p>
+                        <p>Price(in $): <?=$all_proposal_sender['proposal_credit'];?></p>
+                    </div>
+                    <p class="capitalize">Description: <?=$all_proposal_sender['proposal_description'];?></p>
+                </div>
+                  <? } ?>
+            </div>
+            
+          <? } ?>
+    </div>
+</div>
+
+<script type="text/javascript">
+</script>
+
+
+

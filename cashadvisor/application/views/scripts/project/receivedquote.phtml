@@ -1,0 +1,66 @@
+<?php 
+$this->modelStatic = new Application_Model_Static();
+$all_notification = $this->allmassages;
+$max_proposal_limit = $this->site_configs['max_proposal_limit'];
+$total_notificatin = count($all_notification);
+
+
+//prd($all_notification);  
+?>
+<style type="text/css">
+	
+</style>
+<div class="containerfluid overflow ">
+	<div class="col-sm-8 col-sm-offset-2 notification_page_ReceivedQuote">
+    
+    	<p class="all_noti_p">All Notifications</p>
+        <div class="col-xs-12 inline-block padding_zero text-center index_star_img">
+       		 <img src="<?=HTTP_SITEIMG_PATH?>/starSeries.png" class="">
+        </div>
+        
+       <? if($this->paginator->getTotalItemCount() > 0)  { ?>
+           	<ul class="all_noti_ul">
+      			 <? foreach($this->paginator as  $key => $notification){
+				$all_data=unserialize($notification['job_all_data']);
+				//prn($all_data);
+				$where = "service_id='".$all_data['Cat_id']."'";
+				$extra=array('fields'=>'service_name');	
+				$getservice_name = $this->modelStatic->Super_Get("services",$where,"fetch",$extra);
+
+			?>
+        	<li class="overflow">
+                <a href="<?php echo $this->url(array('job_id'=>$notification['notification_job_id']),"front_viewquote")?>">
+                    <span class="viewSpan">
+                          <i style="font-size:24px;" class="fa fa-eye" aria-hidden="true"></i>
+                    </span>
+                    <? if($notification['notification_type']=='2'){?>
+                     <span class="job_desc_all_noti"><span class="li_inner_p_all_noti"><?=$notification['user_name']?></span> has send you Quote for <span class="li_inner_p_all_noti"><?=$getservice_name['service_name']?></span> </span>
+                   <? } elseif($notification['notification_type']=='6'){ ?> 
+                   	 <span class="job_desc_all_noti">Your more quote request for <span class="li_inner_p_all_noti"><?=$getservice_name['service_name']?></span> has been accepted </span> 
+                   <? } elseif($notification['notification_type']=='7'){ ?>
+                   	<span class="job_desc_all_noti">Your more quote request for <span class="li_inner_p_all_noti"><?=$getservice_name['service_name']?></span> has been declined </span> 
+                   <? } ?>
+                 </a>    
+            </li>
+         	<? } ?>
+        	</ul>
+            <div class="col-sm-12 padding_left_0 text-center margin_top_20"> 
+              <?php echo $this->paginationControl($this->paginator,'Sliding','pagination-control.phtml');?> 
+           </div>
+        
+     <? } else {?>  
+     		<div class="BlankPageouterDiv"> 
+                <div class="BlankPageInnerDiv"> 
+                    <p class="no_noti_p BlankPagecontent">You have no notifications</p>
+                </div>    
+            </div>
+     <? } ?>
+     </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+</script>
+
+
+

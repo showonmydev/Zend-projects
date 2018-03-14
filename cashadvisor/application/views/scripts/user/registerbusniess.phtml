@@ -1,0 +1,408 @@
+<div class="signup01 Overflow cover">
+    <div class="signuptwo_container text-center">
+        <p class="txt_head">Lorem Ipsum is simply dummy text of <span>the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</span> when an unknown.</p>
+       
+        <div class="form_main_div">
+        	<?php /*?><div class="signup_error_div">
+                <span class="common-error-msg"><?php echo $this->formElementErrors($form->get('user_business_name'));?></span>
+                <span class="common-error-msg"><?php echo $this->formElementErrors($form->get('user_business_desc'));?></span>
+                <span class="common-error-msg"><?php echo $this->formElementErrors($form->get('user_first_name'));?></span>
+                <span class="common-error-msg"><?php echo $this->formElementErrors($form->get('user_last_name'));?></span>
+                <span class="common-error-msg"><?php echo $this->formElementErrors($form->get('user_email'));?></span>
+                <span class="common-error-msg"><?php echo $this->formElementErrors($form->get('user_phone'));?></span>
+                <span class="common-error-msg"><?php echo $this->formElementErrors($form->get('user_zip_code'));?></span>
+            </div>
+<?php */?>        <form method="post" id="register_form">
+                <div>
+                    <h3>Account</h3>
+                    <section>
+                      <div class="signuptwo_form_div text-left">
+                        <h1>Which of these services do you provide?</h1>
+                        <p>Tell us what you do so we can send you the right customers.</p>
+                        
+                        <div class="signup_two_form rewilla_first_step_scroll">
+                        	<div class="signup_two_form_checkbox">
+							<?
+								$j = 0;
+								foreach($this->Categories as $val){
+							
+									if(isset($this->subCategory[$val['service_id'].'_'.$j])){
+							?>
+                            		 <label for="cat_<?=$val['service_id']?>" style="border-bottom:1px solid #d2d2d2" >
+                                            <input type="checkbox" class="Service_main_cat" value="<?=$val['service_id']?>" id="cat_<?=$val['service_id']?>" name="service_cat[]" />&nbsp;<?=$val['service_name']?>
+                                    </label>
+                            		<div id="Cat_div_<?=$val['service_id']?>" class="Cat_Sub_Div">
+                            <?
+										foreach($this->subCategory[$val['service_id'].'_'.$j] as $data){
+							?>
+                            			<label for="cat_<?=$val['service_id'].'_'.$data['service_id']?>" class="subCategory checked_label" style="border-bottom:1px solid #d2d2d2" >
+                                                <input type="checkbox" id="cat_<?=$val['service_id'].'_'.$data['service_id']?>" value="<?=$data['service_id']?>" checked="checked" class="subCatCheckbox" name="service_sub_cat_<?=$val['service_id']?>[]" />&nbsp;<?=$data['service_name']?>
+                                        </label>
+                            <?
+										}
+							?>
+                            		</div>
+                            <?
+										$j++;
+									}
+									
+								}
+							?>
+                            
+                            
+                        </div>
+                       </div>
+                       <p>&nbsp;</p>
+                      </div>
+                    </section>
+                    
+                    <h3 class="hide">Profile</h3>
+                    
+                    <section>
+                     <div class="signupthree_form_div text-left">
+        				<h1>Describe your business.</h1>
+            			<p>Tell customers about your business and what services you provide.</p>
+                        
+                        	<div class="col-sm-12">
+                                <?php echo $this->form->user_business_name ?>
+                                <p class="business_instruction">If your business has no official name, use something descriptive,like "Juile's House Cleaning".</p>
+                            </div>
+                            <div class="col-sm-12">
+                                <?php echo $this->form->user_business_website ?>
+                                <p class="business_instruction">Optional</p>
+                            </div>
+                            
+                            <div class="col-sm-12">
+                                 <?php echo $this->form->user_business_desc ?>
+                                 <p class="business_instruction">Tell customers what you do and what makes your business great.<span><a class="business_instruction_span_ex" onclick="toggleshowExample()">(examples)</a></span><br />(100 characters minimum)</p>
+                                 <p id="example_desc_businesss" class="business_instruction_example hide_example">Describe what makes your service great. If you have experience working with a particular type of customer or project, share this specialty.</p>
+                            </div>
+                            
+                             <div class="col-sm-12">
+                             	<?php echo $this->form->user_business_hear_about ?>
+                                 <p class="business_instruction">Optional</p>
+                            </div>
+                    	</div>
+                    </section>
+                    
+                    
+                    <h3 class="hide">Hints</h3>
+                    <section>
+                    	<div class="signupfour_form_div Overflow text-left">
+                        	<h1>How can we contact you?</h1>
+                        	<p>Tell us where should send customer requests for your services.</p>
+                            <div class="col-sm-12 rewilla_signupfour_form_inner_div p0">
+                                <div class="col-sm-6">
+                                	<?php echo $this->form->user_first_name ?>
+                                </div>
+                                    
+                                <div class="col-sm-6">
+                               	 <?php echo $this->form->user_last_name ?>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 rewilla_signupfour_form_inner_div p0">
+                                <div class="col-sm-6">
+                                 <?php echo $this->form->user_email ?>
+                                </div>
+                                
+                                <div class="col-sm-6">
+                               		 <?php echo $this->form->user_phone ?>
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-12 rewilla_signupfour_form_inner_div p0" id="pass_section">
+                               
+                            </div>
+                            
+                            
+                            <div class="col-sm-12 clear rewilla_signup_user_notify">
+                                <h3>Account protection</h3>
+                                <?php echo $this->form->user_protect_account ?>
+                            </div>
+                    	</div>
+                    </section>
+                    
+                    <h3 class="hide">Finish</h3>
+                    <section>
+                    	<div class="signupfive_form_div text-left">
+        				<h1>Where do you work with your customers?</h1>
+                        <label>Travel Preference</label>
+                          <div class="signupfive_checkbox_div">                            
+                            <?php echo $this->form->user_travel_preference ?>
+                          </div>
+                          
+                           <?php echo $this->form->user_state ?>
+                           
+                            <?php echo $this->form->user_city ?>
+                          
+                          <?php echo $this->form->user_zip_code ?>
+                          
+                          <input type="hidden" value="" id="zip_code_lat" />
+                          <input type="hidden" value="" id="zip_code_long" />
+                         
+                        <?php echo $this->form->user_travel_range ?>
+                     
+                          <div id="map"></div>
+                          
+                          <div class="text-div" id="content-div">
+              	<span class="information_span">By clicking “sign Up” you are indicating that you have read and agreed to the <a href="<?php echo APPLICATION_URL?>terms" id="terms_span" target="_blank">terms of use.</a></span><br/>
+                <span class="information_span">Your carrier’s message and data rates may apply to text messages. You are not required to agree to receive text message as a condition of using CasaAdvisor’s service.</span>
+              </div>
+                    	</div>
+                    </section>
+                </div>
+      </form>
+      	    
+        </div>
+        
+        
+    </div>
+     <br />
+ <br />
+</div>
+
+<script>
+
+var form = $("#register_form");
+function toggleshowExample() {
+ 
+ document.getElementById("example_desc_businesss").classList.toggle("show_example");
+ 
+ document.getElementById("example_desc_businesss").classList.toggle("hide_example");
+ 
+}
+
+
+
+$(document).ready(function(e) {
+	var startIndex=0;
+
+	form.children("div").steps({
+    headerTag: "h3",
+    bodyTag: "section",
+    transitionEffect: "slideLeft",
+	
+    onStepChanging: function (event, currentIndex, newIndex)
+    {
+		/*add button back to become a pro on page load*/
+		startIndex=newIndex;
+		if(startIndex==0)
+			{
+				$('#menu_li_back').removeClass("hide").addClass('show');
+			}else{
+				
+				$('#menu_li_back').addClass('hide');
+			}
+		/*end add button back to become a pro on page load*/	
+		if(newIndex==2){
+			$("#content-div").show();
+		}
+		else{
+			$("#content-div").hide();
+		}
+		
+		if (currentIndex > newIndex)
+        {
+            return true;
+        }	
+				
+       form.validate().settings.ignore = ":disabled,:hidden";
+       return form.valid();
+    },
+    onFinishing: function (event, currentIndex)
+    {
+       form.validate().settings.ignore = ":disabled";
+	   if(startIndex==0)
+			{
+				$(".form_main_div .actions .disabled").css("display","none","important");
+				$(".form_main_div .actions .disabled a").attr("href","<?php echo $this->url(array(),"become_pro")?>");
+			}else{
+				
+				$(".form_main_div .actions .disabled a").attr("href","#previous");
+			}
+       return form.valid();
+    },
+    onFinished: function (event, currentIndex)
+    { 
+		$.blockUI({ css: { 
+		border: 'none', 
+		padding: '15px', 		
+		'-webkit-border-radius': '10px', 
+		'-moz-border-radius': '10px', 
+		opacity: 1, 
+		color: '#0bb8e3' ,
+		fontSize:'25px',
+		},
+		message: 'Processing....',		
+		});
+		form.submit();
+    }
+});
+
+/*add button back to become a pro on page load*/
+
+if(startIndex==0)
+{
+	$('.form_main_div .actions ul').prepend('<li id="menu_li_back"><a href="<?php echo $this->url(array(),"become_pro")?>" style="background-color: transparent; color: rgb(255, 255, 255); float: left;" >Back</a></li>');
+}
+
+
+$('#steps-uid-0-p-0 .rewilla_first_step_scroll').mCustomScrollbar({ mouseWheelPixels: 0 });
+
+$(".actions ul li:nth-child(2) a").html('Back');
+$(".actions ul li:first-child a").css({'background-color':'transparent','color':'#fff','float':'left'});
+$(".actions ul li:nth-child(3) a").html('Continue');
+$(".actions ul li:last-child a").html('Sign Up');
+
+
+
+$(".actions ul li:nth-child(3)").click(function(e) {
+//	alert('jkkjhkjh');
+   initialize(38.889931,-77.009003,"New York",5000,'map'); 
+ });
+
+$('.signup_two_form_checkbox .Service_main_cat:checkbox').change(function(e) {
+	//alert("1");
+	var Id = e.target.id;
+	var CatId = Id.split("_");
+	
+	if($(this).prop("checked") == true){
+		$('#cat_'+CatId[1]).closest('label').addClass('checked_label');
+		$('.subCategory:checkbox').attr('checked', true);
+		$('#Cat_div_'+CatId[1]).slideDown('slow');
+	}
+	else {
+		$('#cat_'+CatId[1]).closest('label').removeClass('checked_label');
+		$('#Cat_div_'+CatId[1]).hide('slow');
+	}
+	
+});
+
+$('.subCatCheckbox').change(function(e) {
+	//alert("2");
+    var Id = e.target.id;
+	var CatId = Id.split("_");
+	
+	if($(this).prop("checked") == true){
+		$('#cat_'+CatId[1]+'_'+CatId[2]).closest('label').addClass('checked_label');
+	}
+	else {
+		$('#cat_'+CatId[1]+'_'+CatId[2]).closest('label').removeClass('checked_label');
+	}
+	
+});
+	
+	$("#pass_section").hide();
+	
+	$("#content-div").hide();
+	
+	
+	
+	$('#user_protect_account').click(function(){
+            if($(this).is(":checked")){
+               $("#pass_section").hide();
+			   $("#pass_section").html('');			 
+            }
+            else if($(this).is(":not(:checked)")){
+               $("#pass_section").show();
+			   $("#pass_section").html('<div class="col-sm-6"><div class="form-group"><label class="required_class" for="user_password">Password</label><input type="password" name="user_password" id="user_password" class="form-control" placeholder="" value=""></div></div><div class="col-sm-6"><div class="form-group"><label class="required_class" for="user_cpassword">Confirm Password</label><input type="password" name="user_cpassword" id="user_cpassword" class="form-control" placeholder="" value=""></div></div>')
+            }
+        });
+	
+	var Ht = $('.signup_two_form_checkbox').height();
+	//console.log(Ht);
+	if(Ht < 258){
+		$('.signup01 .signup_two_form').css('height',Ht+'px');
+	}
+	else{
+		$('.signup01 .signup_two_form').css('height','258px');	
+	}
+	
+		
+	$(".chzn-select").chosen();
+	
+	$("#user_zip_code_chzn .chzn-drop .chzn-results").css('display','none');
+	
+	$(".travel_prefrence_class:radio[value=1]").closest('label').addClass('checked_label').prop("checked","true");
+	$(".travel_prefrence_class:radio[value=1]").prop("checked","true");
+	$(".travel_prefrence_class:radio[value=2]").closest('label').css('border-bottom','1px solid #d2d2d2');
+	
+		
+	$('#user_zip_code_chzn .chzn-drop .chzn-search input').on('keyup',function(e){
+		$("#user_zip_code_chzn .chzn-drop .chzn-results").css('display','block');
+	});
+	
+ var ht = $(window).height();
+		$('.signup01').css('min-height',ht+'px');
+		
+			$(window).resize(function(e){
+	var resize_height = $(document).height();
+   $(".signup01").css('min-height',resize_height+'px'); 
+	
+});
+
+
+$(".travel_prefrence_class").each(function()
+{
+   $(this).change(function()
+	  {
+			$(".travel_prefrence_class").attr('checked',false);
+			$('.travel_prefrence_class').closest('label').removeClass('checked_label');
+			$(this).attr('checked',true);
+			$(this).closest('label').addClass('checked_label');
+	  });
+});
+
+$( "#user_business_website" ).keypress(function() {
+  if($('#user_business_website').val()==''){
+	  $('#user_business_website').val('http://');
+  }
+});
+
+    });
+	
+	
+	
+function initialize(latitude,longitude,location,range,id) {
+	
+		/* ONLY MAP INTEGRATION */
+		range = parseInt(range);
+		 var
+        latLngCenter = new google.maps.LatLng(latitude, longitude),
+		latLngCMarker = new google.maps.LatLng(latitude, longitude),
+        map = new google.maps.Map(document.getElementById(id), {
+            zoom:9,
+            center: latLngCenter,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: false,
+			scrollwheel: false,
+        }),
+        markerCenter = new google.maps.Marker({
+            position: latLngCMarker,
+           // title: 'Location',
+            map: map,
+            draggable: true
+        }),
+        
+        
+        // exemplary setup: 
+        // Assumes that your map is signed to the var "map"
+        // Also assumes that your marker is named "marker"
+        circle = new google.maps.Circle({
+            map: map,
+            clickable: false,
+            // metres
+            radius: range,
+            fillColor: '#88b8f8',
+            fillOpacity: .6,
+            strokeColor: '#75adf7',
+            strokeOpacity: .4,
+            strokeWeight: .8
+        });
+    // attach circle to marker
+    circle.bindTo('center', markerCenter, 'position');
+	markerCenter.setMap(null);		
+			
+}
+	
+</script>

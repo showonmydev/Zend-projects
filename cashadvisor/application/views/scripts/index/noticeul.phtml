@@ -1,0 +1,65 @@
+<?php 
+$total_massages = $this->total_massages;
+$massages = $this->massages;
+?>
+
+
+<? if(count($massages)!='0'){?>
+<? foreach($massages as  $key => $msz){?>
+	<li>
+	<? if($this->user->user_type=='service_provider'){ 
+			if($msz['notification_type']=='8'){
+			$see_notifications =  $this->url(array('user_id'=>$this->user->user_id,'feedback'=>'r'),"front_user_SPprofile");
+			}else{
+				$see_notifications =  $this->url(array('job_id'=>$msz['notification_job_id']),"front_bid");
+				}
+		}else {
+			if($msz['notification_type']=='9'){
+			$see_notifications = $this->url(array('user_id'=>$msz['notification_sender'],'feedback'=>'rr'),"front_user_SPprofile");
+			}else{
+				$see_notifications = $this->url(array('job_id'=>$msz['notification_job_id']), "front_viewquote");
+				}
+		}?>
+		
+	<a href="<?php echo $see_notifications?>">
+	  <div class="subject">
+		 <div class="sender_msz">
+		   <img class="img-responsive img-thumbnail"  src="<?php echo getUserImage($msz['user_image'],'60') ;?>" />
+		   <div class="message">
+			 <? if($msz['notification_type']=='10') {?>
+            	  <p class="first_P" ><b><?=$msz['user_name']?> </b> has send you message (<b><?=$msz['service_name']?></b>)</p>
+			 <? } ?>
+             <? if($this->user->user_type=='service_provider'){?>
+					<? if($msz['notification_type']=='1'){?>
+					 <p class="first_P" >New job posted by <b><?=$msz['user_name']?> </b>  (<b><?=$msz['service_name']?></b>)</p>
+					 <? } elseif($msz['notification_type']=='3') {?>
+					 <p class="first_P" >Congratulations!! you got hired by <b><?=$msz['user_name']?> </b> for job (<b><?=$msz['service_name']?></b>)</p>
+					 <? } elseif($msz['notification_type']=='4') { ?>
+					 <p class="first_P" >Reminder!!  <b><?=$msz['user_name']?> </b> has send you reminder for (<b><?=$msz['service_name']?></b>)</p>
+					  <? } elseif($msz['notification_type']=='8') { ?>
+					 <p class="first_P" ><b><?=$msz['user_name']?> </b> has send review for (<b><?=$msz['service_name']?></b>)</p>
+					 <? } ?>
+			 <? } else { ?>
+				<? if($msz['notification_type']=='2'){?>
+			   <p class="first_P" ><b><?=$msz['user_name']?> </b> has send you Quote for <b><?=$msz['service_name']?></b></p>
+			   <? } elseif($msz['notification_type']=='6'){?>
+			   <p class="first_P" >Your more quote request for <b><?=$msz['service_name']?></b> has been accepted</p>
+			   <? } elseif($msz['notification_type']=='7'){ ?>
+			   <p class="first_P" >Your more quote request for <b><?=$msz['service_name']?></b> has been declined</p>
+			   <? } elseif($msz['notification_type']=='9') { ?>
+			  <p class="first_P" ><b><?=$msz['user_name']?> </b> has replied to review for (<b><?=$msz['service_name']?></b>)</p>
+			   <? } ?>
+			 <? } ?>
+				  <p class="whenP"><span class="when"><?php echo showPostTime($msz['notification_date']);?> ago </span></p>
+				</div>
+				</div>   
+			</div>
+		</a> 
+	</li>
+<? } ?>
+<? } ?>
+
+
+<input type="hidden" id="totalReceivedNoti" value="<?=count($massages)?>" />
+                            
+                            

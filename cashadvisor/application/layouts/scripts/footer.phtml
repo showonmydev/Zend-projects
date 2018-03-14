@@ -1,0 +1,244 @@
+<?
+?>
+
+<div class="customcontainer_1">
+    <div class=" footer_1" style="background-image:url(<?php echo HTTP_SITEIMG_PATH?>/footer_bg.jpg);">
+ 
+              <div class="container">
+ <!--main footer desktop-->
+                   <div class="inner_first_footer  hidden-xs">
+                         <!--  About-->      
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 width_xs padding_centre">
+                                      <div class="row ">
+                        
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                     <h3 class="about">About CasaAdvisor</h3>
+                                            </div>
+                                            <div class="row bcolor_4"> 
+                                                     <div class=" col-lg-2 col-md-2  col-sm-4 col-xs-4 footer_heading_line_1"></div>
+                                            </div>         
+                                      </div>
+                                      <div class="footer_logo_img">
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6  footlogo">   
+                                            <img  src="<?php echo HTTP_SITEIMG_PATH?>/footerlogo.png" class=" img-responsive maxWidthLogo logoimg" alt="" />
+                                            </div>
+                                    </div>
+                                      <div>
+                                            <p class="about_2"><?=nl2br($this->site_configs['footer_about'])?></p>    
+                                     </div>
+                                     
+                                     <div>
+                                     	<a target="_blank" href="<?=$this->site_configs['google_play_store_link']?>">
+                                     		<img  src="<?php echo HTTP_SITEIMG_PATH?>/googleplayLogo.png" class=" img-responsive maxWidthLogo logoimg" alt="" />
+                                        </a>
+                                        <div class="Spacer-1"></div>
+                                        <a target="_blank" href="<?=$this->site_configs['apple_app_store']?>">
+                                        	<img  src="<?php echo HTTP_SITEIMG_PATH?>/appleAppLogo.png" class=" img-responsive maxWidthLogo logoimg" alt="" />
+                                        </a>
+                                     </div>
+                                     
+                                </div>
+                                
+                         <!--  USEFULL LINKS-->
+                                <div  class="col-lg-2 col-md-2 col-sm-6 col-xs-6 width_xs pading_left_3 padding_centre">
+                                        <h3 class="about">USEFUL LINKS</h3>
+                                        <div class="row bcolor_4"> 
+                                               <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 footer_heading_line" ></div>         
+                                        </div>   
+                                       
+                                        <ul  class=" foot_1  ">   
+                                                <li><a data-title="home" class=" active home_11 hcolor_1" href="<?php echo $this->url(array(''),'front_page')?>">Home <span class="sr-only">(current)</span></a></li>
+                                                <li><a data-title="about" class=" home_11" href="<?=$this->baseUrl('about-us')?>">About us</a></li>
+                                                <li><a data-title="how" class="home_11" href="<?=$this->baseUrl('how_it_work')?>">How it Works</a></li>
+                                                <li><a data-title="contact" class="home_11" href="<?php echo $this->url(array(),"contact_us")?>">Contact us</a></li>
+                                               
+                                                <li><a data-title="term" class="home_11 margin_1"  href="<?=$this->baseUrl('terms')?>">Terms and conditions</a></li>
+                                                <li><a data-title="privacy" class="home_11 margin_1" href="<?=$this->baseUrl('privacy')?>">Privacy Policy</a></li>
+                                                <li><a data-title="faq" class="home_11 margin_1" href="<?=$this->baseUrl('faq')?>">FAQ</a></li>  
+                                                <li><a data-title="blog" class="home_11 margin_1" href="<?php echo $this->url(array(''),'front_blog')?>">Blog</a></li>  
+
+                                        </ul>
+                                </div>
+                        <!--  CONTACT INFO-->
+                                <div  class="col-lg-3 col-md-3 col-sm-6 col-xs-6 width_xs pading_left_2 padding_centre">
+                                        <h3 class="about">CONTACT INFO</h3>
+                                        <div class="row bcolor_4"> 
+                                             <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 footer_heading_line "></div>         
+                                        </div>   
+                                       
+                                        
+               							 <p class="home_11"><img src="<?php echo HTTP_SITEIMG_PATH?>/marker_foot.png" alt="" /><span class="span_foot_padding hillhaven" ><?=nl2br($this->site_configs['footer_address'])?></span></p>
+                                        
+                                        <p class="home_11"><i class="awsm_col fa fa-phone" aria-hidden="true"></i>  <span class="span_foot_padding" ><?=nl2br($this->site_configs['footer_phone'])?></span></p>
+                                        <p class="home_11"><i class="awsm_col fa fa-envelope" aria-hidden="true"> </i><a href="mailto:info@casaadvisor.com"> <span class="span_foot_padding" ><?=nl2br($this->site_configs['footer_email'])?></span></a></p>
+                                        
+                                        
+                                </div>
+                                
+                         <!-- CONNECT WITH US-->  
+                                <div  class="col-lg-3 col-md-3 col-sm-6 col-xs-6 width_xs pading_left_1 padding_centre">
+                                        <h3 class="about">CONNECT WITH US</h3>
+                                        <div class="row bcolor_4"> 
+                                              <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 footer_heading_line" ></div>         
+                                        </div>   
+                                    <p class="home_11"><i class="asm_icon asm_icon_facebook fa fa-facebook" aria-hidden="true"> </i><a target="_blank" href="<?=$this->site_configs['facebook_link']?>"> <span class=" ">Facebook</span></a></p>
+                                        <p class="home_11"><i class="asm_icon asm_icon_twitter fa fa-twitter" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['twitter_link']?>"><span class=" "> Twitter</span></a></p>
+                                        <p class="home_11"><i class="asm_icon_you asm_icon fa fa-youtube" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['youtube_link']?>"> <span class=" ">You Tube</span></a></p>
+                                        <p class="home_11"><i class=" asm_icon_google asm_icon fa fa-google-plus" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['google_plus_link']?>"><span class=" "> Google+</span></a> </p>
+                                        <p class="home_11"><i class=" asm_icon asm_icon_linken  fa fa-linkedin" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['linked_in_link']?>"><span class=" ">Linked In</span></a> </p>
+                                         <p class="home_11"><i class=" asm_icon asm_icon_insta fa fa-instagram" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['social_link_instagram']?>" class="instaLi" ><span>Instagram</span></a></p>
+                                </div>  
+                                
+                   </div> 
+ <!--	responsive footer -->    
+                  <div class="ResponsiveFooter visible-xs">
+
+                                <div class="panel-group" id="accordion">
+                                <!--  About-->
+                              			  <div class="panel panel-default">
+                                                 <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse11">ABOUT CASAADVISOR</a>
+                                                        </h4>
+                                                </div>
+                                                 <div id="collapse11" class="panel-collapse collapse">
+                                                        <div class="panel-body text-center"> 
+                                                        		  <div class="footer_logo_img">
+                                                                            <div class="col-xs-12  footlogo">   
+                                                                            <img src="<?php echo HTTP_SITEIMG_PATH?>/footerlogo.png" class=" img-responsive logoimg" alt="" />
+                                                                            </div>
+                                                                    </div>
+                                     							  <div>
+                                                                        <p class="about_2"><?=nl2br($this->site_configs['footer_cpy'])?></p>    
+                                                                 </div> 
+                                                             <div>
+                                                            <a target="_blank" href="<?=$this->site_configs['google_play_store_link']?>">
+                                                                <img  src="<?php echo HTTP_SITEIMG_PATH?>/googleplayLogo.png" class="MarginAuto img-responsive maxWidthLogo logoimg" alt="" />
+                                                             </a>
+                                                                <div class="Spacer-1"></div>
+                                                                <a target="_blank" href="<?=$this->site_configs['apple_app_store']?>">
+                                                               		 <img  src="<?php echo HTTP_SITEIMG_PATH?>/appleAppLogo.png" class=" MarginAuto img-responsive maxWidthLogo logoimg" alt="" />
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                         </div>
+                                <!--  USEFULL LINKS-->         
+                                          <div class="panel panel-default">
+                                                 <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">USEFUL LINKS</a>
+                                                        </h4>
+                                                </div>
+                                                 <div id="collapse1" class="panel-collapse collapse">
+                                                        <div class="panel-body"> 
+                                                        		<ul  class=" foot_1  ">   
+                                                <li><a data-title="home" class=" active home_11 hcolor_1" href="<?php echo $this->url(array(''),'front_page')?>">Home <span class="sr-only">(current)</span></a></li>
+                                                <li><a data-title="about" class=" home_11" href="<?=$this->baseUrl('about-us')?>">About us</a></li>
+                                                <li><a data-title="how" class="home_11" href="<?=$this->baseUrl('how_it_work')?>">How it Works</a></li>
+                                                <li><a data-title="contact" class="home_11" href="<?php echo $this->url(array(),"contact_us")?>">Contact us</a></li>
+                                               
+                                                <li><a data-title="term" class="home_11 margin_1"  href="<?=$this->baseUrl('terms')?>">Terms and conditions</a></li>
+                                                <li><a data-title="privacy" class="home_11 margin_1" href="<?=$this->baseUrl('privacy')?>">Privacy Policy</a></li>
+                                              	<li><a data-title="faq" class="home_11 margin_1" href="<?=$this->baseUrl('faq')?>">FAQ</a></li>  
+                                                <li><a data-title="blog" class="home_11 margin_1" href="<?php echo $this->url(array(''),'front_blog')?>">Blog</a></li>  
+                                        </ul> 
+                                                        </div>
+                                                </div>
+                                         </div>
+                                 <!--  CONTACT INFO-->        
+                                          <div class="panel panel-default">
+                                                 <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse2">CONTACT INFO</a>
+                                                        </h4>
+                                                </div>
+                                                 <div id="collapse2" class="panel-collapse collapse">
+                                                        <div class="panel-body text-center"> 
+                                                        
+                                                        
+                                                        		<p class="home_11"><img src="<?php echo HTTP_SITEIMG_PATH?>/marker_foot.png" alt="" /><span class="span_foot_padding hillhaven" >2192 Hillhaven Drive Hollywood, CA 90028</span></p>
+                                                                <p class="home_11"><i class="awsm_col fa fa-phone" aria-hidden="true"></i>  <span class="span_foot_padding" >323-817-7524</span></p>
+                                                                <p class="home_11"><i class="awsm_col fa fa-envelope" aria-hidden="true"> </i><a href="mailto:info@casaadvisor.com"> <span class="span_foot_padding" >info@casaadvisor.com</span></a></p>
+                                                        </div>
+                                                </div>
+                                         </div>
+                                   <!-- CONNECT WITH US-->        
+                                          <div class="panel panel-default">
+                                                 <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                        	<a data-toggle="collapse" data-parent="#accordion" href="#collapse3">CONNECT WITH US</a>
+                                                        </h4>
+                                                </div>
+                                                 <div id="collapse3" class="panel-collapse collapse">
+                                                        <div class="panel-body text-center"> 
+<?php /*?>                                                                <p class="home_11"><i class="asm_icon1 fa fa-facebook" aria-hidden="true"> </i><a target="_blank" href="<?=$this->site_configs['facebook_link']?>"> <span class="f_padding ">Facebook</span></a></p>
+                                                                <p class="home_11"><i class="asm_icon1 fa fa-twitter" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['twitter_link']?>"><span class="T_padding "> Twitter</span></a></p>
+                                                                <p class="home_11"><img src="<?php echo HTTP_SITEIMG_PATH?>/youtube.png" /><a target="_blank" href="<?=$this->site_configs['youtube_link']?>"> <span class="Y_padding ">You Tube</span></a></p>
+                                                                <p class="home_11"><img src="<?php echo HTTP_SITEIMG_PATH?>/google_small_awsm.png" /><a target="_blank" href="<?=$this->site_configs['google_plus_link']?>"><span class="G_padding "> Google+</span></a> </p><?php */?>
+                                                                
+                                                                   <p class="home_11"><i class="asm_icon asm_icon_facebook fa fa-facebook" aria-hidden="true"> </i><a target="_blank" href="<?=$this->site_configs['facebook_link']?>"> <span class=" ">Facebook</span></a></p>
+                                        <p class="home_11"><i class="asm_icon asm_icon_twitter fa fa-twitter" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['twitter_link']?>"><span class=" "> Twitter</span></a></p>
+                                        <p class="home_11"><i class="asm_icon_you asm_icon fa fa-youtube" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['youtube_link']?>"> <span class=" ">You Tube</span></a></p>
+                                        <p class="home_11"><i class=" asm_icon_google asm_icon fa fa-google-plus" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['google_plus_link']?>"><span class=" "> Google+</span></a> </p>
+                                        <p class="home_11"><i class=" asm_icon asm_icon_linken  fa fa-linkedin" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['linked_in_link']?>"><span class=" ">Linked In</span></a> </p>
+                                        <p class="home_11"><i class=" asm_icon asm_icon_insta fa fa-instagram" aria-hidden="true"></i><a target="_blank" href="<?=$this->site_configs['social_link_instagram']?>" class="instaLi" ><span>Instagram</span></a></p>
+                                                        </div>
+                                                </div>
+                                         </div>
+                                </div>
+                   </div>       
+              </div> 
+                
+<!--  footer_2  -->
+        	  <div class="container">
+              <div class="footer_2">     
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" >
+                     <div class="casa_logo_img_foot" >
+                        <img src="<?php echo HTTP_SITEIMG_PATH?>/footerlogo.png" class=" img-responsive logoimg" alt="" />
+                     </div>   
+                     <p class="foot_2_p">
+                              <?=$this->site_configs['footer_cpy']?>
+                     </p>
+                   <p class="foot_copy">&copy;<?php echo date('Y')?> CasaAdvisor.com. All Rights Reserved.</p>
+                  </div>     
+            </div>
+        </div>    
+    </div>    
+ </div>   
+
+
+<div class="PostJobFrom3Pages hide"> 
+		<? if($this->current_controller != 'index'){
+				if(isset($_GET['services']) && $_GET['services']!=''){
+					$searchedcat = $_GET['services'];
+					
+					$gotoThisLink =  "login/".$searchedcat;
+				}else{
+					$searchedcat = '1';
+					$gotoThisLink =  "login/".$searchedcat;
+					} 
+			}else{
+					if($this->current_action=='seeallsubcategory'){
+							$gotoThisLink =  "login?url=Category/".$this->sid_for_job."/".$this->spid_for_job."/".$this->sn_for_job;
+						}else if($this->current_action=='seeallcategory'){
+							$gotoThisLink =  "login?url=Service/".$this->msn_for_job;
+							}
+				}
+		?>
+		<p style="margin:0px;" class="Spacer-1"></p> 
+    	<a class="btn pay_continue btn-lg" href="<?php echo $this->url(array(),"front_register")?>"> Sign up</a>
+        <p style="margin:0px;" class="Spacer-1"></p>
+        <input type="hidden" id="JobPostHiddenInput" name="JobPostHiddenInput" value="<?php echo APPLICATION_URL?>/<? echo $gotoThisLink?>" /> 
+        <p> If already have an account? <a class="col_theme" id="loginForJobPost" style="font-weight:bold;"  href="<?php echo APPLICATION_URL?>/<? echo $gotoThisLink?>"> Sign in</a></p>
+</div>
+
+ <script>
+ 		$(document).ready(function(e)
+		{
+			
+			$('a[data-title="<?php echo trim($this->show)?>"').addClass("option_class_active");
+		}
+		
+		);
+ </script>

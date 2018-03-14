@@ -1,0 +1,113 @@
+<?php 
+$this->modelStatic = new Application_Model_Static();
+
+//prn($this->user);
+$address = $this->user->user_address;
+$city = $this->user->user_city;
+$state = $this->user->user_state;
+$phone = $this->user->user_phone;
+if(($this->user->user_city)!=''){
+$getUserAddress  =$this->modelStatic->Super_Get("zips","zip_id='".$this->user->user_city."'","fetch");
+//prd($getUserAddress);
+}
+?>
+<style type="text/css">
+</style>
+<div class="container">
+        <div class="col-sm-12 overflow client_profile_page">
+        
+       		 <div class="account_setting_div overflow">
+                <p class="account_main_heading_h3 text-center overflow">Account Details</p>
+            </div>
+        
+           	 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 width_xs hidden-xs">
+                <div class="account_details_image_Div text-right overflow">
+                		<a href="<?php echo $this->url(array(),"front_image")?>">
+                        <img class="img-responsive img-circle" style="padding:2px; border:1px solid #d1d1d1; float:right;" src="<?php echo getUserImage($this->user->user_image,'160') ;?>" /></a>
+                </div>
+                 
+            </div>
+            
+           	 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 width_xs_33 account_details_Div">
+            	<h5 class="account_heading_h5">ACCOUNT</h5>
+                <p class="detail_info">
+                	<label><i class="fa fa-user account_icon_opacity" aria-hidden="true"></i></label><?=$this->user->user_first_name.' '. $this->user->user_last_name;?>
+                </p>
+                
+                <p class="detail_info">
+              		  <label><i class="fa fa-envelope account_icon_opacity" aria-hidden="true"></i></label><?=$this->user->user_email;?>
+                </p>
+                
+                
+              <? if($address!='' || $city!='' && $state!=''){?>  
+                <p class="detail_info">
+                	<label><i class="fa fa-map-marker account_icon_opacity" aria-hidden="true"></i></label><? if($address!=''){ echo $address.","; } ?> <?=$getUserAddress['city'];?>, <?=$getUserAddress['state'];?> (<?=$getUserAddress['zip'];?>)
+                </p>
+              <? } ?> 
+               <? if($phone!=''){?> 
+                <p class="detail_info">
+               		 <label><i class="fa fa-phone account_icon_opacity" aria-hidden="true"></i></label><?=$phone;?> 
+                </p>
+               <? }?> 
+             <hr class="Clear">
+             <p class="detail_info profile_deleteAccount">
+             	<label><i class="fa fa-times account_icon_opacity" aria-hidden="true"></i></label><a class="col_theme" onclick="sureremovejob(<?=$this->user->user_id?>)">Delete account</a>
+             </p>
+             <p class="detail_info  profile_deleteAccount">
+                <label><i class="fa fa-pencil-square-o account_icon_opacity" aria-hidden="true"></i></label><a class="col_theme" href="<?php echo $this->url(array(),"front_profile")?>">Edit Profile</a>
+             </p>
+            </div>
+            
+            <?   if($this->user->user_type=='service_provider'){ ?>
+          	 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 width_xs_33">
+             	
+                 <p class="col-xs-12 overflow padding_zero">
+                      <a class="btn-setting pull-left MainProfilePackageBtn GreenColBtn" href="<?php echo $this->url(array(),"front_purchase")?>">
+                          <img class="img-responsive" src="<?=HTTP_SITEIMG_PATH?>/WhiteWallet.png" alt=""> &nbsp;&nbsp;&nbsp;<span>Purchase Package</span>
+                      </a>
+              	</p>
+                
+                 <p class=" col-xs-12 overflow padding_zero">
+                      <a class="btn-setting pull-left MainProfilePackageBtn YellowColBtn" href="<?php  echo $this->url(array(),"package_purchased_history")?>">
+                          <img class="img-responsive" src="<?=HTTP_SITEIMG_PATH?>/CreditHistory.png" alt=""> &nbsp;&nbsp;&nbsp;<span>Credit History</span>
+                      </a>
+              	</p>
+                 
+			</div>
+           <?  }?> 
+        </div>
+	</div>
+
+<div class="modal fade" id="delete_account_user" role="dialog" data-backdrop="" aria-hidden="true">
+ <div class="modal-dialog">
+         <div class="modal-content">
+            <form name="remove_project" method="post" action="<? echo APPLICATION_URL?>/profile/deleteaccount/">
+              <div class="modal-header ">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
+              </div>
+              <div class="modal-body">
+                <h4 class="text-center">Are you sure, you want to delete your account.</h4>
+                <input type="hidden" value="<?=$this->user->user_id?>" id="user_acc_delete_id" name="user_id"> 
+                <div class="text-center">
+                    <button data-dismiss="modal" class="btn btn-default" type="button"> No</button>
+                    <button class="btn btn-info" type="submit">Yes</button>
+                </div>
+              </div>
+             </form>
+         </div>
+         
+     </div>
+</div>
+</div>
+
+
+
+    
+<script type="text/javascript">
+function sureremovejob(user_id){
+		$("#user_acc_delete_id").val(user_id);
+		$("#delete_account_user").modal('show');
+}
+
+</script>    
+    

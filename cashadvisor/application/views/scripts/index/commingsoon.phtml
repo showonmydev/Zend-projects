@@ -1,0 +1,67 @@
+<?php 
+			$today=date_create(date('Y-m-d h:i:s a'));
+			$target=date_create("2016-12-27 18:00:00");
+			$diff=date_diff($today,$target);
+			$name ="Casa Advisor";
+			$share_url = SITE_HTTP_URL;
+			/*$share_img = $this->videoThumb;*/
+			//echo SITE_HTTP_URL;
+?>
+<!--Comming soon Section-->
+<section class="discover-section">
+   			 <div class="containerfluid">
+             	<div class="coming_bg">
+                	<div class="coming_wlcm_bg">
+                    	<div class="text-center wlcm_div">
+                    		<h3 class="wlcm_h">Welcome To </h3> <img src="<?php echo HTTP_SITEIMG_PATH?>/coming_logo.png" />
+                         </div>
+                        <p class="our_site">Our website is under construction, we are working very hard to give you the best experience with this one.</p>
+                       
+                        <div class="time_show">
+                        <?	if($diff->m != 0){?>
+							<div class="left_border"><p class="day_col"><?=$diff->m?></p><p>Month</p></div>	
+						<? } ?>
+                        
+                        <?	if($diff->d != 0){?>
+							<div class="left_border"><p class="day_col"><?=$diff->d?></p><p>Day</p></div>	
+						<? } ?>
+                        
+                         <?	if($diff->h != 0){?>
+							  <div class="left_border"><p class="h_col"><?=$diff->h?></p><p>Hour</p></div>
+						<? } ?>
+                         <?	if($diff->i != 0){?>
+							  <div class="left_border"><p class="m_col"><?=$diff->i?></p><p>Minute</p></div>
+						<? } ?>
+                        <?	if($diff->s != 0){?>
+							  <div class="left_border"><p class="m_col"><?=$diff->s?></p><p>Second</p></div>
+						<? } ?>
+                       
+                        </div>
+                        <div class="share_email_div">
+                            <p class="stay_close">Stay close. We'll bring it back as fast we can. Subscribe to our list and we'll notice you!</p>
+                                <div class="share_input_div"><input class="share_input" placeholder="Enter your email address" type="text" /></div>
+                                	<div class="share_img_div">
+                                 </div>
+                         </div>
+                            <?php /*?><li class="insta"><img src="<?php echo HTTP_SITEIMG_PATH?>/insta_icon.png" /></li><?php */?>
+                         <div class="social_icon_div">
+                                <ul class="share_ul">
+                                    <!--<li><i class="asm_icon fa fa-facebook" aria-hidden="true"> </i></li>-->
+                                    <li><a onclick="FBShareOp('<?php echo $name; ?>','<?php echo $share_url; ?>','<?php echo $share_img; ?>','')" ><i class="fa fa-facebook"></i></a></li>
+                                    <!--<li><i class=" asm_icon fa fa-tumblr" aria-hidden="true"></i></li>-->
+                                     <li><a onClick='window.open("https://twitter.com/intent/tweet?screen_name=<?=$this->site_configs['social_link_twitter']?>&url=<?=$share_url;?>","sharer","toolbar=0,status=0,width=580,height=325");' ><i class="fa fa-tumblr"></i></a></li>
+                                     
+                                   <!-- <li class="insta"><i class=" fontsize asm_icon fa fa-instagram" aria-hidden="true"></i></li>-->
+                                     <li><a class="insta"><i class="fa fa-instagram"></i></a></li>
+                                     
+                                  
+                                   <!-- <li class="gplus"><i class="asm_icon  fa fa-google-plus" aria-hidden="true"></i></li>-->
+                                      <li><a  class="gplus" onclick='window.open("https://plus.google.com/share?url=<?=$share_url;?>","sharer","toolbar=0,status=0,width=580,height=325","sharer","toolbar=0,status=0,width=580,height=325");'><i class="fa fa-google-plus"></i></a></li>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
+
+

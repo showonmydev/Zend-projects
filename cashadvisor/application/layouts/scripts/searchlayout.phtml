@@ -1,0 +1,141 @@
+<?php echo $this->docType("HTML5");?>
+<html lang="en">
+<head>
+<?php 
+	echo $this->headMeta()."\n"; 
+	echo $this->headTitle()."\n";
+	echo $this->headLink()."\n";
+	global $myActionName,$myControllerName,$myModuleName;
+	$myControllerName=Zend_Controller_Front::getInstance()->getRequest()->getControllerName();	
+	$myActionName=Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+	$myModuleName=Zend_Controller_Front::getInstance()->getRequest()->getModuleName();
+?>
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="<?php echo $this->baseUrl()?>/public/front_js/html5shiv.js"></script>
+  <script src="<?php echo $this->baseUrl()?>/public/front_js/respond.min.js"></script>
+<![endif]-->
+	
+<script src="<?php echo $this->baseUrl('public/plugins/jquery-1.11.0.min.js')?>"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script>var baseUrl = SITEURL = SITE_URL = '<?php echo $this->baseUrl()?>';</script>
+<script>
+var controller='<?=$myControllerName?>';
+var action='<?=$myActionName?>';
+var module='<?=$myModuleName?>';
+
+</script>	
+<script>
+$(window).load(function(e) {
+	$('#wrap').hide();
+});
+
+</script>
+</head>
+<?
+if($myControllerName=='user' and $myActionName=="login" )
+{
+	$class="body_bg";
+}
+else if($myControllerName=='user' and $myActionName=="register" and $this->type=='employer')
+{
+	$class="body_bg_regis";
+}
+else if($myControllerName=='user' and $myActionName=="register" and $this->type=='recruiter')
+{
+	$class="body_bg_recruiter";
+}
+else if($myControllerName=='user' and $myActionName=="forgotpassword" )
+{
+	$class="body_bg_forgot";
+}
+else if($myControllerName=='user' and $myActionName=="resetpassword" )
+{
+	$class="body_bg_reset";
+}
+else if($myControllerName=='static'  )
+{
+	$class="body_bg_static";
+}
+else
+{
+	$class="";
+}
+
+?>
+
+<body class="<?=$class?> drawer drawer-right site-base">
+	<div id="wrap" align="center">
+	<img src="<?=HTTP_SITE_IMAGES?>/loader.GIF" alt="loader" class="fa-spin" width="100" id="logo-preloader" />
+</div>
+
+	<?php echo $this->render('header.phtml'); ?>
+	<!--========================================== //End PROJECT-NAME Menu Section-->
+	<br>
+    <br/>
+    <br>
+	 <div class="widthdiv relativediv">
+ 	<img src="<?php echo HTTP_SITE_IMAGES ?>/b_skills.jpg"  />
+    <div class="job_abs"> <h2 class="text-center"> <?php echo $this->pageHeading;?></h2></div>
+ </div>
+                      
+  	<div align="center">
+		<div class="maxwidth">
+		
+				<div class="innerpage">
+                  		
+                        <div class="container">
+                            <div class="row"><?php echo $this->getHelper('Messages')->getMessages();?> </div>
+                            <?php echo $this->render("sub_show_messages.phtml");?>
+                        <br/>  
+                             
+                        	<div class="row row-offcanvas row-offcanvas-left">
+								
+                                <div class="col-xs-12 col-sm-12 text-right visible-xs"  >
+                                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapsemain">
+                                        <span class="inline-block">
+                                            <span class="icon-bar" style="margin-top:4px;"></span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                        </span>
+                                    </button>
+                           		</div>
+                            
+                               <div class="col-xs-12 col-sm-3  navbar-collapsemain collapse newcollapse" id="sidebar" role="navigation" >
+                                  <?php echo $this->render("_search_side_bar.phtml");?>
+                                </div>
+                            
+                                <div class="col-xs-12 col-sm-9">
+                                <?php echo $this->layout()->content?>
+                            	</div>
+                            
+                            </div>
+                            
+                        </div>
+                        <br/>
+                    </div>
+
+	
+				
+			</div>
+		</div>
+	</div>
+	
+ 	
+	<!--========================================== //End PROJECT-NAME Layout Section-->
+	
+	
+<?php /*?>	<?php echo $this->render("sub_home_footer_top.phtml");?>
+	
+	<?php echo $this->render("sub_signup_social_buttons.phtml");?><?php */?>
+ 	
+<?php /*?>	<?php echo $this->render('footer.phtml');?>
+<?php */?>	<!--========================================== //End PROJECT-NAME Footer Section-->
+	
+    
+	<?php echo $this->headScript();?>
+	
+    
+  </body>
+</html>

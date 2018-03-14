@@ -1,0 +1,157 @@
+<style type="text/css">
+</style>
+<?php 
+$posted_jobs = $this->posted_jobs;
+$n=count($posted_jobs);
+echo $n."<br>";
+prn($posted_jobs);
+?>
+    <div class="container">
+    		<div class="heading_project overflow">
+            	<div class="col-sm-6">
+            		<h3 class="project_h">Projects</h3>
+                </div>
+                <div class="col-sm-6 add_project_div">
+                	<a href="<?php echo $this->url(array(),"front_addproject")?>" class="add_project">Add New Project</a>
+                </div>
+            </div>
+<!--Posted Projects -->  
+    		<div class="package_wrap">
+            	
+                <div class="col-sm-12">
+            		<p>&nbsp;</p>
+            		<p> LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING AND TYPESETTING INDUSTRY. LOREM IPSUM HAS BEEN THE INDUSTRY'S STANDARD DUMMY TEXT EVER SINCE THE 1500S, WHEN AN UNKNOWN PRINTER TOOK A GALLEY OF TYPE AND SCRAMBLED IT TO MAKE A TYPE SPECIMEN BOOK.</p>
+                    <p>&nbsp;</p>
+                 </div> 
+                 
+                 <div class="credit"> 
+                 	
+                    		<div class="col-sm-3 col-xs-6 width_xs overflow">
+                    		<div class="job_div project_shed">
+                            		<h3 class="backpack">fghfhg</h3>
+                                    <p class="monthoffer">jun 8, 2016</p>
+                                       <hr />
+                                    <p class="total_con"> Total Communications</p>
+                                 
+                                  
+                                   
+                                   
+                                    <p>Lorem Ipsum is simply dummy text of the printing</p>
+                            </div>
+                            <div>
+
+                                                                        
+
+                            </div>    
+                            
+                    </div>
+                    
+                   
+                </div>
+                 <div class="credit"> 
+                 	
+                    		<div class="col-sm-3 col-xs-6 width_xs overflow">
+                    		<div class="job_div project_shed">
+                            		<h3 class="backpack">fghfhg</h3>
+                                    <p class="monthoffer">jun 8, 2016</p>
+                                       <hr />
+                                    <p class="total_con"> Total Communications</p>
+                                 
+                                  
+                                   
+                                   
+                                    <p>Lorem Ipsum is simply dummy text of the printing</p>
+                            </div>
+                            <div>
+
+                                                                        
+
+                            </div>    
+                            
+                    </div>
+                    
+                   
+                </div>
+                 <div class="credit"> 
+                 	
+                    		<div class="col-sm-3 col-xs-6 width_xs overflow">
+                    		<div class="job_div project_shed">
+                            		<h3 class="backpack">fghfhg</h3>
+                                    <p class="monthoffer">jun 8, 2016</p>
+                                       <hr />
+                                    <p class="total_con"> Total Communications</p>
+                                 
+                                  
+                                   
+                                   
+                                    <p>Lorem Ipsum is simply dummy text of the printing</p>
+                            </div>
+                            <div>
+
+                                                                        
+
+                            </div>    
+                            
+                    </div>
+                    
+                   
+                </div>
+                 <div class="credit"> 
+                 	
+                    		<div class="col-sm-3 col-xs-6 width_xs overflow">
+                    		<div class="job_div project_shed">
+                            		<h3 class="backpack">fghfhg</h3>
+                                    <p class="monthoffer">jun 8, 2016</p>
+                                       <hr />
+                                    <p class="total_con"> Total Communications</p>
+                                 
+                                  
+                                   
+                                   
+                                    <p>Lorem Ipsum is simply dummy text of the printing</p>
+                            </div>
+                            <div>
+
+                                                                        
+
+                            </div>    
+                            
+                    </div>
+                    
+                   
+                </div>
+                 
+                 <div class="credit"> 
+                 			<?php 
+							$k=0;
+							for($i=0;$i<$n;$i++){
+								if($k>3){ $k=0;}
+							?> 
+                    		<div class="col-sm-3 col-xs-6 margin_padding width_xs overflow">
+                    			<div class="pay_div shed_1">
+                                    <?php foreach($posted_jobs as  $key => $posted_jobs){ ?>
+                                            <h3 class="backpack"><?php echo $posted_jobs['job_title'] ?></h3>
+                                            <p class="sup_140"><sup class="rm_sup">$</sup><?php echo $posted_jobs['request_job_created'] ?></p>
+                                            <!--  <hr />-->
+                                            <p >Enjoy 30 days free job posting</p>
+                                            <hr />
+                                            <p >unlimited job posting</p>
+                                            <hr />
+                                            <p class=" get_points">Get Points - <span class=""><?php echo $posted_jobs['request_job_status'] ?></span></p>
+                                            <hr />
+                                     <? } ?>       
+                               </div>
+            				</div>
+                            
+                            <? $k++; }?>
+   				 </div> 
+    		</div>
+    </div>        
+<script type="text/javascript">
+
+
+
+</script>
+
+
+

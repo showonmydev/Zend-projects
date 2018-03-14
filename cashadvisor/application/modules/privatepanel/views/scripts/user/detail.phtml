@@ -1,0 +1,236 @@
+<style type="text/css">
+.col-md-3,.col-md-9,.col-md-5,.col-md-7
+{
+	font-size: 14px;
+    font-weight: 400;
+	padding-bottom:10px;
+	padding-top:10px;
+}
+.rating-container .clear-rating{ display:none;}
+.rating-container .caption{ display:none;}
+.rating-disabled .rating {
+    cursor: auto;
+}
+.rating-md {
+    font-size: 13px;
+}
+</style>
+<?php 
+	$user =  $this->user_information ;
+	$city = $this->city;
+//	prd($user);
+	$user_services = $this->user_services;
+	
+?>
+<!-- BEGIN PAGE CONTENT-->
+<div class="row profile">
+	<div class="col-md-12">
+		<!--BEGIN TABS-->
+        
+		<div class="tabbable tabbable-custom tabbable-full-width">
+			
+			<div class="tab-content">
+				<!--tab_1_2-->
+				<div class="tab-pane active" id="tab_1_3">
+					<div class="row profile-account">
+                    	<div class="col-md-8 col-sm-12 col-xs-12" style="background:none repeat scroll 0 0 #f0f6fa;">
+							 <?php echo $this->form?>
+                             <div>
+                                 <div class="col-md-12 col-sm-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">Name:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7"><?=$this->user_information['user_first_name'].' '.$this->user_information['user_last_name']?></div>
+                                 </div>
+                                 
+                                 <div class="col-md-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">Email Address:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7"><?=$this->user_information['user_email']?></div>
+                                 </div>
+                                 
+                                 <? if($this->user_information['user_address']!=''){?>
+                                 <div class="col-md-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">Address:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7"><?=$this->user_information['user_address']?></div>
+                                 </div>
+                                 <? }?>
+                                   <?
+								 if(!empty($this->user_information['user_state']))
+								 {
+								  ?>
+                                 <div class="col-md-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">State:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7"><?=$this->user_information['user_state']?></div>
+                                 </div>
+                                 <?php } ?>
+                                 <?php
+								 if(!empty($this->user_information['user_city']))
+								 { 
+								  ?>
+                                 <div class="col-md-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">City:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7"><?=$city['city']?></div>
+                                 </div>
+                                 <?php } ?>
+                                 <?
+								 if(!empty($this->user_information['user_zip_code']))
+								 {
+								  ?>
+                                 <div class="col-md-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">Zip Code:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7"><?=$this->user_information['user_zip_code']?></div>
+                                 </div>
+                                 <? } ?>  
+                                 
+                                 <?php /*?><?php if(!empty($user_services)){ ?>
+                                 <div class="col-md-12">
+                                  <div class="col-md-5">Provider Services:</div>
+                                     <?php if(count($user_services)<6){  $height_div = 'style="height:auto";';  } else { $height_div=''; }?>
+                                  <div class="col-md-7">
+                                          <div>
+                                                <ul class="servULDashbord short-text_service" <?=$height_div?>>
+                                                    <? foreach($user_services as $service){?>
+                                                        <li><span><?=$service['service_name']?></span></li>
+                                                    <? } ?>
+                                                </ul>
+                                                
+                                                <div class="show_more_service">
+                                                    <a href="#">Show More</a>
+                                                </div>
+                                           </div> 
+                                    </div>
+                                 </div>
+                                 <?php } ?><?php */?>
+                                  <?php
+								 if(!empty($this->user_information['user_phone']))
+								 {
+								  ?>
+                                 <div class="col-md-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">Phone Number:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7"><?=$this->user_information['user_phone']?></div>
+                                 </div>
+                                 <?php }
+								 ?>
+                                <?php 
+								 if($user['user_type']=='service_provider' && $this->HireTime!='')
+								 {
+								 ?>
+                                 <div class="col-md-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">Times hired on Casa Advisor:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7"><?=$this->HireTime?></div>
+                                 </div>
+                                 <?php }
+								 ?>
+                                 <?php 
+								 if($user['user_type']=='service_provider')
+								 {
+								 ?>
+                                 <div class="col-md-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">Average Rating:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7">
+                                  <input id="input-2-1" name="input-2" class="rating rating-loading" data-min="0" data-max="5" value="<?=$this->AvegargeRate?>" data-step="0.1" readonly="readonly">                 
+                                  </div>
+                                 </div>
+                                 <?php }
+								 ?>
+                                  <?php 
+								 if($user['user_type']=='service_provider' && $this->ReviewData!='')
+								 {
+								 ?>
+                                 <div class="col-md-12 col-xs-12">
+                                  <div class="col-md-5 col-sm-5 col-xs-5">Total Reviews given by client:</div>
+                                  <div class="col-md-7 col-sm-7 col-xs-7"><?=count($this->ReviewData)?></div>
+                                 </div>
+                                 <?php }
+								 ?>
+							 </div>
+                             <br />
+                             <br />
+ 						</div>
+						<div class="col-md-4">
+             				<img src="<?php echo getUserImage($this->user_information['user_image'],'thumb')?>" style="max-width:100%" title="User" alt="User">
+                           <?php if(!empty($user_services)){ ?>
+                            <?php if(count($user_services)<6){  $height_div = 'style="height:auto";';  } else { $height_div=''; }?>
+                             <div class="servCatDiv">
+                                  <p class="serveCat">Service Categories</p>
+                                    <ul class="servULDashbord short-text_service" <?=$height_div?>>
+                                        <? foreach($user_services as $service){?>
+                                            <li><span><?=$service['service_name']?></span></li>
+                                        <? } ?>
+                                    </ul>
+                                    
+                                    <div class="show_more_service">
+                                        <a href="#">Show More</a>
+                                    </div>
+                               </div> 
+                           	<? } ?>
+                           
+						</div>
+						
+						<!--end col-md-9-->
+					</div>
+				</div>
+				<!--end tab-pane-->
+			</div>
+		</div>
+		<!--END TABS-->
+	</div>
+</div>
+<!-- END PAGE CONTENT-->
+
+
+<!--EDIT USER Info MODEL BOX-->
+
+<div class="modal fade" id="editUserInfoModel" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+       
+         <button aria-label="Close" data-dismiss="modal" class="close" type="button"><img class="viewProjectClose" src="<?=HTTP_SITEIMG_PATH?>/close_image_x.png" alt="" /></button>
+         
+        <div class="modal-body" style="padding:0px;">
+        	
+        </div> 
+      </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+function edituserprofile(user_id){
+	$.ajax({ 
+			url:baseUrl+'/privatepanel/user/edituserinfo/user_id/'+user_id,
+			data : {id:user_id},
+			success:function(data){
+				$('#editUserInfoModel .modal-body').html(data);
+				$('#editUserInfoModel').modal('show');
+	
+			}
+		});
+}
+
+</script>
+
+<script type="text/javascript">
+
+$(".show_more_service a").on("click", function(){
+    var $link = $(this);
+    var $content = $link.parent().prev("ul.servULDashbord");
+    var linkText = $link.text();
+    $content.toggleClass("short-text_service full-text_service",500);
+    $link.text(getShowLinkText(linkText));
+    return false;
+});
+
+function getShowLinkText(currentText){
+    var newText = '';
+    if (currentText.toUpperCase() === "SHOW MORE") {
+        newText = "Show Less";
+    } else {
+        newText = "Show More";
+    }
+    return newText;
+}
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(e) {
+    $('.rating').rating();
+});
+</script>

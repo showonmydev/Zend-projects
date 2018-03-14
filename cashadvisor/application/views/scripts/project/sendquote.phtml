@@ -1,0 +1,508 @@
+<style type="text/css">
+</style>
+<?php 
+
+
+
+$this->modelStatic = new Application_Model_Static();
+
+$bid = $this->bid;
+$customer_City = $this->customer_City;
+$job_id=$this->job_id;
+$wallet=$this->wallet;
+$all_proposal_sender=$this->all_proposal_sender;
+//prn($all_proposal_sender);
+
+$totalProposal = count($all_proposal_sender);
+$all_data=unserialize($bid['job_all_data']);
+//prn($bid);
+$lat = $customer_City['lat'];
+$lng = $customer_City['lng'];
+if($all_data['job_deadline']='1'){
+		$JobDeadline = "I'm flexible";
+	}
+	elseif($all_data['job_deadline']='2'){
+			$JobDeadline = "In the next few days";
+		}
+		elseif($all_data['job_deadline']='3'){
+			 	$JobDeadline = "As soon as possible";
+			}
+			elseif($all_data['job_deadline']='4'){
+						$JobDeadline = "on date";
+			}
+if($all_data['how_receive_quote']=='0'){
+	$receiveQuoteBy = "Email Only";
+}else{
+	$receiveQuoteBy = "Email and Message both";
+	}
+	
+
+$get_new_proposal_limit = $this->modelStatic->Super_Get("more_quote","more_quote_job_id='".$job_id."' && more_quote_status='1'","fetch");
+if($get_new_proposal_limit['more_quote_admin_allowed']!='0'){
+	$max_proposal_limit = $this->site_configs['max_proposal_limit']+$get_new_proposal_limit['more_quote_admin_allowed'];
+}else {
+$max_proposal_limit = $this->site_configs['max_proposal_limit'];
+	}
+
+
+$TotalSecond = '';
+foreach($all_proposal_sender as $ProposalReceivedOn){ 
+
+		$PostedOn = strtotime($bid['posted_job_created']);
+		$ProposalReceivedDate = strtotime($ProposalReceivedOn['proposal_date']);
+		$differenceInSeconds  = $ProposalReceivedDate-$PostedOn;
+		
+		$TotalSecond  = $TotalSecond+$differenceInSeconds;
+	}
+
+if(($totalProposal=='0')){ 
+	$avgSecond = '';
+}else{
+	$avgSecond = (int)($TotalSecond/$totalProposal);
+}
+
+function convert_seconds($avgSecond)   
+ {  
+  $dt1 = new DateTime("@0");  
+  $dt2 = new DateTime("@$avgSecond");  
+  return $dt1->diff($dt2)->format('%ad %hh %im  %ss');  
+  }  
+if(($totalProposal=='0')){
+		$FinalTimeDiff = '- -';
+	}else{  
+		$FinalTimeDiff = (str_ireplace(array('0d','0h','0m','0s'),array('','','',''),convert_seconds($avgSecond)));		
+	}
+
+?>
+<div class="containerfluid overflow ">
+	<div class="request_main_div">
+<!--//left-->    
+	    <div class="col-sm-4 padding_zero">
+        	<div id="bid_left_div">
+                        <div class="client_detail_left_div">
+                
+                            <div id="map_canvas" style="width:100%; min-height:160px;"></div>
+                              <img class="img-responsive img-thumbnail client_IMage_SendQuote" src="<?php echo getUserImage($bid['user_image'],'60') ;?>" />
+                              <div class="overflow clear_both client_name_send_quote">
+                                  <h3 class="capitalize"><?=$bid['user_name']?></h3>
+                                  <? if($customer_City!=''){?>
+                                  <p class="capitalize service_provider_address_in_req_to_client"><?=$customer_City['city']?> , <?=$customer_City['state']?></p>
+                                  <? } ?>
+                              </div> 
+                              
+                              <div class="proCountDiv">
+                              	<span>
+                                	<div>
+                                	  <p class="quotecountIcon"><img src="<?=HTTP_SITEIMG_PATH?>/menu-square-button-gross-symbol.png" alt="" />  <?=$totalProposal?>/<?=$max_proposal_limit?></p>
+                                      <p class="actfast">Quote Sent</p>
+                                   	</div>   
+                                     <? if($totalProposal<=$max_proposal_limit){ $Howmoreproposal = $max_proposal_limit-$totalProposal; ?>	
+                                      <p class="actfast">Only <?=$Howmoreproposal?> more pro can respond act fast.</p>
+                                     <? } else{ ?>
+                                      <p class="actfast">Received max proposal</p>
+                                     <? } ?> 
+                                </span>
+                                
+                                <span class="MaxWidth170">
+                                	<div>
+                                	  <p class="quotecountIcon">
+                                      	<img src="<?=HTTP_SITEIMG_PATH?>/wall-clock.png" alt="" /> 
+                                        <? if(($totalProposal=='0')){?>- -<? } else{
+												echo $FinalTimeDiff; 
+                                         } ?>
+                                        </p>
+                                       <p class="actfast">Avg pro response time</p>
+                                    </div>    
+                                      <p class="actfast">Average time for pro to Respond to a Request.</p>
+                                </span>
+                                
+                                <span>
+                                	<div>
+                                	  <p class="quotecountIcon"><img src="<?=HTTP_SITEIMG_PATH?>/copyright.png" alt="" />  <?=$bid['service_price']?></p>
+                                      <p class="actfast">Credits</p>
+                                   </div>   
+                                      <p class="actfast">Quote on this request for <?=$bid['service_price'] ?> credits. Credits never expire</p>
+                                </span>
+                              </div>
+                                 
+                        </div>
+                        <div class="view_client_job_details">
+                            <p class="job_q_headings">Job type: </p>
+                            <p class="job_answers"><?=$bid['service_name']?></p>
+                           <p class="site_HR"></p>
+
+                            <? 
+                                if (array_key_exists('post_field_value', $all_data)) {
+                                if($all_data['post_field_value']!=''){
+                            ?>
+                            <? foreach($all_data['post_field_value'] as $key => $ques_ans){
+                                $Ques = $this->modelStatic->Super_Get('category_form','c_form_id = "'.$key.'"','fetch');
+									if(is_array($all_data["post_field_value"][$key]))
+									{
+									$implode_optipons=implode(",",$all_data["post_field_value"][$key]);
+									}
+									else
+									{
+										$implode_optipons=$all_data["post_field_value"][$key];
+									}
+									$ex_getdata=explode('other_options',$implode_optipons);
+									
+										$test_check_id=$implode_optipons;
+										if(isset($ex_getdata[1]) && !empty($ex_getdata[1])){
+											$test_check_id=$ex_getdata[1];
+											if(isset($all_data['other_options'][$test_check_id]) &&  !empty($all_data['other_options'][$test_check_id])){
+													//echo $all_data['other_options'][$test_check_id];
+											}
+										}
+									$ans = $this->modelStatic->Super_Get('category_form_options','c_option_id IN('.$test_check_id.')','fetchAll');
+									$totalAns = count($ans);
+                                ?>
+                                    <p class="job_q_headings"><?=$Ques['c_form_field_name'];?></p>  
+                                        <ul class="viewJobUL">
+                                           <? if($totalAns!=0){ foreach($ans as $Ans){?>
+                                                <li class="job_answers"><?=$Ans['option_text']?></li>                		
+                                            <?  }}else{ $otherAnswerVal = $all_data['other_options'][$key]; ?>
+                                                <li class="job_answers"><?=$otherAnswerVal;?></li>                		
+                                            <? } ?>
+                                        </ul>
+                                <p class="site_HR"></p>
+                            <? } ?>
+                            <? } } 
+							?>
+                            
+                              <? 
+							  	 if (array_key_exists('job_images', $bid)) { 
+							  	if($bid['job_images']!=""){?>
+                                        <p class="job_q_headings">Would you like to add photos to describe your project? </p>
+                                        <div class="col-sm-12 overflow clear_both">
+											<? 
+                                                 $image= array(); $image = explode(',',$bid['job_images']); 
+                                                 foreach($image as $img){
+                                            ?>
+                                                     <div class=" col-sm-4 col-xs-4 job_image_width overflow projectImgagesSendQuote">
+                                                        <img  src="<?=HTTP_CLIENT_JOB_IMAGES_PATH?>/150/<?=$img;?>" alt="" />
+                                 						<div class="Spacer-2"></div>
+                                                    </div>
+                                            <? } ?>
+                                        </div>
+                                       <p class="site_HR"></p>
+
+                              <? } }
+							   ?> 
+                               
+                               <? 		if (array_key_exists('form_ID_and_Type', $all_data)) {
+										foreach($all_data['form_ID_and_Type'] as $key => $Answer){
+											if($Answer=='1' or $Answer=='0'){
+												$TextQuestion = $this->modelStatic->Super_Get('category_form','c_form_id= "'.$key.'"',"fetch");
+								?>
+								 <div>
+									<p class="job_q_headings"><?=$TextQuestion['c_form_field_name'];?></p>  
+									<ul class="viewJobUL">
+											<li class="job_answers"><?=$all_data['Textand_Area_'.$key];?></li>                		
+									</ul>
+								   <p class="site_HR"></p>
+								</div>
+								<? } } }?>
+                            <?php /*?><p class="job_q_headings">Phone no: </p>
+                            <p class="job_answers"><?=$all_data['job_phone_client']?></p>
+                            <p class="site_HR"></p><?php */?>
+                            
+                             <? if($all_data['job_anything_else_know']=='0'){?>
+                                <p class="job_q_headings">Service Provider Should Know:</p>
+                                <p class="job_answers"><? echo $all_data['yes_else_know'];?></p>
+                                <p class="site_HR"></p>
+                            <? } ?>
+                            
+
+                            <p class="job_q_headings">How would you like to receive quotes?:</p>
+                            <p class="job_answers"><? echo $receiveQuoteBy;?></p>
+                            <p class="site_HR"></p>
+
+
+                             <p class="job_q_headings">When the work should be start:</p>
+        					 <p class="job_answers"><? echo $JobDeadline;?> &nbsp;<?=$all_data['job_deadline_date']?></p>
+                             
+                             <div class="Spacer-2"></div>
+                             <div class="Spacer-2"></div>
+                             <div class="Spacer-2"></div>
+           			   </div>
+            </div>
+        </div>
+        
+<!--// right--> 
+        <div class="col-sm-8 padding_zero createQuote_bg ClassForAllProposalCss">
+     		<div id="bid_right_div">
+                
+            	<div class="creade_quote_div overflow">
+                    <div class="row m0">
+                        <h3 class="pull-left">Create Quote</h3>
+                        <div class="pull-right currnetBalance">
+                            <a href="#" class="btn btn-info">
+                                <img src="<?=HTTP_SITEIMG_PATH?>/totalcreditwallet.png" alt="" style="max-width: 22px;margin-top: -6px;">
+                                &nbsp;<b><?=$wallet?></b> Total Credits 
+                            </a>
+                        </div>
+                        <p class="needTocredit">You need <b><?=$bid['service_price']?></b> credits to send quote for this job.</p>
+						<?php /*?> <p class="needTocredit text-center">If you're hired, keep 100% of what you earn. No additional fees or commission. </p><?php */?>   
+                 </div>
+                </div>
+               
+               <? if($totalProposal==$max_proposal_limit){?>
+                <p class="notEnf_credit_P">Client has already received max number of quote request.</p>
+               <? } else { ?>
+                
+				  <? if($bid['service_price']> $wallet){ 
+                        $per_bid_credit = $this->site_configs['per_bid_credit'];
+                        $NeedToPayAmount = $bid['service_price']*$per_bid_credit;
+                  ?>
+                    <p class="notEnf_credit_P">Currently there is not enough credit in your account.You need to pay <b><?=$bid['service_price']?> credits ($ <?=$NeedToPayAmount?>)</b> for posting your proposal for this job.</p>
+                     <div class="text-center">
+                        <a class="btn buy_package btn-lg"  href ="<?php  echo $this->url(array('job_id'=>$bid['job_id']),"front_purchase")?>"> Buy Package</a>
+                     <button onclick="payByCard()" type="button" class=" buy_package btn btn-info btn-lg" data-toggle="modal" data-target="">Pay by card</button>
+                        <div class="Spacer-1"></div>
+                        <div class="Spacer-1"></div>
+                        
+                        
+                    </div> 
+                  <? }else { ?>
+                    <div class="create_quote_form" <? //=$displayNone?>>
+                      <form name="comment_form" id="comment_form" class="profile_form" enctype="multipart/form-data" method="post" action="<? echo APPLICATION_URL?>/project/sendquote"> 
+                            <div >
+                                <input type="hidden" name="job_id" value="<?=$job_id?>" />
+                                <div class="col-sm-12 ">
+                                     <?php echo $this->form->proposal_credit ;?>
+                                </div>
+                                <div class="col-sm-12">
+                                    <p>Write a message to <?=$bid['user_name']?> </p>
+                                </div>
+                                <div class="col-sm-12 ">
+                                     <?php echo $this->form->proposal_description ;?>
+                                </div>
+                                <div class="col-sm-12">
+                                     <?php echo $this->form->bttnsubmit ?>
+                                </div> 
+                           </div>
+                    </form>  
+                    </div>  
+                   <? } ?> 
+              <? } ?>             
+            </div>
+             <!--All other Proposals -->                 
+              <div class="Spacer-2"></div>
+              <div class="Spacer-2"></div>
+              <div class="Spacer-2"></div>
+              <? if($totalProposal>0){?>
+              <div class="col-sm-12 AllProposalDiv overflow clear_both">
+                    <h3>All Proposals</h3>
+                    <p class="totalProposalReceive"> <span class="capitalize"><?=$bid['user_name']?></span> has received <?=$totalProposal?> Proposal</p>
+              </div>
+               <div class="col-xs-12">     
+                <ul class="allProposals_ul">
+                    <?  foreach($all_proposal_sender as $key => $all_proposal_sender){ ?>
+                        
+                    <li class="overflow">
+                        
+                       <? if($all_proposal_sender['proposal_decline_status']=='1'){?>
+                           <div class="Hiredribbon">
+                                 <span style="">Hired</span>
+                            </div>
+                       <? } ?>
+                        
+                        <div class="requestImg">
+                                <img class="img-responsive img-circle MarginAuto RequestPageImage" src="<?php echo getUserImage($all_proposal_sender['user_image'],'160') ;?>" />
+                        </div>
+                        <div class="requestText">
+                            <p class="liProposalSenderName"><?=$all_proposal_sender['user_name']?> </p>
+                            <p class="ProposalPriceAllProposal"> <span class="headingsAllP"> Price:&nbsp;</span>($<span class="hidePrice">&nbsp; &nbsp; &nbsp; &nbsp;</span>)</p>
+                            <p class="ProposalPriceAllProposal"><? echo showPostTime($all_proposal_sender['proposal_date']); ?> ago</p>
+                           
+                       </div>
+                       
+                     
+                    </li>
+                    <? } ?>
+                </ul>
+               </div>
+			  <? } else {?>
+                <div class="col-sm-12 AllProposalDiv">
+                    <p class="totalProposalReceive"> <span class="capitalize"><?=$bid['user_name']?></span> has  not received any proposal yet.</p>
+                </div>
+              <? } ?>  
+        </div>
+    </div>  
+</div>
+
+
+<!--model for Send Proposal -->    
+
+<div id="sendProposal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header model_surepay_header">
+      		<h4 class="modal-title model_title_pay">Send Quote</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+        <div class="modal-body model_body_pay ">
+        <?php $Price= $this->package_price;
+		?>
+            <div class="credit_msg">
+              <? if($bid['service_price']> $wallet){?>
+                <p>Currently there is not enough credit in your account.<br />You need to pay <b><?=$bid['service_price']?> credits</b> for posting your proposal for this job.</p>
+                 <div class="text-center">
+                    <a class="btn buy_package btn-lg"  href ="<?php  echo $this->url(array('job_id'=>$bid['job_id']),"front_purchase")?>"> Buy Package</a>
+                </div> 
+              <? } else { ?>
+                <p> <b><?=$bid['service_price']?> credits </b> will be deduct from your wallet.</p>
+                <div class="text-center">
+                	 <a class="btn pay_continue btn-lg" onclick="continueSendProposal()"> Continue</a>
+                </div> 
+              <? } ?>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<!--model for pay cnfrm-->    
+
+<div id="payModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header model_surepay_header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        
+        <h4 class="modal-title model_title_pay">Payment Plan</h4>
+      </div>
+        <div class="modal-body model_body_pay ">
+        <?php $Price= $this->package_price;
+		?>
+            <div class="credit_msg">
+                <h4>You Have To Pay $ <span id="cpprice"><?=$NeedToPayAmount?></span>. Are You Sure You Want To Pay?</h4>
+                <form name="default_form" id="default_form" class="profile_form" enctype="multipart/form-data" action="<?php echo $this->url(array('job_id'=>$job_id),"pay_by_card")?>" method="post"> 
+               			 <div id="pay_form" class="pay_form">
+                	<div class="col-sm-12">
+						 <?php echo $this->formCreditCard->card_number; ?>
+                         <?php echo $this->formCreditCard->cvv; ?>
+                         <?php echo $this->formCreditCard->user_first_name; ?>
+                         <?php echo $this->formCreditCard->user_last_name; ?>
+                     </div>
+                     
+                     <input id="payAmountByCard" type="hidden" name="payAmountByCard" value="<?=$NeedToPayAmount?>"  />
+                     <input id="getCreditbyCardPayment" type="hidden" name="getCreditbyCardPayment" value="<?=$bid['service_price']?>"  />
+                     
+                     <div class="col-sm-12 overflow date_span_width">
+                         <div class="col-sm-3">
+                            <label class="dayy">Expiry date</label>
+                         </div>
+                         <div class="col-sm-3">
+                         		<?php echo $this->formCreditCard->user_credit_card_expire_month; ?>
+                         </div>
+                          <div class="col-sm-3">
+                         		<?php echo $this->formCreditCard->user_credit_card_expire_year; ?>
+                         </div>
+                         
+                     </div>
+                     <div class="col-sm-12">
+                     		<?php echo $this->formCreditCard->bttnsubmit; ?>
+                     </div>
+                </div>
+                </form>
+                <div class="text-center">
+               		<button class="btn pay_continue btn-lg" onclick="">Continue</button>
+                </div>    
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+    
+
+
+
+<script type="text/javascript">
+
+function payByCard()
+{		
+			$('#payModal').modal('show');
+			$(".pay_form").hide();
+			$(".pay_continue").show();
+}
+
+$(document).ready(function(){
+    $(".pay_continue").click(function(){
+        $(".pay_form").show();
+		 $(".pay_continue").hide();
+    });
+});
+</script>
+
+<script type="text/javascript">
+$('.sendProposalBtn').click(function(){
+	if($('#comment_form').valid()){
+		 $('#sendProposal').modal('show');
+	}
+	});
+function continueSendProposal(){
+		if($('#comment_form').valid()){
+		 $('#comment_form').submit();
+	}
+	}
+$(document).ready(function() {
+	var x = window.innerWidth;
+	if(x>767){
+	var get_MainDiv_height = $('.request_main_div').outerHeight();
+	//alert(get_MainDiv_height);
+	$('.createQuote_bg').css('height',get_MainDiv_height+'px');
+	}
+});			
+
+</script>
+
+<script type="text/javascript">
+
+var map;
+	function initialize() {
+	//	initialize(38.889931,-77.009003,"New York",5000,'map');
+		var mylatlng = {lat:<?=$lat?>, lng:<?=$lng?>};
+		var mapOptions = {
+			zoom: 12,
+			center: new google.maps.LatLng(<?=$lat?>, <?=$lng?>),
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			scrollwheel: false,
+			zoomControlOptions: {
+     			style: google.maps.ZoomControlStyle.SMALL,
+     		},
+			 mapTypeControlOptions: {
+			  style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+			},
+			
+ 		};
+		
+	
+		var infowindow = new google.maps.InfoWindow();
+		map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
+		
+    	var	marker = new google.maps.Marker({
+		                         position:mylatlng,
+								 map: map,
+								 title: 'Hello World!'
+						});
+		
+		google.maps.event.addListener(marker, 'click', (function (marker) {
+                return function () {
+                    infowindow.setContent('helloooo');
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+		
+ 		marker.setPosition(mapOptions.center);
+		
+	}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+</script>
+

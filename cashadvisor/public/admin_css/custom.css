@@ -1,0 +1,305 @@
+/* here you can put your own css to customize and override the theme */
+
+/***
+Rounded Portlets
+***/
+/*
+.portlet {
+	border-radius: 4px !important;
+}
+
+.portlet .portlet-title {
+	border-radius: 4px 4px 0px 0px !important;
+}
+
+.portlet .portlet-body,
+.portlet .portlet-body .form-actions  {
+	border-radius: 0px 0px 4px 4px !important;
+}
+*/
+#sample_1_wrapper {
+    margin-top: 10px;
+}
+.overflow{ overflow:hidden;}
+.view_job_ajax_div{ padding: 30px 10px;width: 60%; margin: 0px auto;background-color: rgb(247, 247, 247);border: 1px solid rgb(220, 220, 220); margin-bottom: 4%; overflow:hidden;}
+
+.viewJobUL{ list-style-type:none; padding-left:0px;}
+
+.view_job_ajax_div .view_job_client_img .job_title{ font-size:24px; color:#0bb8e3; text-align:center;}
+.view_job_client_img {padding:0px;}
+.view_client_job_details{ padding:20px 30px;}
+
+ .job_q_headings{ font-size:16px; color:#929292; font-weight:bold;}
+.job_answers{ font-size:14px; color:#929292;}
+
+.view_job_ajax_inner_div {padding: 0px 20px;text-align: left}
+.Spacer-2{ height:8px;}
+/*START CONVERSATION CSS*/
+.comment_body {
+    clear: both;
+    padding: 0;
+    display: block
+}
+
+.comments_ul {
+    margin: -15px 0 0;
+    padding: 0
+}
+
+.comments_ul li {
+    list-style: none;
+    padding: 5px 0;
+    margin: 5px auto;
+    width: 97%
+}
+
+.comments_ul li.in .user_image {
+    float: left;
+    margin-right: 10px
+}
+
+.show_messz_time_P {
+    font-size: 12px;font-family:"pt_sansregular";
+    color: #c3c3c3
+}
+
+.in .show_messz_time_P {
+    font-size: 10px;font-family:"pt_sansregular";
+    color: #fff
+}
+
+.msz_user_name_in_req {
+    color: #2cc1e7;
+    font-size: 12px;font-family:"pt_sansregular";
+}
+
+.name_ago_msz {
+    margin-bottom: 0
+}
+
+.in .msz_user_name_in_req {
+    color: #fff
+}
+
+.comments_ul li .user_image {
+    height: 45px;
+    width: 45px;
+    -webkit-border-radius: 50%!important;
+    -moz-border-radius: 50%!important;
+    border-radius: 50%!important
+}
+
+.comments_ul li.in {
+    float: left;
+    clear: both
+}
+
+.comments_ul li.in .message {
+    text-align: left;
+    border: 2px solid #6abcd1;
+    margin-left: 65px;
+    background: #6abcd1;
+    border-radius: 8px
+}
+
+.comments_ul li .message {
+    display: block;
+    padding: 3px 15px;
+    position: relative
+}
+
+.comments_ul li.in .message .comment_arrow {
+    display: block;
+    position: absolute;
+    top: -2px;
+    right: 100%;
+    width: 0;
+    height: 0;
+    border-top: 0 solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 16px solid #6abcd1;
+    margin-right: -3px
+}
+
+.comments_ul li.out {
+    clear: both;
+    float: right
+}
+
+.comments_ul li.out .user_image {
+    float: right;
+    margin-right: 10px
+}
+
+.comments_ul li.out .message {
+    text-align: left;
+    border: 2px solid #fff;
+    margin-right: 65px;
+    background: #fff;
+    border-radius: 8px
+}
+
+.comments_ul li.out .message .comment_arrow {
+    display: block;
+    position: absolute;
+    top: -2px;
+    left: 100%;
+    width: 0;
+    height: 0;
+    border-top: 0 solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 16px solid #fff;
+    margin-left: -3px
+}
+
+.inner_li_pro_name,
+.inner_request_li div,
+.pro_price_req,
+.scorallable_ul img {
+    display: inline-block
+}
+
+.comment_show_p {
+    font-size: 15px;font-family:"pt_sansregular";
+    color: #525252;
+    margin:0px;
+}
+.conversationHeading{ text-align:center; font-size:15px; color:white;}
+.ALLProposael{    text-align: center;
+    font-size: 20px;
+    color: #5a5a5a;
+    font-weight: bold;}
+.display_inline{ display:inline-block;}	
+ p.prosalDesc{color:#6f6c6c; text-align:justify; padding:0px 8px; font-family:"pt_sansregular";}
+ p.prosalDesc span, .proposal_send_by_name p.proNamePrice span{ color:#434343; font-weight:bold;} 
+.proposal_send_by_name p.proNamePrice{text-transform:capitalize; color:#434343; margin-bottom:0px;}
+.viewJobUL{ list-style-type:none; padding-left:0px;}
+.commentDivOutter{ height:auto; padding:20px; background-color:#989898; margin-bottom:10px;}
+.bgColeee{ background-color:#eee;}
+.ProposalSenderNamePanel{    color: #6f6e6e;
+    font-size: 18px;
+    font-weight: bold;}
+.ReviewSenderReceiverImg{ max-width:40px;}	
+/*END CONVERSATION CSS*/
+
+.ribbon {
+  position: absolute;
+  left: -5px; top: -5px;
+  z-index: 1;
+  overflow: hidden;
+  width: 75px; height: 75px;
+  text-align: right;
+}
+.ribbon span {
+  font-size: 10px;
+  font-weight: bold;
+  color: #FFF;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  width: 68px;
+  display: block;
+  background: #79A70A;
+  background: linear-gradient(#2989d8 0%, #1e5799 100%);
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 7px; left: -21px;
+}
+.ribbon span::before {
+  content: "";
+  position: absolute; left: 0px; top: 100%;
+  z-index: -1;
+  border-left: 3px solid #1e5799;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #1e5799;
+}
+.ribbon span::after {
+  content: "";
+  position: absolute; right: 0px; top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid #1e5799;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #1e5799;
+}
+.proposal_lists_view_pro_page{position:relative;    position: relative;
+    max-width: 70%;
+    margin: 0 auto;
+    background-color: #fff;
+    margin-bottom: 15px;
+    padding: 15px;}
+.proposal_send_by_name{padding-left:15px;}
+.nav-tabs>li>a{font-size:14px ;text-transform:uppercase;font-weight:700;}.site_HR{margin-bottom:15px; margin-top:15px;border-bottom:1px solid rgba(0,0,0,.05);clear:both;}
+.clear{clear:both}
+.defaultText{margin:50px 0;text-align:center;color:#003399;font-weight:600;opacity:.8;}
+.nameLabel {
+    /*width: 80%;*/
+        font-weight: 600;
+    color: #003399;
+    padding-top: 00;
+    float: left;
+    padding: 14px 15px;
+}
+.reviewText {padding-left:20px;}
+.RatingActualDiv{padding:20px 0;}
+.RatingActualDiv p{font-style:italic;}
+.RatingActualDiv h5{color:#ff9000;font-weight:600;font-size:15px;text-transform:uppercase;}
+.reviewContent{
+    max-width: 70%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 15px;
+	position: relative;
+}
+.editBtn{position:absolute;right:26px;top:0;height:30px ;color:white;background:green;width:25px; height:25px; font-size:18px;text-align:center;cursor:pointer}
+.DeleteBtn{position:absolute;right:0;top:0;height:30px ;color:white;background:red;width:25px; height:25px; font-size:18px;text-align:center;cursor:pointer}
+a,a:hover{text-decoration:none;}
+
+/* view Blog page*/
+.byy_1{color:#777777;}
+.blogpostername{color:#1386ce; text-transform:capitalize;}
+.blogPostedDate{color:#e85243;}
+.margin_list{ margin:0px 10px;}
+.blog_byDiv{ font-family: 'Open Sans', sans-serif;text-align: left;font-size: 13px;font-weight: 400;}
+h2.CasaBlogHaedingA {
+    color: #4e4d4d;
+    font-size: 24px;
+    font-family: "pt_sansbold";
+}
+/*end view Blog page*/
+
+/*Profile CSS*/
+.inline-block
+{
+	display:inline-block !important;
+}
+ul.servULDashbord {
+    list-style-type: disc;
+    color: #0bb8e3;
+}
+ul.servULDashbord li span {
+    color: #000;
+}
+.short-text_service {
+    overflow: hidden;
+    height: 123px;
+}
+.full-text_service {
+    height: auto;
+}
+.show_more_service {
+    text-align: center;
+    margin: 0 auto;
+    padding: 5px;
+}
+.servCatDiv p.serveCat{color: #0bb8e3;
+    font-size: 20px;
+    text-align: center;
+    padding: 20px 10px 10px;
+    margin-bottom: 0px;}
+.servCatDiv{ margin-top:10px; background-color:#f0f6fa}
+
+/* End Profile Css*/

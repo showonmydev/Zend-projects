@@ -1,0 +1,333 @@
+<?php
+$this->modelStatic = new Application_Model_Static();
+
+$User = $this->user_details;
+$user_services = $this->user_services;
+$client_projects = $this->client_projects;
+$total_projects = count($client_projects);
+$client_location = $this->client_location;
+
+$provider_location=$this->modelStatic->Super_Get("zips","zip_id='".$User['user_city']."'","fetch");
+//prd($User);
+
+$ProviderRecentWork = $this->ProviderRecentWork;
+$TotalProJob = count($ProviderRecentWork);
+
+if($User['user_type']=='service_provider'){
+	$lat = $provider_location['lat'];
+    $lng = $provider_location['lng'];
+}
+else
+{
+	$lat = $client_location['lat'];
+    $lng = $client_location['lng'];
+	}
+$ReviewData = $this->ReviewData;	
+?> 
+<style type="text/css">
+</style>
+
+<div class="col-sm-12 padding_zero container">
+        <div class="FProfile col-sm-12 padding_zero overflow">
+                <div class="FPart1 col-sm-9 col-xs-12 PaddingLeftZero" style="padding-right:10px;">
+                        <div class="FLayer1 col-sm-12 padding_zero overflow">
+                            <div class="col-sm-4 col-xs-12">
+                                <div class="FProfileImage">
+                                    <img class="img-responsive" src="<?php echo getUserImage($User['user_image'],'160') ;?>" />
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-8 col-xs-12">
+                                <div class="FProfileDetails">
+                                    <div class="Name">
+                                        <p class="pull-left">
+											<?=$User['user_first_name'].' '.$User['user_last_name']?>
+                                        </p>
+                                        <span class="pull-right"><label><i class="fa fa-pencil-square-o" aria-hidden="true"></i></label><a class="col_white" href="<?php echo $this->url(array(),"front_profile")?>">Edit Profile</a></span>
+                                        
+                                    </div>
+                                    <div class="Details">
+                                        <div class="Part1">
+                                                <div class="ClearBoth"> </div>
+                                                <? if(!empty($User['user_first_name']) && !empty($User['user_last_name'])){?>
+                                                <p class="Text">
+                                                   <span> <? if($User['user_type']=='service_provider'){?>Contact Name <? } else {?> Name<? } ?>: </span><?=$User['user_first_name'].' '.$User['user_last_name']?>
+                                                </p>
+                                                <? } ?>
+                                                <div class="ClearBoth"> </div>
+                                                
+                                                                     
+                                                <p class="Text"><span>Servicing  : </span><? if(!empty($provider_location)){?>  <?=$provider_location['city']?>, <?=$provider_location['state']?> <? }else {?> NA <? }?></p>
+                                                <div class="ClearBoth"> </div>
+                                                                                                        
+                                                <p class="Text"><span>Phone : </span><? if(!empty($User['user_phone'])){?> <?=$User['user_phone']?> <? }else {?> NA <? }?></p>
+                                                <div class="ClearBoth"> </div>
+                                                
+                                                <p class="Text"><span>Email : </span><? if(!empty($User['user_email'])){?> <?=$User['user_email']?><? }else {?> NA <? }?></p>
+                                                <div class="ClearBoth"> </div>
+                                                <? if($User['user_type']=='service_provider'){?>
+                                                <p class="Text"><span>Website  : </span><? if(!empty($User['user_business_website'])){?> <?=$User['user_business_website']?><? }else {?> NA <? }?></p>
+                                                <? } ?> 
+                                                <div class="ClearBoth"> </div>
+                                                
+                                         </div>
+                                        
+                                        <? if($User['user_type']=='service_provider'){?>
+                                        <div class="Part2">
+                                            <p class="Rating">Rating</p>
+                                            <p>
+                                               <? echo rating_display($this->AvegargeRate);?>
+                                            </p>
+                                        </div>
+                                        <? } ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+           <!-- VIEW ABOUT START -->        
+                       <div class="FLayer2 col-sm-12 padding_zero overflow">
+                            <div class="AboutSP">
+                            <? if($User['user_type']=='service_provider'){?> 
+                                <p class="Title">About</p>
+                                <p class="Desc" id="lessProfileText"><?=$User['user_business_desc'];?></p>
+                      		<? }else { ?>
+                                <p class="Title">Total Projects <?=$total_projects?></p>
+                                <ul>
+									<? foreach($client_projects as $project){ ?>
+                                    <li><?=$project['service_name']?></li>
+                                    <? }?>
+                                </ul>
+                            <? } ?>
+                            </div>
+                     </div>
+           <!-- VIEW ABOUT END -->   
+           
+          <!-- VIEW REVIEWS START --> 
+          		<? if($User['user_type']=='service_provider'){?>        
+                   <div class="FLayer2 col-sm-12 padding_zero overflow">
+                            <div class="AboutSP">
+                            <? if($User['user_type']=='service_provider'){?> 
+                                <p class="Title">Reviews</p>
+                                    <div id="AllReviews">                                                             
+                                        <?php   foreach($ReviewData as $Reviews){?>
+                                                <div class="ReviewBody">  
+                                                      <ul class="Review_ul">
+                                                           <li class="ReviewIN">
+                                                              <img class="img-thumbnail ReviewClientImg" src="<?php echo getUserImage($Reviews['user_image'],'60') ;?>" alt="" />
+                                                              <div class="ReviewContent">
+                                                                 <!--<span class="arrow"></span>-->
+                                                                 <div class="overflow">
+                                                                     <p class="ReviewRatingP inline_block"> <? echo rating_display($Reviews['review_ratings']);?></p>
+                                                                     <p class="ReviewRatingP inline_block pull-right">
+                                                                        <span class="ReviewClinetName"><?php echo $Reviews['user_name']; ?> &nbsp;on</span> 
+                                                                        <span class="ReviewDate"><?php echo date('M d, Y',strtotime($Reviews['review_date'])); ?></span>
+                                                                      </p> 
+                                                                  </div>      
+
+                                                                   <span class="ReviewMszTitleP"><p class="ReviewMszTitleP"> <?php echo $Reviews['review_title']; ?></p></span>
+                                                                  <span class="ReviewMszP"><p class="ReviewMszP"> <?php echo $Reviews['review_msz']; ?></p></span>
+                                                                  
+                                                                  <? if($Reviews['review_reply_msz']!=''){
+																	  $StyleCss = "style='display:block;'";
+																	  
+																	   }else{
+																		    $StyleCss = "style='display:none;'";
+																		   } ?>
+                                                                 <p class="MszReplyReviewCss ReviewMszReplyP_<?=$Reviews["review_id"]?>" <?=$StyleCss?>> <?php echo $Reviews['review_reply_msz']; ?></p>
+                                                                 
+                                                                  <? if($Reviews['review_reply_msz']==''){?>
+                                                                	  <p><a id="replytypebtn<?=$Reviews["review_id"]?>" class="replyBttnA pull-right" onclick="showReviewForm(<?=$Reviews["review_id"]?>)">Reply</a></p>
+                                                                        <div class="Spacer-2"></div>
+                                                                 <? }?>
+                                                                 	  
+                                                                 
+                                                                 
+                                                              </div>
+                            <div class="commonReplyreview formReviewReply_<?=$Reviews["review_id"]?>">
+                                <form name="reply_review_form" id="reply_review_form_<?=$Reviews["review_id"]?>" >
+                                	<input type="hidden" value="<?=$Reviews["review_id"]?>" id="review_id_<?=$Reviews['review_id']?>" name="review_id" />
+                                    <div class="form-group">
+                                    <textarea name="review_reply_msz" id="review_reply_msz" rows="2" class="form-control"></textarea>
+                                    </div>
+                                   <p class="text-right"> <button type="button" name="formSubmit" class="add_project" onclick="replyreviewform('<?=$Reviews["review_id"]?>')">Reply</button><button type="button" name="formSubmit" class="reviewreplycancelbtn" onclick="cancelreply('<?=$Reviews["review_id"]?>')">Cancel</button></p>
+                                  <p class="text-right"> </p>
+
+                                </form>
+                            </div>
+
+                                                           </li>  
+                                                      </ul> 
+                                               </div>      
+                                        <?php }?>
+                                     </div>
+                      		<? }?>
+                            </div>
+                     </div>
+                <? } ?>      
+           <!-- VIEW REVIEWS END -->   
+           
+           <!-- VIEW RECENT WORK START -->    
+           		<? if($User['user_type']=='service_provider'){?>     
+                       <div class="FLayer2 col-sm-12 padding_zero overflow">
+                            <div class="AboutSP">
+                                <p class="Title">Total Projects <?=$TotalProJob?></p>
+                                <ul class="ProRecentJobUl">
+									<? foreach($ProviderRecentWork as $RecentWork){ ?>
+                                    <li class="RecentWorkLi">
+										<p><?=$RecentWork['service_name']?></p>
+                                        <span class="ReviewDate"><?php echo date('F d, Y',strtotime($RecentWork['job_complete_on'])); ?></span>
+                                    </li>
+                                    <? }?>
+                                </ul>
+                            </div>
+                     </div>
+                 <? } ?>
+           <!-- VIEW RECENT WORK END -->   
+               </div>
+        
+                <div class="FPart2 col-sm-3 col-xs-12 padding_zero">
+                    <div class="SideBar">
+                    	  <? if($User['user_type']=='service_provider'){?> 
+                                 <div class="Skills">
+                                 	<div>
+                                            <div><p>Service Category <span class="pull-right"><i class="fa fa-pencil-square-o" aria-hidden="true"></i><a class="col_white" href="<?php echo $this->url(array(),"front_service_provider_services")?>">Edit Services</a></span></p>
+                                             </div>
+                                        <div class="MainProfileServiceList">
+                                            <div class="InnerServiceList">
+                                                <?php if(count($user_services)<6){
+                                                    $height_div = 'style="height:auto";';
+                                                } else { $height_div=''; }?>
+                                                <div class="text-content_service short-text_service" <?=$height_div?>>
+                                                    <div>
+                                                         <? if(count($user_services)>0){ 
+                                                                foreach($user_services as $services){ 
+                                                        ?>
+                                                                <span><?=$services['service_name'];?></span><br/>
+                                                               
+                                                         <? }  }    ?>
+                                                    </div>
+                                                </div>
+                                                <div class="show_more_service">
+                                                    <a href="#">Show More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </div>
+                          <? }?>
+                      
+                         <div class="Skills">
+                         	 <? if($User['user_type']=='service_provider'){?> 
+                         			<p>Travels up to <?=$User['user_travel_range'];?> miles</p>
+                            <? } else {?>
+                            		<p>Client Location</p>
+                            <? } ?>
+                         
+                             <div class="MapDiv">     
+                                <div id="map_canvas" style="width:100%; min-height:160px;"></div>  
+                             </div>   
+                         </div>
+                    </div>
+                </div>
+		</div>
+</div>        
+
+<script type="text/javascript">
+function replyreviewform(review_id){
+		$.ajax({
+			url: baseUrl+"/project/replyreview",
+			type:'POST',
+			data: $('#reply_review_form_'+review_id).serialize(),
+			success: function (data) 
+			{ console.log(data);
+				$('.ReviewMszReplyP_'+review_id).html(data);
+				$('.ReviewMszReplyP_'+review_id).show();
+				$('.formReviewReply_'+review_id).remove();
+			}
+	  });
+		
+	}
+
+function showReviewForm(id){
+	$(".commonReplyreview").hide();
+	$(".formReviewReply_"+id).show();
+	$(".replyBttnA").show();
+	$('#replytypebtn'+id).hide();
+}
+
+function cancelreply(id){
+	$(".formReviewReply_"+id).hide();
+	$('#replytypebtn'+id).show();
+}
+
+
+</script>
+
+
+<script type="text/javascript">
+
+$(".show_more_service a").on("click", function(){
+    var $link = $(this);
+    var $content = $link.parent().prev("div.text-content_service");
+    var linkText = $link.text();
+    $content.toggleClass("short-text_service full-text_service",500);
+    $link.text(getShowLinkText(linkText));
+    return false;
+});
+
+function getShowLinkText(currentText){
+    var newText = '';
+    if (currentText.toUpperCase() === "SHOW MORE") {
+        newText = "Show Less";
+    } else {
+        newText = "Show More";
+    }
+    return newText;
+}
+
+
+
+</script>
+
+<script type="text/javascript">
+var map;
+	function initialize() {
+	//	initialize(38.889931,-77.009003,"New York",5000,'map');
+		var mylatlng = {lat:<?=$lat?>, lng:<?=$lng?>};
+		var mapOptions = {
+			zoom: 12,
+			center: new google.maps.LatLng(<?=$lat?>, <?=$lng?>),
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			scrollwheel: false,
+			zoomControlOptions: {
+     			style: google.maps.ZoomControlStyle.SMALL,
+     		},
+			 mapTypeControlOptions: {
+			  style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+			},
+			
+ 		};
+		
+	
+		var infowindow = new google.maps.InfoWindow();
+		map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
+		
+    	var	marker = new google.maps.Marker({
+		                         position:mylatlng,
+								 map: map,
+								 title: 'Hello World!'
+						});
+		
+		google.maps.event.addListener(marker, 'click', (function (marker) {
+                return function () {
+                    infowindow.setContent('helloooo');
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+		
+ 		marker.setPosition(mapOptions.center);
+		
+	}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>

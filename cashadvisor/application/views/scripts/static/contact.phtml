@@ -1,0 +1,138 @@
+<style type="text/css">
+ .form-group label {
+    color: #FFF;
+	font-weight:normal !important;
+}
+</style>
+<div class=" text-left contactform">
+
+<?  echo str_ireplace(array("{form}"),array($this->form),$this->content['page_content']);?>
+ 
+</div>
+
+
+<!--<div class="aboutusmain contact_background_img">
+	<div class="text-center" style="padding-top:4%;">
+    		<div class="container">
+            		<div class="col-sm-12">
+            				<h3 class="contact_heading">Contact Us</h3>
+                    </div>
+            
+                    <div class="col-md-6 col-sm-12">
+                            
+                            
+                            <div class="intro_text boldfont" style="font-size:30px"><span style="color:#FFFFFF;">We are here to advice You.</span></div>
+                            &nbsp;
+                            
+                            <div class="intro_text" style="font-size:15px"><span style="font-size:14px;"><span style="color: rgb(255, 255, 255);">Fill out the form and find answer</span></span></div>
+                            
+                            <div class="row">
+                                 <div class="col-md-12 text-left">
+                                        <div class="contact_us signup_pagesbg_inner" style="padding:20px; color: #fff; min-height:500px;background:rgba(85, 201, 233, 0.5) none repeat scroll 0 0 !important; ">
+                                                <div class="intro_text lightfont text-center"><span style="font-size:20px;">Send Enquiry</span></div>
+                                                 <?php echo $this->form ;?>
+
+                                        </div>
+                                        <br />
+                                        &nbsp;
+                                </div>
+                            </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-sm-12">
+                    		 
+                            <div class="intro_text boldfont" style="font-size:30px"><span style="color:#FFFFFF;">Here we are.</span></div>
+                            &nbsp;
+                            <div class="intro_text" style="font-size:15px"><span style="font-size:14px;"><span style="color: rgb(255, 255, 255);">Get location on google map</span></span></div>
+                           <div id="map_canvas" style="width:100%; min-height:500px;"></div>
+
+                    </div>
+            </div>
+
+   			<div style="background:#ffffff">&nbsp;
+                    <div class="secondblockbigtext semiboldfont marginbottom20"><span style="font-size:28px;">Free to Ask</span></div>
+                    
+                    <div class="container" style="background:#ffffff">
+                    		<div class="secondblocksmalltext">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.<br />
+                    &nbsp;
+                           			 <div class="col-md-12 text-left">
+                                            <div class="col-md-6">
+                                           			 <p><img src="http://192.168.1.99/CasaAdvisor/public/site_images/contact_us_man.jpg" style="margin:auto; max-height:100%; max-width:100%" /></p>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                    <h3>Address :</h3>
+                                                    
+                                                    <p>120 - Dummy Address , Testing message for testing of the testing site</p>
+                                                    
+                                                    <h3>Email Address :&nbsp;</h3>
+                                                    
+                                                    <p><a href="mailto:test@test.com">test@test.com</a></p>
+                                                    
+                                                    <p><a href="mailto:test@test.com">test@test.com</a></p>
+                                                    
+                                                    <h3>Contact No .:</h3>
+                                                    
+                                                    <p>(121) 1923874 2348971</p>
+                                                    
+                                                    <p>(123) 653247856 432568</p>
+                                            </div>
+                                    </div>
+                            </div>
+                    </div>
+   			</div>
+            
+    </div>
+</div>-->
+
+
+ 
+
+<?php /*?><script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZmQj_e_DJQVFr2hiJr01pvFYZUQt83mI&libraries=places,geometry&amp;sensor=false"  type="text/javascript"></script>
+<?php */?>
+<script type="text/javascript">
+
+
+var map;
+	function initialize() {
+	//	initialize(38.889931,-77.009003,"New York",5000,'map');
+		var mylatlng = {lat:38.889931, lng:-77.009003};
+		var mapOptions = {
+			zoom: 16,
+			center: new google.maps.LatLng(38.889931, -77.009003),
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			scrollwheel: false,
+			zoomControlOptions: {
+     			style: google.maps.ZoomControlStyle.SMALL,
+     		},
+			 mapTypeControlOptions: {
+			  style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+			},
+			
+ 		};
+		
+	
+		var infowindow = new google.maps.InfoWindow();
+		map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
+		
+    	var	marker = new google.maps.Marker({
+		                         position:mylatlng,
+								 map: map,
+								 title: 'Hello World!'
+						});
+		
+		google.maps.event.addListener(marker, 'click', (function (marker) {
+                return function () {
+                    infowindow.setContent('helloooo');
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+		
+ 		marker.setPosition(mapOptions.center);
+		
+	}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+</script>

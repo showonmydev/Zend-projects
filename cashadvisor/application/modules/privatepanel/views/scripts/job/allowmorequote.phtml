@@ -1,0 +1,54 @@
+<?php
+$ProposalDetails = $this->ProposalReceived; //prd($ProposalDetails);
+$SpInQueue = $ProposalDetails['totalSpReceivedNotice']-$ProposalDetails['totalProposal'];
+?>
+<style type="text/css">
+
+</style>
+<div style="min-height:250px;"> 
+	<h4 class="doyouallow">Do you allow more Quotes for this job to <?=$ProposalDetails['user_name']?></h4>
+
+  <div class="moreQuoteDetaisDiv">
+  	<p><?=$ProposalDetails['user_name']?> has received total <b><?=$ProposalDetails['totalProposal']?></b> quotes for <?=$ProposalDetails['service_name']?> </p>
+    <? if($ProposalDetails['more_quote_client_request']!=''){?>
+  		<p>and has sent request for <b><?=$ProposalDetails['more_quote_client_request']?></b> more quotes.</p>
+    <? } ?>
+  	<p>Casa Advisor has <b><?=$SpInQueue?></b> more Service Provider <? if($SpInQueue>1) {?>are<? } else{?> is <? }?> in queue for this job. </p>
+  </div>  
+ 
+     <form name="QuoteRequestClient" id="default_form" class="MoreQuoteForm" enctype="multipart/form-data"  method="post"> 
+         <div id="pay_form" class="pay_form">
+                <div class="col-sm-12">
+                	 <input type="hidden" value="<?=$ProposalDetails['job_id']?>" id="allow_more_quote_job_id" name="allow_more_quote_job_id"> 
+                     <input type="hidden" value="<?=$ProposalDetails['user_id']?>" id="moreQuoteRequestedBy" name="moreQuoteRequestedBy"> 
+                    <?php echo $this->form2->more_quote_admin_allowed; ?>
+                 </div>
+    
+                 <div class="col-sm-12">
+                        <div class="form-actions text-right">
+                            <button name="bttnsubmit" id="bttnsubmit" type="button" onclick="allowMoreINModel()" value="Allow" class="site_button">  Allow</button>
+                        </div>
+                  </div>
+         </div>
+    </form>	
+     
+</div>  
+
+<script type="text/javascript">
+function allowMoreINModel(){
+		if($('#default_form').valid()){
+				$.ajax({ 
+					url:baseUrl+'/privatepanel/job/sendmorequote',
+					type:'POST',
+					data:$('#default_form').serialize(),
+					success:function(data){
+						$('#sendReminderSP').modal('hide');
+						showFlashMessage(data);	
+					}
+				});
+
+			
+			
+			}
+	}
+</script>

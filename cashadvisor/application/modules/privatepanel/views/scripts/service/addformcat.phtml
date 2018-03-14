@@ -1,0 +1,195 @@
+<? 
+$category_id = $this->category_id;
+$editCategoryForm = $this->editCategoryForm;
+$edit_options = $this->edit_options;
+//prn($editCategoryForm);
+//prn($edit_options);
+?>
+<style type="text/css">
+.radio span span.help-block{ position: absolute;left: 100px; display: block; width:400px; background: none;}
+label.radio{ color:black !important;}
+/*.show_div{ display:block !important;}
+.hide_div{ display:none;}*/
+.show_div_to_Add_options,.show_div_to_Add_option_other{display:none}
+</style>
+
+<div class="row">
+	<div class="col-md-12">
+		<!-- BEGIN SAMPLE FORM PORTLET-->
+		<div class="portlet box purple">
+			<div class="portlet-title">
+				<div class="caption">
+                <? if($editCategoryForm!=''){ $show = "show_div";?>
+					<i class="fa fa-sitemap"></i>Edit form to category  
+                 <? } else { $show = "hide_div"; ?>
+                 	<i class="fa fa-sitemap"></i>Add form to category  
+                 <? } ?>   
+				</div>
+				
+			</div>
+			<div class="portlet-body form">
+				<div class="form-body">
+                        <form id="validate" enctype="application/x-www-form-urlencoded" role="form" class="default_form  validate" novalidate="novalidate" method="post">
+                            <div>
+                            	<? echo $this->form->c_form_field_name;?>
+                            </div>
+                            <div>
+                            	<? echo $this->form->c_required_optional;?>
+                            </div>
+                            <div>
+                            	<? echo $this->form->c_need_image;?>
+                            </div>
+                            <div class="tpye_slect">
+                            	<? echo $this->form->c_form_field_type;?>
+                            </div>
+                             <div>
+                            	<? echo $this->form->total_options;?>
+                            </div>
+                            <div class="form-group">
+                            	  <input type="hidden" value="<?=$category_id?>" class="add" id="category_id" name="category_id" /> 
+                            </div>
+                           <div class="<?=$show?> show_div_to_Add_options">
+                                                        
+                                    <fieldset id="buildyourform">
+                                    <legend>Add Options to select</legend>
+                                    
+                                    <? 
+										if($edit_options!=''){
+										$k=1; foreach($edit_options as $edit_option){
+									 ?>
+                                            <div class="fieldwrapper " id="field<?=$k?>">
+                                                <div class="form-group">
+                                               		 <label class="required" for="field<?=$k?>">Option <?=$k?></label><input type="text" id="field<?=$k?>" class="fieldname form-control required" name="field[]" required="required" value="<?=$edit_option['option_text']?>">
+                                                </div>
+                                            </div>
+                                    <? $k++; } } ?>
+                                    </fieldset>
+                                    <input type="button" value="Add option" class="add" id="add" />
+                                     <input type="button" value="Remove option" class="remove" id="remove" />
+                                    <!-- <input type="button" value="Add option for other input" class="other_input_add" id="other_input_add" />
+                                      <input type="button" value="Remove option" class="remove option for other input" id="removeother" />-->
+                                </div>
+                                
+                            <div class="show_div_to_Add_option_other" style="margin-top:20px;">
+                            	<? echo $this->form->c_other;?>
+                            </div>     
+                            
+                            <div>
+                            	<? echo $this->form->bttnsubmit;?>
+                            </div>
+                        </form>
+				</div>
+			</div>
+		</div>
+		<!-- END SAMPLE FORM PORTLET-->
+	</div>
+</div>
+
+<script type="text/javascript">
+var fieldSet ='';
+var cat_form_id='<?=$this->cat_form_id?>';
+$(".show_div_to_Add_options").hide(); 
+$(".show_div_to_Add_option_other").hide(); 
+
+$(".tpye_slect input[type='radio']").change(function(){
+if($(this).val()==2)
+{
+    $(".show_div_to_Add_options").show();
+	$(".show_div_to_Add_option_other").show(); 
+	
+
+}
+else if($(this).val()==3){
+	    $(".show_div_to_Add_options").show();
+		$(".show_div_to_Add_option_other").hide();
+}
+else
+{
+       $(".show_div_to_Add_options").hide(); 
+	   $(".show_div_to_Add_option_other").hide(); 
+}
+    
+});
+
+function checkvalid(){
+	var if_has_options = $('#buildyourform .fieldwrapper').length;
+	var checkoptiontype = $(".tpye_slect input[type='radio']:checked").val();
+		if((checkoptiontype==2 || checkoptiontype==3) && (if_has_options=='0'))
+		{
+			alert("Please Add Atleast two options for redio type input");
+		}else{
+			$('#validate').submit();
+			}
+
+	
+	}
+
+
+
+$(document).ready(function() {
+if(cat_form_id!=''){
+		showhideoptionDiv(cat_form_id);
+}
+	
+    $("#add").click(function() {
+		
+        var intId = $('#buildyourform .fieldwrapper').length + 1;
+        var fieldWrapper = $("<div class=\"fieldwrapper \" id=\"field" + intId + "\"/>");
+        var fName = $("<div class='form-group'><label  class=\"required\" for='field"+intId+"' >Option "+intId+"</label><input type=\"text\" id='field"+intId+"' class=\"fieldname form-control required\" name='field[]"+intId+"' required='required' /></div>");
+     
+        fieldWrapper.append(fName);
+        $("#buildyourform").append(fieldWrapper);
+		
+    });
+
+	  $("#remove").click(function () {
+			 var intId = $('#buildyourform .fieldwrapper').length+1;
+			
+			if(intId==2){
+				  alert("No more textbox to remove");
+				  return false;
+			   }
+			intId--;
+			// alert(intId);
+			$("#field"+intId).remove();
+     });
+	 
+	 
+	 /* $("#preview").click(function() {
+		
+		var newTextBoxDiv = $(document.createElement('div'))
+	     .attr("id", 'TextBoxDiv' + counter);
+		 
+        $("#yourform").remove();
+        var fieldSet = $("<fieldset id=\"yourform\"><legend>Your Form</legend></fieldset>");
+        $("#buildyourform div").each(function() {
+            var id = "input" + $(this).attr("id").replace("field","");
+            });
+            fieldSet.append(label);
+            fieldSet.append(input);
+        });*/
+	 
+});
+
+
+function showhideoptionDiv(value){ 
+if(value==2)
+{
+    $(".show_div_to_Add_options").show();
+	$(".show_div_to_Add_option_other").show(); 
+
+}
+else if(value==3){
+	    $(".show_div_to_Add_options").show();
+		$(".show_div_to_Add_option_other").hide();
+}
+else
+{
+       $(".show_div_to_Add_options").hide(); 
+	   $(".show_div_to_Add_option_other").hide(); 
+}
+    
+}
+
+
+</script> 

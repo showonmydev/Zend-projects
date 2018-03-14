@@ -1,0 +1,504 @@
+<style type="text/css">
+</style>
+<?php 
+$this->modelStatic = new Application_Model_Static();
+$AllBlogs = $this->AllBlogs;
+$RecentBlogs = $this->RecentBlogs;
+$SeaschBlogTilte = $this->SeaschBlogTilte;
+$post_code1=$this->post_code;
+$BlogCat= $this->BlogCat;
+$FullBlog = $this->GetBlogByUrl; 
+
+$ViewFullBlog = $this->blogUrl;
+
+
+$B_comments = $this->comments;
+
+$ifAdmin = $this->ifAdmin;
+?>
+
+<?php if($ViewFullBlog!='\s+'){ ?>
+<?
+$share=array();
+$share['desc']=(substr(strip_tags(addslashes(str_replace("’","",$FullBlog['blog_content']))),0,250));
+$share['caption']=(substr(strip_tags(addslashes(str_replace("’","",$FullBlog['blog_title']))),0,120));
+$share_url = APPLICATION_URL.'/blog/'.$FullBlog['blog_url']; 
+$share['image']=HTTP_BLOG_IMAGES_PATH."/".$FullBlog['blog_image'];
+$share['link']=urlencode($share_url);
+
+$share_img=$share['image'];
+$share_title=$share['caption'];
+$share_desc=(substr(strip_tags(addslashes(str_replace('"',"'",$share['desc']))),0,60));
+$share['name']=(substr(strip_tags(addslashes(str_replace('"',"'",$FullBlog['blog_title']))),0,60));
+$share['redirect_url']=urlencode($share_url."#closewindow");
+?>
+
+<meta property="og:title" content="<?=$share_title?>" />
+<meta property="og:image" content="<?=$share_img?>" />
+<meta property="og:description" content="<?=$share_desc?>" />
+<link rel="image_src" href="<?=$share_img?>"/>
+
+<meta itemprop="name" content="<?=$share_title?>" />
+<meta itemprop="description" content="<?=$share_desc?>" />
+<meta itemprop="image" content="<?=$share_img?>" />
+<? } ?>
+
+
+<div class="container">
+    <div class="col-sm-12 casaBlogPageHeading">
+   		 <p>Blog</p>
+    </div>
+    
+    <div class="col-sm-12 CasaBlogOutterDiv">
+  		<div class="col-sm-8 col-xs-12 CasaBlogRightDiv">
+        <? if($SeaschBlogTilte!=''){?>
+    	<div class="searchBlogdetailDiv">
+        	<h3><p>Search result for : <?=$this->SeaschBlogTilte;?></p></h3>
+        </div>
+        <? } ?>
+        <? if($this->BlogTagWith!=''){?>
+    	<div class="searchBlogdetailDiv">
+        	<h3><p>Blog tagged with: <?=$this->BlogTagWith;?></p></h3>
+        </div>
+        <? } ?>
+        
+      	<? if($this->Bcategory!=''){?>
+    	<div class="searchBlogdetailDiv">
+        	<h3><p>Blog category: <?=$this->Bcategory;?></p></h3>
+        </div>
+        <? } ?>
+
+		<?php if($ViewFullBlog=='\s+'){ ?>
+        
+			<?php $BlogIdArray = array(); ?>
+            <? if($this->paginator->getTotalItemCount()> 0){  ?>
+            <?php 
+			
+				 foreach($this->paginator as $Blog){ 
+						 $BlogUrl = $Blog['blog_url']; 
+					     $BlogIdArray[] = $Blog['blog_id'];
+				?>
+                
+                <div class="overflow EachBlogOuterDiv">
+                    <div class="CasaBlogHeadingDiv">
+                        <h2><a href="<?php echo $this->url(array('blog_url'=>$BlogUrl),'front_blog')?>" class="CasaBlogHaedingA"><?=$Blog['blog_title']?></a>	</h2>
+                           <p class="blog_byDiv">
+                                  <span class="byy_1">BY: </span>
+                                  <span class="blogpostername"><?php echo "Casa Advisor Editors"; ?> </span>
+                                  <span class="margin_list"> | </span>
+                                  <span class="blogPostedDate"><?php echo date('F d, Y',strtotime($Blog['blog_modified_on'])); ?> </span> 
+                            </p>
+    
+                    </div>
+                    
+                    <div class="CasaBlogImageDiv">
+                        <a href="<?php echo $this->url(array('blog_url'=>$BlogUrl),'front_blog')?>">
+                         <img style="max-width:100%;"  src="<?=HTTP_BLOG_IMAGES_PATH?>/<?=$Blog['blog_image']?>" alt="" />
+                         </a>
+                    </div>
+                    
+                    <div class="CasaBlogDetailsDiv">
+                      <div class="overflow CasaBlogContent"><span class="overflow display_block"><? echo substr($Blog['blog_content'],0,200).'...';?></span></div>
+                        <p class="Spacer-2"></p>
+                        <p class="CasaBlogReadMore"><a href="<?php echo $this->url(array('blog_url'=>$BlogUrl),'front_blog')?>">Read More</a></p>
+                        <div class="Spacer-1"></div>
+                    </div>
+                    
+                    <div class="blogUnderCat">
+                        <p class="undercat">Under Blog Category: <span> <a  href="<? echo APPLICATION_URL?>blogs?category=<?=$Blog['blog_category_title']?>"><?=$Blog['blog_category_title']?></a></span></p>
+                        
+                        <p class="undercat">Tagged with: 
+                        <? $tag = explode(",",$Blog['blog_tag']); $totalTag = count($tag);  $i=0;
+                         foreach($tag as $eachTag){?>
+                            <span> 
+                                 <a href="<? echo APPLICATION_URL?>/blog?tag=<?=$eachTag?>"><?=$eachTag?></a>
+                            </span><?   if(++$i!== $totalTag){?>,<? } ?>
+                        <? } ?>
+                        </p>
+                        <div class="Spacer-1"></div>
+                    </div>
+                </div>
+            <?php }  ?>  
+            
+            <div class="col-sm-12 padding_left_0 text-center margin_top_20"> 
+              <?php echo $this->paginationControl($this->paginator,'Sliding','pagination-control.phtml');?> 
+            </div>
+            
+           <?php }else{ ?>
+            <div class="NoContentMatch"><p>Sorry, no content matched your criteria.</p></div>
+            <?php } ?>
+        
+        <?php }else{ ?>
+        
+        	<?php if($FullBlog!=''){
+				$BlogIdArray = array();
+				 $BlogIdArray[] = $FullBlog['blog_id'];?>
+                <div class="overflow FullBlogOuterDiv">
+                        <div class="CasaBlogHeadingDiv">
+                            <h2 class="CasaBlogHaedingA"><?=$FullBlog['blog_title']?></h2>
+                            <p class="blog_byDiv">
+                                  <span class="byy_1">BY: </span>
+                                  <span class="blogpostername"><?php echo "Casa Advisor Editors"; ?> </span>
+                                  <span class="margin_list"> | </span>
+                                  <span class="blogPostedDate"><?php echo date('F d, Y',strtotime($FullBlog['blog_modified_on'])); ?> </span> 
+                                  <span class="margin_list"> | </span>
+                                  <span class="blog_comments_count"><span style="margin-right:5px;"><?=$FullBlog['total_comments'];?></span>Comment</span>
+                                 <span class="margin_list"> | </span>
+                              
+                                  <span>
+									  <? if(empty($this->likedata)){  $like_class="fa-heart-o"; }else{ $like_class="fa-heart";}?>
+                                      <a style="text-decoration:none; cursor:pointer;" onclick="like_blog('<?=$FullBlog['blog_url'];?>')" > 
+                                      <i class="like_heart fa <?=$like_class?>"></i>
+                                      </a>
+                                  </span>
+                                  <span class="blog_like_count">             
+                                      <?php $c = $FullBlog['total_like']; if($c>1){ echo $c." Likes"; }else {echo $c. " Like";} ?>
+                                  </span>                                       
+                               </p>
+                            <ul class="ShareLink">
+                                <li>
+                                    <a class="fbBlog" onclick='FBShareOp();' target="_blank"><i class="fa fa-facebook"></i></a>
+                                </li>
+                                
+                                <li>
+                                      <a class="twBlog" onclick='globalsharing(<?php echo json_encode($share)?>,2)' href="javascript: void(0)"><i class="fa fa-twitter"></i></a>
+                                </li>
+                                <li>
+                                      <a class="pinBlog" onclick='globalsharing(<?php echo json_encode($share)?>,4)' href="javascript: void(0)"><i class="fa fa-pinterest-p" aria-hidden="true"></i>
+                                </a>
+                                </li>
+                                <li>
+                                      <a class="gpBlog" onclick='globalsharing(<?php echo json_encode($share)?>,3)' href="javascript: void(0)"><i class="fa fa-google-plus"></i>
+                                </a>
+                                </li>  
+                            </ul>  
+                        </div>
+                        <div class="CasaBlogImageDiv">
+                            <a><img style="max-width:100%;"  src="<?=HTTP_BLOG_IMAGES_PATH?>/<?=$FullBlog['blog_image']?>" alt="" /></a>
+                        </div>
+                        <div class="CasaBlogDetailsDiv">
+                            <div class="overflow CasaBlogContent"><div class="overflow"><?=$FullBlog['blog_content']?></div></div>
+                            <div class="Spacer-1"></div>
+                        </div>
+                        <div class="blogUnderCat">
+                            <p class="undercat">Under Blog Category: <span> 
+                            	<a  href="<? echo APPLICATION_URL?>blogs?category=<?=$FullBlog['blog_category_title']?>"><?=$FullBlog['blog_category_title']?></a></span>
+                            </p>
+                            <p class="undercat">Tagged with: 
+                            <? $tag = explode(",",$FullBlog['blog_tag']); $totalTag = count($tag);  $i=0;
+                                foreach($tag as $eachTag){?>
+                                <span> 
+                                     <a href="<? echo APPLICATION_URL?>blogs?tag=<?=$eachTag?>"><?=$eachTag?></a>
+                                </span><?   if(++$i!== $totalTag){?>,<? } ?>
+                                <? } ?>
+                             </p>   
+                            <div class="Spacer-1"></div>
+                        </div>
+                    <div class="site_HR"></div>
+                    <div class="Spacer-1"></div>
+<!-- previous comments-->
+                    <div id="AllBlogComments">                                                             
+                    <?php if(count($B_comments)>0){  foreach($B_comments as $comments){ //prd($comments);?>
+                       <div class="blog_comment_body comnt<?=$comments['b_comment_id']?>">  
+                          <ul class="blog_comments_ul">
+                               <li class="blog_in">
+                                     <img src="<?php echo getUserImage($comments['user_image'],'60')?>" alt="" class="img-thumbnail blog_user_image user_comment_img " />
+                                     <div class="blog_message">
+                                         <span class="blog_arrow"></span>
+                                          <span class="blog_comment_user"><?php echo $comments['user_first_name']; ?> <?php echo $comments['user_last_name']; ?></span>    
+                                          <span class="blog_comment_user_date"><?php echo showPostTime($comments['blog_comment_date']); ?> ago</span>
+    <!--delete comment-->       		
+    									<? if( ((isset($this->user) && !empty($this->user)) && ($comments['blog_comment_user_id']==$this->user->user_id)) && ($ifAdmin!='adminview')){?>	
+                                         <span class="delete_icon delCommentBtn" title="Delete" onclick="suredel(<?php echo $comments["b_comment_id"]?>)"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+
+                                         <? } ?>
+    <!--edit and delete comment by admin-->       		
+    									<? if(($ifAdmin=='adminview')){?>
+                                           <span class="delete_icon delCommentBtn" title="Delete" onclick="suredel(<?php echo $comments["b_comment_id"]?>)"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+                                           <span class="editCommentBtn" title="Edit" onclick="showbcommentForm(<?php echo $comments["b_comment_id"]?>)"><i class="fa fa-pencil"></i></span>
+                                         <? } ?>
+                                         
+                                          <span class="blog_comment_show_p"><p class="blog_comment_show_p" id="blog_comment_show_p_<?=$comments['b_comment_id']?>"> <?php echo $comments['blog_comment']; ?></span>
+                                          
+                                          <div id="formBlogComment_<?=$comments['b_comment_id']?>" class="formBlogComment" style="display:none;">
+                                            <form name="blogCommentEdit_form" id="blogCommentEdit_form_<?=$comments['b_comment_id']?>" >
+                                                <div class="form-group">
+                                                <label for="blog_comment_edit">Edit Comment</label>
+                                                <textarea name="blog_comment_edit" id="blog_comment_edit_<?=$comments['b_comment_id']?>" rows="2" class="form-control"><?=$comments['blog_comment']?></textarea>
+                                                 <input type="hidden" name="b_comment_id" value="<?=$comments['b_comment_id']?>">
+                                                </div>
+                                                <button type="button" name="formSubmit" class="btn btn-success saveEditCommentBtn" onclick="editblogcommentform('<?=$comments["b_comment_id"]?>')">SAVE</button>
+                                            </form>
+                                        </div>
+                                        
+                                      </div>
+                               </li>  
+                          </ul> 
+                       </div> 
+                    <?php } } ?>
+                    </div>
+<!--post comments-->                                                              
+                   <form name="commentblog_form" id="commentblog_form" class="profile_form" enctype="multipart/form-data" method="post" action=""> 
+                          <div >
+                               <?php /*?> <div class="col-sm-12 comment_label">
+                                    <?php echo $this->form->blog_comment ;?>
+                                </div><?php */?>
+                                
+                                <div class="col-sm-12 comment_label">
+                                    <div class=" form-group ">
+                               		     <textarea name="blog_comment" id="blog_comment" class="form-control required  user_text" rows="3" placeholder="Start the discussion…" filter="StringTrim StripTags HtmlEntities" cols="80" aria-required="true"></textarea>
+                                    </div>                               
+                                </div>
+                                
+                                <div class="col-xs-6 text-right">
+                                     <?php echo $this->form->saveblogBtn ?>
+                                </div> 
+                                <div class="col-xs-6">
+                                     <?php echo $this->form->cancelbtn ?>
+                                </div>    
+                          </div>
+                  </form>   
+                </div>
+       		 <? } ?>    
+		
+        <?php } ?>
+        </div>
+    
+        <div class="col-sm-4 col-xs-12">
+             <div id="rightSection_1" class="overflow eachRightSection">
+                <h3 class="subscribe">Categories</h3>
+                <div>
+                	<ul class="BlogCatUl">
+                  		<? foreach($BlogCat as $cat){?>
+                        <li><span><a href="<? echo APPLICATION_URL?>/blog?category=<?=$cat['blog_category_title']?>"><?=$cat['blog_category_title']?></a></span></li>
+                  		<? } ?>  
+                   </ul>         
+                </div>
+            </div>
+            
+            <div id="rightSection_2" class="overflow">
+            	<form action="<? echo APPLICATION_URL?>/blog" method="get" id="getsearchedblog">
+                    <div class=" form-group">
+                        <input type="search" placeholder="Looking for something" value="<?=$SeaschBlogTilte?>"  name="s" id="search_blog" class="form-control required" aria-required="true">
+                    </div>
+               </form>     
+            </div>
+            
+            <div id="rightSection_4" class="overflow recentPostDiv">
+                <h3 class="subscribe">Recent Post</h3>
+                
+                <?php 
+					if(count($BlogIdArray)=='0'){ 
+						$BlogIdString = 0;
+					}else{ 
+						$BlogIdString = implode(",",$BlogIdArray); 
+					}
+					$joinArr1 = array(
+							'0'=>array('blog_categories','bc_id =blog_cat_id','left',array('blog_category_title')),
+					);
+					$RecentBlogs=$this->modelStatic->Super_Get("blogs","blog_id NOT IN (".($BlogIdString).")","fetchAll",array('order'=>'RAND()','limit'=>'3'),$joinArr1);
+					
+				    foreach($RecentBlogs as $recentblog){ 
+				 ?>
+                <article>
+                	<div class="blogLeftTitleDiv">
+                    	<h4 class="entryTitle"><a href="<?php echo $this->url(array('blog_url'=>$recentblog['blog_url']),'front_blog')?>"><?=$recentblog['blog_title']?></a></h4>
+                    </div>
+
+                	<a href="<?php echo $this->url(array('blog_url'=>$recentblog['blog_url']),'front_blog')?>" class="BlogImgRecentPost">
+                    	 <img class="recentBlogDivImage" src="<?=HTTP_BLOG_IMAGES_PATH?>/400/<?php echo $recentblog['blog_image']; ?>" alt="" />
+                    </a>
+                </article>
+                <?php  } ?>
+            </div>
+        </div>
+	</div>
+</div>
+
+<script type="text/javascript">
+function serachbycat(catID){
+		$.ajax({
+			url: baseUrl+"/blogs/searchblogbycat",
+			data:{id:catID},
+			success: function (data) 
+			{ 
+				$('.CasaBlogRightDiv').html(data);	
+				
+				 $('html, body').animate({
+				   scrollTop: $("#top-header").offset().top
+				 }, 1000); 
+				
+			}
+	  });
+
+}
+
+</script>
+
+<?php if($ViewFullBlog!='\s+'){ ?>
+<script type="text/javascript">
+function editblogcommentform(blog_c_id){
+		$.ajax({
+			url: baseUrl+"/blogs/editbcomment/b_c_id/"+blog_c_id,
+			type:'POST',
+			data: $('#blogCommentEdit_form_'+blog_c_id).serializeArray(),
+			success: function (data) 
+			{
+				if(data!='0'){
+					var bcomentData=JSON.parse(data);
+					$('#blog_comment_edit'+blog_c_id).val(bcomentData.blog_comment);
+					$('#blog_comment_show_p_'+blog_c_id).html(bcomentData.blog_comment);
+				}
+				showbcommentForm(blog_c_id);
+			}
+	  });
+		
+	}
+
+function showbcommentForm(id){ 
+	$("#formBlogComment_"+id).toggle();
+}
+</script>
+
+<script type="text/javascript">
+  window.fbAsyncInit = function() {
+    // init the FB JS SDK
+    FB.init({
+   appId      : facebook_appid,                                 
+      status     : true,                                 
+      xfbml      : true                                  
+    });
+
+  };
+  // Load the SDK asynchronously
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+   
+function FBShareOp(){
+   var share_title='<?=$share['caption']?>';var share_url='<?=$share_url?>';var share_img='<?=$share['image']?>';var share_desc='<?=$share['caption']?>';
+    FB.ui({
+        method: 'feed',
+        name: share_title,
+        link: share_url,
+        picture: share_img,
+        caption: "",
+        description: share_desc
+    }, function(response) {
+        if(response && response.post_id){}
+        else{}
+    });
+}
+
+</script>
+
+
+<script type="text/javascript">
+function like_blog(burl){
+	var presentblogUrl = '<?=$ViewFullBlog;?>';
+	if(Logged_user>0)
+	{
+		$.ajax({
+			  url: baseUrl+"/blogs/likeblog/blog_url/"+burl,
+			  data: {blog_url:burl},
+			  success: function (data) 
+			  {
+				 var newdata=data.split("|||");
+				 $(".blog_like_count").html(newdata[0]);
+				 $(".like_heart").removeClass("fa-heart-o");
+				 $(".like_heart").removeClass("fa-heart");
+				
+				 if(newdata[1]=="0")
+				 {
+					$(".like_heart").addClass("fa-heart-o");
+				 }
+				else
+				 {
+					$(".like_heart").addClass("fa-heart");
+				 }
+			  }
+		});
+ }else{	window.location=baseUrl+'/login?url=blog/'+presentblogUrl;	}
+	/*else
+	{
+		//window.location=baseUrl+'/login';
+	}*/
+}
+
+
+$('.userChatMsgInput').keyup(function(e) {
+ 
+    var code = e.keyCode || e.which;
+ var Status = 0;
+  
+  if(code == 13){
+   if(e.shiftKey){
+   Status = 1; 
+   }
+   else if(e.ctrlKey){
+    Status = 1; 
+   }
+   if(Status == 0){
+   var Input = $(this)[0].id;
+   if($(this).val().trim()!=''){
+    var ID = Input.split("_");
+    $(this).blur();
+    sendMessaFun(ID[1]);
+   }
+   }}
+});
+
+
+$('#saveblogBtn').click(function(e) {
+	var presentblogUrl = '<?=$ViewFullBlog;?>';
+	//var presentUrl = window.location.href;
+ if(Logged_user>0){
+		if($('#commentblog_form').valid()){
+			$.ajax({
+				url: baseUrl+"/blogs/saveblogcomment",
+				async:false,
+				type:'GET',
+				data: {CMsz:$('#blog_comment').val(),blog_id:'<?php echo $FullBlog['blog_id']?>'},
+				success: function (data) 
+				{ 	
+				  $.ajax({
+					  url: baseUrl+"/blogs/blogcomments",
+					  data: {blog_id:'<?php echo $FullBlog['blog_id']?>'},
+					  success: function (data) 
+					  {
+						  $('#AllBlogComments').html(data);
+						  $('#commentblog_form')[0].reset();
+					  }
+				  });
+				}
+		  });
+	  }
+ }else{	window.location=baseUrl+'/login?url=blog/'+presentblogUrl;	}
+ 
+});
+
+
+function suredel(c_id){
+	var del = confirm("Are you sure you want to delete this comment?");
+	if(del==true)
+	{	 
+				$.ajax({
+				url: baseUrl+"/blogs/deleteblogcomment",
+				  data: {comment_id:c_id},
+				  success: function (data) 
+				  {
+					   $(".comnt"+c_id).remove();
+			       }
+			  });
+			
+	}
+}
+
+</script>
+
+
+<? } ?>

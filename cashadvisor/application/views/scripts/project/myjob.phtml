@@ -1,0 +1,81 @@
+<?php 
+$this->modelStatic = new Application_Model_Static();
+$max_proposal_limit = $this->site_configs['max_proposal_limit'];
+$jobTypeTab = $this->jobTypeTab;
+?>
+<style type="text/css">
+</style>
+<div class="containerfluid overflow" style="background-color:#eee;">
+    <div id="MyJobOutterDiv">
+        <div id="myjobUL">
+             <ul class="nav nav-tabs">
+                <li <? if($jobTypeTab=='inprogress'){?>class="active" <? } ?> ><a  href="<?php echo $this->url(array('jobtype'=>'inprogress'),'front_myJob')?>">In Progress</a></li>
+                <li <? if($jobTypeTab=='hire'){?>class="active" <? } ?> ><a href="<?php echo $this->url(array('jobtype'=>'hire'),'front_myJob')?>">Hired</a></li>
+                <li <? if($jobTypeTab=='complete'){?>class="active" <? } ?> ><a href="<?php echo $this->url(array('jobtype'=>'complete'),'front_myJob')?>">Completed</a></li>
+             </ul>
+         </div>
+    
+        <div class="col-sm-8 col-sm-offset-2 notification_page_outter_div overflow">	
+<!--In job tab --> 
+            <div class="MyJobTabs">
+                 <div>
+                        <p class="all_noti_p">In Progress</p>
+                        <?  if($this->paginator->getTotalItemCount()> 0)  {  ?>
+                        <ul class="all_noti_ul">
+                         <?	foreach($this->paginator as $Job){ //prn($Job);
+                            $all_data=unserialize($Job['job_all_data']);
+							$whereAdr = "zip='".$all_data['client_zip_code']."'";
+							 $clientAddress = $this->modelStatic->Super_Get("zips",$whereAdr,"fetch");
+                         ?>
+                            <li class="overflow">
+                                <div class="requestImg">
+                                        <img class="img-responsive img-circle MarginAuto RequestPageImage" src="<?php echo getUserImage($Job['user_image'],'60') ;?>" />
+                                </div>
+                                  <? 
+                                    $where = "service_id='".$all_data['Cat_id']."'";
+                                    $extra=array('fields'=>'service_name');	
+                                    $getservice_name = $this->modelStatic->Super_Get("services",$where,"fetch",$extra);
+                                 ?>    
+                                <div class="requestText">
+                                    <p class="li_inner_p_all_noti"><?=$Job['user_name']?> </p>
+                                    <p class="job_desc_all_noti"><?=$getservice_name['service_name']?>&nbsp; - &nbsp;<?=$clientAddress['city']?>(<?=$clientAddress['state']?>)</p>
+                                    
+                                  <?php /*?>  <? if($jobTypeTab=='inprogress'){?> <p class="job_desc_all_noti_address"><? if($Job['proposal_status']=='1'){?><span> Your quote has been viewed by <?=$Job['FirstName'];?></span><? }else{?> <span> Your quote has not been viewed by <?=$Job['FirstName']?></span> <? } ?></p> <? } ?><?php */?>
+                                    
+                                   <? if($jobTypeTab=='complete' && $Job['review_id']!=''){?> <p class="job_desc_all_noti_address"><span><?=$Job['FirstName'];?> has wrote you a review.</span></p> <? } ?>
+                               </div>
+                             
+                              <a href="<?php echo $this->url(array('job_id'=>$Job['p_job_id']),'front_view_quotemessage')?>" class="add_project">View Job</a>
+                              
+                              <?  if (array_key_exists('review_id', $Job)) {if($Job['review_id']!=''){?>
+                              <a href="<?php echo $this->url(array('user_id'=>$this->user->user_id,'feedback'=>'view-feedback'),"front_user_SPprofile")?>" class="add_project">View Feedback</a> 
+                              <? } } ?> 
+
+                            </li>
+                         <? } ?>   
+                        </ul>
+                          <div class="col-sm-12 padding_left_0 text-center margin_top_20"> 
+                              <?php echo $this->paginationControl($this->paginator,'Sliding','pagination-control.phtml');?> 
+                         </div>
+                      <? } else{?>
+                        <div class="BlankPageouterDiv"> 
+                            <div class="BlankPageInnerDiv"> 
+                               <div class="BlankPagecontentMyJob">
+                                    <p><i class="fa fa-tags blankJobFontIcon" aria-hidden="true"></i></p>
+                                    <p class="no_noti_p ">You have no Request</p>
+                                </div>
+                            </div>    
+                      </div>   
+                    <? } ?>  
+                 </div>
+            </div>
+        </div>
+    </div>    
+</div>    
+
+
+<script type="text/javascript">
+</script>
+
+
+

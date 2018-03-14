@@ -1,0 +1,68 @@
+<?php
+$ReviewFor = $this->ReviewFor;
+//prd($ReviewFor);
+?>
+<style type="text/css">
+
+</style>
+<link href="http://192.168.0.99/CasaAdvisor//public/front_css/jquery.rating.css" media="screen" rel="stylesheet" type="text/css" >
+
+<div class="container">
+
+    <div class="col-sm-12">
+            <p class="LeaveReview">Leave a review for <?  echo $ReviewFor['user_name'];?></p>
+    </div>
+
+    <div class="col-sm-6 col-xs-12 overflow">
+        <div class="postReviewMainDiv">
+             <div class="overflow">
+                 <form name="reviewSP" id="default_form" class="profile_form" enctype="multipart/form-data" action="<? echo APPLICATION_URL?>/project/postreview/" method="post"> 
+                        <input name="review_sp" type="hidden" value="<?=$ReviewFor['sender_id']?>" />
+                        <input name="review_job_id" type="hidden" value="<?=$ReviewFor['p_job_id']?>" />
+                        <input name="review_proposal_id" type="hidden" value="<?=$ReviewFor['proposal_id']?>" />
+
+                        <div class="casaReviewRatingDiv">
+                        <div class="Rating_Inner_Div">
+                                <span>Your Rating: &nbsp; &nbsp;</span>
+                                <div id="rating_div">
+                                    <input name="review_rating" id="feedback_rating1" type="radio" class="star required" value="1"  />
+                                    <input name="review_rating" id="feedback_rating2" type="radio" class="star required" value="2"  />
+                                    <input name="review_rating" id="feedback_rating3" type="radio" class="star required" value="3"  />
+                                    <input name="review_rating" id="feedback_rating4" type="radio" class="star required" value="4"  />
+                                    <input name="review_rating" id="feedback_rating5" type="radio" class="star required" value="5"  />
+                                 </div>
+                                  <a class="ClickToRate">click to rate</a>
+                                 
+                        </div>
+                        
+                        <div class="casaReviewMszBoxDiv">
+                                <?php echo $this->form2->review_msz; ?>
+                                <?php echo $this->form2->review_title; ?>
+                                <?php echo $this->form2->bttnsubmit; ?>
+                                <p class="reviewNotEdit"> Reviews cannot be edited after posting.</p>
+                        </div>
+                        </div>
+                </form>
+               
+             </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5 col-lg-offset-1 col-md-5 col-md-offset-1  col-sm-5 col-sm-offset-1 col-xs-12">
+        <div class="Casa_review_experience_went_div">
+            <h1>Let people know how your experience went</h1>
+            <label>Describe the job</label>
+            <p>What did Chris Evans help you with? Where was the job? How long did it take?</p>
+            <label>Say what went well</label>
+            <p>What impressed you about the service? Did Chris Evans go above and beyond? Was Chris on time? How was the quality of the work?</p>
+            <label>Point out what could have been better</label>
+            <p>What would have improved your experience? What went wroung, if anything? How could Chris Evans do better in the future?</p>
+        </div>
+    </div>      
+ 
+</div>
+
+<script type="text/javascript">
+</script>
+<script type="text/javascript" src="http://192.168.0.99/CasaAdvisor//public/front_js/jquery.rating.js"></script>
+

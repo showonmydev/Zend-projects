@@ -1,0 +1,21 @@
+
+<div class="login"> 
+ 
+  <!-- BEGIN LOGIN -->
+  <div class="content">
+  	<div class="fullwidthdiv text-center login_title">Sign Up for verifood</div>
+    <div class="fullwidthdiv text-center">
+                    <a  class="ColorText facebook" href="<?=$this->baseUrl('social/fbregister/usertype/'.$this->user_type)?>"><span class="fa fa-facebook-f"></span>FACEBOOK</a>
+                        &nbsp;&nbsp;     
+                   <a  class="ColorText google" href="<?=$this->baseUrl('social/googlelogin/usertype/'.$this->user_type)?>"><span class="fa fa-google-plus"></span> GOOGLE+</a>
+    </div>
+    
+    <div class="content_padding">
+      <?=$this->form?>
+    </div>
+    
+  </div>
+  <!-- END LOGIN --> 
+  
+  
+</div>

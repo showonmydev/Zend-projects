@@ -1,0 +1,130 @@
+<?php
+$RatingChk=0;
+$this->modelStatic = new Application_Model_Static();
+?>
+<div class="col-sm-12 padding_zero overflow ClearBoth">
+    <!-- ALL FEEDBACK CONTENT START --> 
+    <div class="col-sm-12 overflow padding_zero FeedbackMainContent1 <?php if($this->type==1) { echo "hide"; } ?>">
+        <div class="FLayer3 col-sm-12 padding_zero overflow">
+        <?php  
+            if(count($this->ReviewData)>0) {  ?>
+			<?php 
+			$i=1; 
+			foreach($this->ReviewData as $Review){
+				$joinReview = array(
+						'0'=>array("users","user_id=review_client","left",array('CONCAT(user_first_name," ",user_last_name) as user_name','user_image')),
+					);
+			$EachReview=$this->modelStatic->Super_Get("users","user_id='".$Review['review_client']."'","fetch",array('CONCAT(user_first_name," ",user_last_name) as user_name','user_image')); 
+			prd($EachReview);
+			?>
+            <div class="<?php if($this->type==2) { echo "WHistory"; } ?> overflow">
+                <div class="Feedback">
+                    <div class="Date overflow">
+                        <p class="pull-left">
+						<?=date('M',strtotime($feedbackData['job_pro_assigned_date'])).' '.date('Y',strtotime($feedbackData['job_pro_assigned_date'])).' - '.date('M',strtotime($feedbackData['feedback_date'])).' '.date('Y',strtotime($feedbackData['feedback_date']));?>
+                        </p>
+                        <?php if($feedbackData['job_pay_type']=='hourly') { ?>
+						<p class="pull-right"><?=$feedbackData['totalHours']?> <?=$this->translate('hours');?></p>
+                        <?php } ?>
+                    </div>
+                    
+                    <div class="JobTitle overflow">
+                        <p class="pull-left"><?=$feedbackData['job_title']?></p>
+                        <?php if($feedbackData['job_pay_type']=='hourly') { ?>
+						<p class="pull-right"><?=$feedbackData['job_pro_price']?> <?=$this->translate('/hr');?></p>
+                        <?php } else{ ?>
+						<p class="pull-right"><?=$this->translate('Fixed Price');?></p>
+                        <?php } ?>
+                    </div>
+                    
+                    <div class="Rating overflow">
+                        <p class="pull-left">
+                            <label><?=rating_display($feedbackData['feedback_rating'])?></label>
+                            <?php /*?><label><?=$feedbackData['feedback_rating']?></label><?php */?>
+                        </p>
+                        <p class="pull-right"><?=PRICE_SYMBOL.number_format(round($feedbackData['totalEarned'],2),2)?> <?=$this->translate('earned');?></p>
+                    </div>
+                    
+                    <div class="Text overflow">
+                    	<div class="Img InlineBlock VerticalMiddle text-center">
+                        <img class="img-responsive img-circle MarginAuto" src="<?php echo getUserImage($feedbackData['user_image'],'60')?>" alt="" />
+                        <?php echo $feedbackData['user_first_name'].' '.$feedbackData['user_last_name']?>
+                       	<? if($feedbackData['user_sub_amount']!='0.00' && $feedbackData['user_sub_amount']!=''){?>
+                            <img src="<?php echo HTTP_IMG_PATH?>/c_icon.png" data-title="<p class='Text MarginZero'><?php echo $this->translate('Certified Member')?></p>" 
+                            data-toggle="tooltip"/>
+                        <? }?>
+                        </div>
+                        
+                        <div class="Txt InlineBlock VerticalMiddle">
+                        &nbsp; <?=nl2br($feedbackData['feedback_content'])?>
+                        </div>
+                    </div>
+				</div>
+                
+                      
+            </div> 
+                         
+			<hr />
+        	<?php $i++; } ?>
+            <div class="ClearBoth overflow <?php if($this->type==1) { echo "hide"; } ?>">
+                <?php echo $this->paginationControl($this->paginator,'Sliding','pagination-control.phtml');  ?>
+            </div>
+		</div>
+		<?php } else{ ?>
+        <p class="ClearBoth">&nbsp;</p>
+        <h3 align="center"><?=$this->translate('No Feedback Found');?></h3>
+        <? }?>
+	</div>
+    <!-- ALL FEEDBACK CONTENT END --> 
+    
+    <!-- FEEDBACK CONTENT WITH VIEW MORE START --> 
+    <div class="col-sm-12 overflow padding_zero FeedbackMainContent2 <?php if($this->type==2) { echo "hide"; } ?>">
+        <div class="FLayer3 col-sm-12 padding_zero overflow">
+			<?php $i=1; 
+            $moreFeedbackCount=$this->paginator->getTotalItemCount()-TOTAL_INITIAL_FEEDBACK;
+            foreach($this->feedbackData as $feedbackData) { ?>
+            <div class="<?php if($this->type==2) { echo "WHistory"; } ?> overflow">
+                <div class="Feedback">
+                    <div class="Date overflow">
+                        <p class="pull-left">
+                        <?=date('M',strtotime($feedbackData['job_pro_assigned_date'])).' '.date('Y',strtotime($feedbackData['job_pro_assigned_date'])).' - '.date('M',strtotime($feedbackData['feedback_date'])).' '.date('Y',strtotime($feedbackData['feedback_date']))?>
+                        </p>
+                        <?php if($feedbackData['job_pay_type']=='hourly') { ?>
+                        <p class="pull-right"><?=$feedbackData['totalHours']?> <?=$this->translate('hours');?></p>
+                        <?php } ?>
+                    </div>
+                    
+                    <div class="JobTitle overflow">
+                        <p class="pull-left"><?=$feedbackData['job_title']?></p>
+                        <?php if($feedbackData['job_pay_type']=='hourly') { ?>
+                        <p class="pull-right"><?=$feedbackData['job_pro_price']?> <?=$this->translate('/hr');?></p>
+                        <?php } else{ ?>
+                        <p class="pull-right"><?=$this->translate('Fixed Price');?></p>
+                        <?php } ?>
+                    </div>
+                    
+                    <div class="Rating overflow">
+                        <p class="pull-left">
+                            <label><?=rating_display($feedbackData['feedback_rating'])?></label>
+                            <?php /*?><label><?=$feedbackData['feedback_rating']?></label><?php */?>
+                        </p>
+                        <p class="pull-right"><?=PRICE_SYMBOL.number_format(round($feedbackData['totalEarned'],2),2)?> <?=$this->translate('earned');?></p>
+                    </div>
+                    
+                    <div class="Text overflow"><?=nl2br($feedbackData['feedback_content'])?></div>
+                </div>
+            </div>        
+            <hr />
+            <?php $i++; } ?>
+            <div class="ClearBoth overflow">
+                <div class="ClearBoth overflow">
+                    <hr />
+                    <div class="ViewMore Cursor" onclick="showMoreFeedback()" id="viewFeedbackBtn">
+                        <?=$this->translate('View More');?> <span>(<?=$moreFeedbackCount?>)</span>
+                    </div>
+                </div>
+           </div>
+		</div>
+    </div>
+    <!-- FEEDBACK CONTENT WITH VIEW MORE START --> 
+</div>

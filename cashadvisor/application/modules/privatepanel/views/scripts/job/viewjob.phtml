@@ -1,0 +1,348 @@
+<?php
+$this->modelsuper = new Application_Model_SuperModel();
+$viewjob = $this->getjob; 
+$all_data = $this->all_data;
+$n = count($viewjob);
+$all_proposal_sender=$this->all_proposal_sender;
+$isReceiveAnyProposal = count($all_proposal_sender);
+
+if($all_data['job_deadline']=='1'){
+		$JobDeadline = "I'm flexible";
+	}
+	elseif($all_data['job_deadline']=='2'){
+			$JobDeadline = "In the next few days";
+		}
+		elseif($all_data['job_deadline']=='3'){
+			 	$JobDeadline = "As soon as possible";
+			}
+			elseif($all_data['job_deadline']=='4'){
+						$JobDeadline = "on date";
+			}
+?>
+
+
+<div class="view_job_ajax_div">
+
+	<ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#tabJobdetail">Job Details</a></li>
+      <? if($isReceiveAnyProposal!='0') { ?>
+      <li><a data-toggle="tab" href="#tabProposal">Job Proposals</a></li>
+      <? }?>
+      
+      <? if($isReceiveAnyProposal!='0') { ?>
+      <li><a data-toggle="tab" href="#Tabcommunication">communication</a></li>
+      <? }?>
+      <? if($viewjob['review_id']!=''){?>
+      <li><a data-toggle="tab" href="#TabReview">Job Review</a></li>
+      <? } ?>
+    </ul>
+    
+    <div class="tab-content">
+        <div id="tabJobdetail" class="tab-pane fade in active">
+        	<div class="view_job_client_img text-center">
+                   <a href="<?=APPLICATION_URL?>/siteadminpanel/view-user/<?=$viewjob['ClientId']?>"> <img class="img-responsive" style="display:inline-block;" src="<?php echo getUserImage($viewjob['user_image'],'60') ;?>"  alt=""/></a>
+                    <p><? echo $viewjob['user_name'];?></p>
+                    <p class="job_title"><? echo $viewjob['service_name'];?></p>
+             </div>
+             
+            <div class="view_job_ajax_inner_div">
+                <div>
+                    <p class="job_q_headings">Job Type:</p>
+                    <p class="job_answers"><? echo $viewjob['service_name'];?></p>
+                    <p class="site_HR"></p>
+                </div>
+                
+                <?	
+                    if (array_key_exists('post_field_value', $all_data)) {
+                     foreach($all_data['post_field_value'] as $key => $Answer){
+                         //prd($all_data["post_field_value"][$key]);
+                            $Question = $this->modelsuper->Super_Get('category_form','c_form_id= "'.$key.'"',"fetch");
+                        //	prd($Question);
+                            if(is_array($all_data["post_field_value"][$key]))
+                            {
+                            $implode_optipons=implode(",",$all_data["post_field_value"][$key]);
+                            }
+                            else
+                            {
+                                $implode_optipons=$all_data["post_field_value"][$key];
+                            }
+                            
+                            $ex_getdata=explode('other_options',$implode_optipons);
+                            $test_check_id=$implode_optipons;
+                            if(isset($ex_getdata[1]) && !empty($ex_getdata[1])){
+                                $test_check_id=$ex_getdata[1];
+                                if(isset($all_data['other_options'][$test_check_id]) &&  !empty($all_data['other_options'][$test_check_id])){
+                                        //echo $all_data['other_options'][$test_check_id];
+                                }
+                            }
+                        
+                        $ans = $this->modelsuper->Super_Get('category_form_options','c_option_id IN('.$test_check_id.')','fetchAll');
+                        $totalAns = count($ans);
+        
+                ?>
+                <div>
+                    <p class="job_q_headings"><?=$Question['c_form_field_name'];?></p>  
+                    <ul class="viewJobUL">
+                        <? if($totalAns!=0){ foreach($ans as $Ans){?>
+                            <li class="job_answers"><?=$Ans['option_text']?></li>                		
+                        <?  }}else{ $otherAnswerVal = $all_data['other_options'][$key]; ?>
+                            <li class="job_answers"><?=$otherAnswerVal;?></li>                		
+                        <? } ?>
+                    </ul>
+                   <p class="site_HR"></p>
+                </div>
+                <? } }?>
+                 <? //prd($viewjob);
+                    if (array_key_exists('job_images', $viewjob)) {
+                    if($viewjob['job_images']!=""){?>
+                            <p class="job_q_headings">Would you like to add photos to describe your project? </p>
+                             <div class="col-sm-12 overflow clear">
+                                 
+                                
+                                         <div class=" col-sm-12 clear overflow projectImgagesSendQuote">
+                                            <img src="<?=getJobImage($viewjob['job_images'],'thumb')?>" alt="" />
+                                            <div class="Spacer-2"></div>
+                                            <div class="Spacer-2"></div>
+                                        </div>
+                               
+                            </div>
+                           <p class="site_HR"></p>
+                  <? }  }
+                  ?> 
+                  
+                   <? if (array_key_exists('form_ID_and_Type', $all_data)) {
+                        foreach($all_data['form_ID_and_Type'] as $key => $Answer){
+                            if($Answer=='1' or $Answer=='0'){
+                                $TextQuestion = $this->modelsuper->Super_Get('category_form','c_form_id= "'.$key.'"',"fetch");
+                    ?>
+                     <div>
+                        <p class="job_q_headings"><?=$TextQuestion['c_form_field_name'];?></p>  
+                        <ul class="viewJobUL">
+                                <li class="job_answers"><?=$this->all_data['Textand_Area_'.$key];?></li>                		
+                        </ul>
+                       <p class="site_HR"></p>
+                    </div>
+                    <? } } } ?>
+                  
+                <div>
+                    <p class="job_q_headings">When the work should be start:</p>
+          			<p class="job_answers"><? echo $JobDeadline;?> &nbsp;<?=$all_data['job_deadline_date']?></p>
+                    <p class="site_HR"></p>
+                </div>
+                
+               <div>
+                    <p class="job_q_headings">Phone Number:</p>
+                    <p class="job_answers"><? echo $all_data['job_phone_client'];?></p>
+                    <p class="site_HR"></p>
+                </div>
+                
+               <div>
+                    <p class="job_q_headings">How would you like to receive quotes?:</p>
+            		<p class="job_answers"><? if($all_data['how_receive_quote']=='0'){ echo "Email Only";}else{ echo "Email and Message both";}?></p>
+                    <p class="site_HR"></p>
+                </div>
+        
+                
+                <div>
+                    <p class="job_q_headings">Posted On:</p>
+                    <p class="job_answers"><? echo $viewjob['posted_job_created'];?></p>
+                    <p class="site_HR"></p>
+                </div>
+            </div>
+        </div>
+        
+       <? if($isReceiveAnyProposal!='0') {?>
+            <div id="tabProposal" class="tab-pane fade ">
+                 <div class="col-sm-12 overflow">
+                    <h3 class="ALLProposael">All Proposals</h3>
+                    <? foreach($all_proposal_sender as $key => $all_proposal_sender){?>
+                        <?php /*?><a href="<?=APPLICATION_URL?>privatepanel/view-user/<?=$all_proposal_sender['sender_id']?>"><?php */?>
+                        <div class="proposal_lists_view_pro_page">
+                             <? if($all_proposal_sender['proposal_decline_status']=='1' || $all_proposal_sender['proposal_decline_status']=='3'){?>
+                                     <div class="ribbon">
+                                         <span style="">Hired</span>
+                                    </div>
+                             <? } ?>     
+                            
+                            <img class="img-responsive img-thumbnail display_inline"  style="width:60px;" src="<?php echo getUserImage($all_proposal_sender['user_image'],'160') ;?>" />
+                            <div class="proposal_send_by_name display_inline">
+                                <p class="proNamePrice"><?=$all_proposal_sender['user_name'];?></p>
+                                <p class="proNamePrice"><span>Price(in $): </span><?=$all_proposal_sender['proposal_credit'];?></p>
+                            </div>
+                            
+                            <p class="capitalize prosalDesc"><span>Description: </span><?=$all_proposal_sender['proposal_description'];?></p>
+                        </div>
+                            <!--</a>-->
+                    <? } ?>
+                </div>
+          </div>
+       <? }?>
+
+        
+		<? if($isReceiveAnyProposal!='0') { ?>
+            <div id="Tabcommunication" class="tab-pane fade">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                  <?
+                  $count=0;
+                  foreach($this->all_proposal_sender as $key => $all_proposal_sender){?>
+                        <!--<div class="proposal_lists_view_pro_page">-->
+                            <div class="panel panel-default">
+                                  <a role="button"  data-toggle="collapse" data-parent="#accordion" href="#collapse_<?=$count?>" aria-expanded="true" aria-controls="collapse_<?=$count?>">						
+                                  <div class=" bgColeee panel-heading" role="tab" id="heading<?=$count?>">
+                                      <h4 class="ProposalSenderNamePanel panel-title">
+                                      <?=ucfirst($all_proposal_sender['user_name']);?>
+                                      </h4>
+                             	 </div>
+                                  </a>
+                              
+                              <div id="collapse_<?=$count?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<?=$count?>">
+                                    <div class="panel-body">
+                                         <div>
+                                            <?php 
+                                             $sender_id = $all_proposal_sender['sender_id'];
+                                                     $extra = array();
+                                                     $joinArr = array(
+                                                            '0'=>array("users","user_id='".$sender_id."'","left",array('CONCAT(user_first_name," ",user_last_name) as user_name','user_image as sender_image'))
+                                                            );
+                                                        
+                            $previous_communication = $this->modelsuper->Super_Get("communication","(c_sender_id='".$viewjob['ClientId']."' or c_receiver_id = '".$viewjob['ClientId']."') and (c_receiver_id ='".$sender_id."' or c_sender_id= '".$sender_id."') and c_job_id='".$all_proposal_sender['p_job_id']."'","fetchAll", $extra,$joinArr); ?>
+                            
+                                            <?  if(count($previous_communication)>0){ ?>
+                                            <div class="allComments col-sm-12 commentDivOutter" id="messageMainDiv_<?=$all_proposal_sender['sender_id']?>">   
+                                                <p class="conversationHeading">Conversation</p>
+                                                <?php  foreach($previous_communication as $communications){
+                                                        //prn($communications);
+                                                        if($communications['c_sender_id']==$viewjob['ClientId']){
+                                                                $in_out = "out";
+                                                            }else{
+                                                                    $in_out = "in";
+                                                                }
+                                                  ?>                                                          
+                                                    <div class="comment_body comnt12">  
+                                                                <ul class="comments_ul">
+                                                                        <li class="<?=$in_out?>">
+                                                                            <? if($in_out=="out"){ $name = $viewjob['user_name'];?>
+                                                                                 <img class=" hidden-xs img-responsive img-thumbnail user_image user_comment_img" style="max-width:60px;" src="<?php echo getUserImage($viewjob['user_image'],'60') ;?>" />
+                                                                                 <? } else { $name = $communications['user_name'];?>
+                                                                                      <img class=" hidden-xs img-responsive img-thumbnail user_image user_comment_img" style="max-width:60px;" src="<?php echo getUserImage($communications['sender_image'],'60') ;?>" />
+                                                                                 <? } ?>
+                                                                            <div class="message">
+                                                                                <span class="comment_arrow"></span>
+                                                                                <p class="name_ago_msz">
+                                                                                
+                                                                                    <span class="msz_user_name_in_req capitalize"> <?=$name?></span>	 
+                                                                                    <span class="show_messz_time_P pull-right"><? echo showPostTime($communications['c_date']); ?> ago</span>
+                                                                                </p>
+                                                                                
+                                                                                <p class="comment_show_p"><?=$communications['c_massage'] ?></p>
+                                                                            </div>
+                                                                                <? if ($communications === end($previous_communication)){ ?>
+                                                                                     <input type="hidden" value="<?=$communications['communication_id'];?> " id="last_msz_<?=$all_proposal_sender['sender_id']?>" name="last_msz"  />
+                                                                                <? } ?>
+                                                                        </li>  
+                                                                </ul> 
+                                                    </div>  
+                                                  <? } ?> 
+                                            </div>        
+                                            <? }else{ ?>
+                                                    <h4  class="defaultText">No communication Found..</h4>
+                                             <? } ?>
+                                        </div>
+                                    </div>
+                             </div>
+                            </div>
+                        <!--</div>-->
+                    <? $count++;} ?>
+                </div>
+            </div>
+        <? } ?>
+        
+        <? if($viewjob['review_id']!=''){?>
+            <div id="TabReview" class="tab-pane fade">
+                <div class="reviewContent">
+                    <?php
+                    
+                    if($viewjob['job_status']=='completed'){
+                        if(isset($viewjob['review_id'])!=''){
+                    
+                             $extra = array();
+                             $joinArr = array(
+                                 '0'=>array("proposal","proposal_id='".$this->getjob['hired_proposal_id']."'","left",array('sender_id')),
+                                    '1'=>array("users","user_id=sender_id","left",array('CONCAT(user_first_name," ",user_last_name) as user_name','user_image as sender_image','user_id')),
+                                    
+                                    );
+                                
+    $reviewData = $this->modelsuper->Super_Get("reviews","review_proposal_id='".$this->getjob['hired_proposal_id']."'","fetch", array(),$joinArr);
+    
+                        ?>
+                        <div class="reviewMainDiv" style="    padding-top: 15px;">
+                            <span class="DeleteBtn" title="remove" onclick="removereviewform('<?=$reviewData["review_id"]?>','<?=$reviewData['review_job_id']?>')"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                            <span class="editBtn" title="Edit" onclick="showReviewForm()"><i class="fa fa-pencil"></i></span>
+                            <div class="imgDiv display_inline">
+                                <img class="img-responsive pull-left img-circle ReviewSenderReceiverImg" title="<?=ucfirst($viewjob['user_name']);?>" src="<?php echo getUserImage($viewjob['user_image'],'60') ;?>"  alt=""/>
+                                <label class="nameLabel"><a href="<?=APPLICATION_URL?>/siteadminpanel/view-user/<?=$viewjob['ClientId']?>"><?=ucfirst($viewjob['user_name']);?></a> added review for <a href="<?=APPLICATION_URL?>/siteadminpanel/view-user/<?=$reviewData['user_id']?>"><?=ucfirst($reviewData['user_name']);?></a>&nbsp;&nbsp;</label>
+                                <img class="img-responsive img-circle ReviewSenderReceiverImg" title="<?=ucfirst($reviewData['user_name']);?>" src="<?php echo getUserImage($reviewData['sender_image'],'60') ;?>"  alt=""/>
+                              
+                            </div>
+                          
+                            <div class="RatingActualDiv " >
+                                <label > <?php echo rating_display($viewjob['review_ratings']);?></label>
+                                <span style="float:right"><i class="fa fa-calendar"></i> <?=date('M d, Y',strtotime($viewjob['review_date']))?></span>
+                                <h5 id="revTitle">
+                                    <?=$viewjob['review_title']?>
+                                </h5>
+                                <p id="RevMsg">
+                                    <?=$viewjob['review_msz']?>
+                                </p>
+                                <p style="padding-left: 42px;" id="RevRplyMsg">
+                                    <b>Reply:</b><span style=" padding-left:15px;color: #525252;"><?=$viewjob['review_reply_msz']?></span>
+                                </p>
+                                
+                            </div>
+                            <div class="formReview " style="display:none">
+                                <form name="review_form" id="review_form" >
+                                    <div class="form-group">
+                                    <label for="review_title">Review Title</label>
+                                    <input type="text" class="form-control" name="review_title" value="<?=$viewjob['review_title']?>" id="review_title">
+                                    <input type="hidden" name="review_id" value="<?=$viewjob['review_id']?>">
+                                    </div>
+                                    <div class="form-group">
+                                    <label for="review_msz">Review</label>
+                                    <textarea name="review_msz" id="review_msz" rows="5" class="form-control"><?=$viewjob['review_msz']?></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                    <label for="review_msz">Review Reply</label>
+                                    <textarea name="review_reply_msz" id="review_reply_msz" rows="5" class="form-control"><?=$viewjob['review_reply_msz']?></textarea>
+                                    </div>
+                                    
+                                    <button type="button" name="formSubmit" class="btn btn-success" onclick="editreviewform('<?=$reviewData["review_id"]?>')">SAVE</button>
+                                </form>
+                            </div>
+                            
+                        </div>
+                        <?	
+                        }else{
+                        ?>
+                        <h4  class="defaultText">Job has been completed by user but feedback is pending.</h4>
+                        <?
+                        }
+                    }else{?>
+                        <h4 class="defaultText">Job has not completed yet.</h4>
+                    <?
+                    }
+                    ?>
+                </div>
+            </div>
+        <? } ?>
+    </div>
+    
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(e) {
+
+	});
+	
+	
+	
+</script>	

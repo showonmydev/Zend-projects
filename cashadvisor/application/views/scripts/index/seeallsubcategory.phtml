@@ -1,0 +1,256 @@
+<style type="text/css">
+.SubCatNamePage{color: #545454 !important;text-decoration: none !important;font-size: 15px;}
+.header .close { position: absolute; right: -7px;background-color: white; padding: 2px 6px;border-radius: 50%; opacity: 1; top: -2%;border:2px solid #0bb8e3;color:#0bb8e3;z-index: 1;}
+.job_post_outter_div .form-group>:first-child { text-align:left;font-weight: 700;font-family: 'PT Sans', sans-serif;display: inline-block;color:black;margin-bottom: 5px;padding:0px;font-size:17px;}	
+</style>
+
+<?php
+$subcategories = $this->subcategories;
+$service_name = $this->service_name;
+$modelSuper=new Application_Model_SuperModel();  
+
+$sub_cat_searchlist = $this->sub_cat_searchlist;
+$showjobPostModel = $this->showjobPostModel;
+
+$jsonServices =json_encode($this->sub_cat_searchlist);
+?>
+<section>
+	<div class="containerfluid home_improve_bg">
+    	<h3><?=$service_name['service_name']?></h3>
+        <p>Complete your project with the right professionals</p>
+        		<div class="search_form_outter_div">
+       				 <form method="get" action="#" class="profile_form">
+                            <div class="row search_form">
+                                    <div class="rewilla_home_service_div">
+                                        <input  type="text" name="services" placeholder="What service do you need?" id="searchsubservicesServices" class="form-control what_need service_serach_box" />
+                                        
+                                        <img class="search_img " src="<?php echo HTTP_SITEIMG_PATH?>/search_icon.png"  />
+                                    </div>
+                                    
+                                    <div class="rewilla_home_service_button_div">
+                                         <button type="submit" class="btn-custom get_start">Get Started</button>
+                                    </div>
+                            </div>
+             </form>
+      			</div>
+    </div>
+    <div class="allservice" >
+    	<div class="container padding_bottom_40">
+        	   <div class="popular_home_div">
+                	<h3>More <?=$service_name['service_name']?> Services</h3>
+                </div>    
+               <div class="main_container overflow">
+               		<?  foreach($subcategories as  $categories2) {  ?>
+                     <div class="pin">
+                         <div class="holder">
+                            
+ 							   <a class="SubCatNamePage Cursor" onclick="postjobfromCatName(<?=$categories2['service_id']?>)"> <?php echo $categories2['service_name'];?></a> 
+                               
+                                <?php /*?><a class="SubCatNamePage Cursor" onclick="<? if(isset($this->user->user_type) && $this->user->user_type=='client'){?>postJobSubCatPage(<?=$categories2['service_id']?>) <? }?>"> <?php echo $categories2['service_name'];?></a>        <?php */?>                 
+                         </div>    
+                     </div>  
+                   <? } ?>         
+               </div>
+        </div>   
+    </div>           
+</section> 
+
+<div class="modal fade" id="addprojectmodel" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="header">
+          <button type="button" class="close" data-dismiss="modal" onclick="closeJobModal(1)">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:0px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+var new_post_job_id = '<?=$showjobPostModel?>';
+
+<? if($showjobPostModel!='' && $showjobPostModel!='\+d'){ ?>
+$(document).ready(function(e) {
+	 afterLoginPostJobConditionChk(<?=$showjobPostModel?>)
+});
+<? } ?>
+</script> 
+
+
+<script type="text/javascript">
+	var JsonServices = JSON.parse('<?=$jsonServices?>');
+$(document).ready(function(e) {
+
+    $('.main_container').masonry
+ ({
+        // options
+        itemSelector : '.pin',
+        isAnimated: true,
+        isFitWidth: true
+    });
+ 
+});
+
+ $(function(){
+           var choices = Array() ;
+			for(var i=0;i<JsonServices.length;i++){
+				choices.push(JsonServices[i].service_name);
+			}
+            $('#searchsubservicesServices').autoComplete({
+                minChars: 1,
+                source: function(term, suggest){
+                    term = term.toLowerCase();
+                    var suggestions = [];
+                    for (i=0;i<choices.length;i++)
+                        if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                    suggest(suggestions);
+                }
+            });
+	 });
+
+
+
+</script>
+
+<script type="text/javascript">
+var Logged_user='0';
+<?
+if(isset($this->user->user_id) && $this->user->user_id!="")
+{
+?>
+Logged_user=parseInt('<?=$this->user->user_id?>');
+
+<? }?>
+
+if(Logged_user>0)
+{
+	var file_cnt=-1;
+	var file_id;
+	var FILE_PATH="<?=SITE_HTTP_URL."/public/resources/uploads/image_"?>"+Logged_user+"/";
+	var THUMB_FILE_PATH="<?=SITE_HTTP_URL."/public/resources/uploads/image_"?>"+Logged_user+"/thumbnail/";
+	var MEDIUM_FILE_PATH="<?=SITE_HTTP_URL."/public/resources/uploads/image_"?>"+Logged_user+"/medium/";
+}
+</script>      
+
+<script id="template-upload" type="text/x-tmpl">
+
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+      	<td>
+            
+        </td>
+	    <td>
+            <span class="preview"></span>
+        </td>
+        <td  class="hidden-xs">
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td  class="hidden-xs">
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Start</span>
+                </button>
+            {% } %}
+            {% if (!i) { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+
+<script id="template-download" type="text/x-tmpl">
+
+   
+{% for (var i=0, file; file=o.files[i]; i++) { 
+file_cnt++;
+file_id="files_"+file_cnt;
+
+$(".banner_img_instruction").css('display','block');
+
+	if (file.error)
+	{
+		if(file.error=="Image requires a minimum width")
+		{
+			alert('Image should be of atleast 200 x 100 pixel.');
+		}
+		else
+		{
+	 		alert(file.error);
+		}
+	}
+	else
+	{
+		
+%}
+    <tr class="template-download fade">
+        <td>
+			<div class="radio">
+            <span class="preview" style="cursor:pointer;">
+                <input type="radio" name="select_banner[]" value="{%=file.name%}" style="margin-left:0px;"/>
+            </span>
+			</div>
+        </td>
+		<td>
+            <span class="preview" style="cursor:pointer;">
+                {% if (file.thumbnailUrl) { %}
+                    <img draggable="false"  src="{%=file.thumbnailUrl%}">
+                {% } %}
+            </span>
+        </td>
+        <td class="hidden-xs">
+            <p class="name">
+                {% if (file.url) { %}
+                    <a  title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td  class="hidden-xs">
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+                <button  class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>
+            {% } else { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% 
+		}
+} 
+		$('img').on('mousedown', function(e) {
+		e.preventDefault();
+		});
+		
+		$('img').bind("contextmenu", function(e) {
+		e.preventDefault();
+		});
+%}
+
+
+</script>
+
+
+

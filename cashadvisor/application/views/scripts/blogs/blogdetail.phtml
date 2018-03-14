@@ -1,0 +1,243 @@
+<style type="text/css">
+
+</style>
+<?php 
+$RecentBlogs = $this->RecentBlogs;
+$SeaschBlogTilte = $this->SeaschBlogTilte;
+$post_code1=$this->post_code;
+$FullBlog = $this->GetBlogByUrl; 
+$BlogCat= $this->BlogCat;
+?>
+
+<?
+$share=array();
+$share['desc']=(substr(strip_tags(addslashes(str_replace("’","",$FullBlog['blog_content']))),0,250));
+$share['caption']=(substr(strip_tags(addslashes(str_replace("’","",$FullBlog['blog_title']))),0,120));
+$share_url = APPLICATION_URL.'/blog-detail/'.$FullBlog['blog_url']; 
+$share['image']=HTTP_BLOG_IMAGES_PATH."/".$FullBlog['blog_image'];
+$share['link']=urlencode($share_url);
+
+$share_img=$share['image'];
+$share_title=$share['caption'];
+$share_desc=(substr(strip_tags(addslashes(str_replace('"',"'",$share['desc']))),0,60));
+$share['name']=(substr(strip_tags(addslashes(str_replace('"',"'",$FullBlog['blog_title']))),0,60));
+$share['redirect_url']=urlencode($share_url."#closewindow");
+?>
+
+<meta property="og:title" content="<?=$share_title?>" />
+<meta property="og:image" content="<?=$share_img?>" />
+<meta property="og:description" content="<?=$share_desc?>" />
+<link rel="image_src" href="<?=$share_img?>"/>
+
+<meta itemprop="name" content="<?=$share_title?>" />
+<meta itemprop="description" content="<?=$share_desc?>" />
+<meta itemprop="image" content="<?=$share_img?>" />
+
+
+
+<div class="container">
+    <div class="col-sm-12 casaBlogPageHeading">
+   		 <p>Blog</p>
+    </div>
+    
+    <div class="col-sm-12 CasaBlogOutterDiv">
+  		<div class="col-sm-8 col-xs-12 CasaBlogRightDiv">
+        <? if($FullBlog!=''){?>
+            <div class="overflow FullBlogOuterDiv">
+                    <div class="CasaBlogHeadingDiv">
+                        <h2 class="CasaBlogHaedingA"><?=$FullBlog['blog_title']?></h2>
+                        <p class="blog_byDiv">
+                              <span class="byy_1">BY: </span>
+                              <span class="blogpostername"><?php echo "Casa Advisor Editors"; ?> </span>
+                              <span class="margin_list"> | </span>
+                              <span class="blogPostedDate"><?php echo date('F d, Y',strtotime($FullBlog['blog_modified_on'])); ?> </span> 
+                        </p>
+                        
+                        
+                        
+                        <ul class="ShareLink">
+                            <li>
+                                <a class="fbBlog" onclick='FBShareOp();' target="_blank"><i class="fa fa-facebook"></i></a>
+                            </li>
+                            
+                            <li>
+                                  <a class="twBlog" onclick='globalsharing(<?php echo json_encode($share)?>,2)' href="javascript: void(0)"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                  <a class="pinBlog" onclick='globalsharing(<?php echo json_encode($share)?>,4)' href="javascript: void(0)"><i class="fa fa-pinterest-p" aria-hidden="true"></i>
+                            </a>
+                            </li>
+							<li>
+                                  <a class="gpBlog" onclick='globalsharing(<?php echo json_encode($share)?>,3)' href="javascript: void(0)"><i class="fa fa-google-plus"></i>
+                            </a>
+                            </li>                       </ul>  
+
+                    </div>
+                    
+                    <div class="CasaBlogImageDiv">
+                        <a>
+                         <img style="max-width:100%;"  src="<?=HTTP_BLOG_IMAGES_PATH?>/<?=$FullBlog['blog_image']?>" alt="" />
+                         </a>
+                    </div>
+                    
+                    <div class="CasaBlogDetailsDiv">
+                        <div class="overflow CasaBlogContent"><?=$FullBlog['blog_content']?></div>
+                        <div class="Spacer-1"></div>
+                    </div>
+                    
+                    <div class="blogUnderCat">
+                        <?php /*?><p class="undercat">Under Blog Category: <span> <a onclick="serachbycat(<?=$FullBlog['blog_cat_id']?>)" ><?=$FullBlog['blog_category_title']?></a></span></p><?php */?>
+                        <p class="undercat">Under Blog Category: <span> <a  href="<? echo APPLICATION_URL?>blogs?category=<?=$FullBlog['blog_category_title']?>"><?=$FullBlog['blog_category_title']?></a></span></p>
+                        <p class="undercat">Tagged with: 
+						<? $tag = explode(",",$FullBlog['blog_tag']); $totalTag = count($tag);  $i=0;
+							foreach($tag as $eachTag){?>
+							<span> 
+								 <a href="<? echo APPLICATION_URL?>blogs?tag=<?=$eachTag?>"><?=$eachTag?></a>
+							</span><?   if(++$i!== $totalTag){?>,<? } ?>
+							<? } ?>
+                         </p>   
+                        <div class="Spacer-1"></div>
+                    </div>
+                    
+                    
+                    <div class="Spacer-1"></div>
+                    
+
+<!--DISQUS COMMENT CODE-->					       
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-techdemolink-co-in-casaadvisor.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!--END DISQUS COMMENT CODE -->                              
+                    
+            </div>
+        <? } ?>    
+        </div>
+    
+        <div class="col-sm-4 col-xs-12">
+            <?php /*?><div id="rightSection_1" class="overflow eachRightSection">
+                <h3 class="subscribe">Subscribe</h3>
+                <div>
+                    <form action="#" method="get" id="getsubscribe">
+                        <div class=" form-group ">
+                            <input type="email" placeholder="Email" name="subscribe_email_id" id="subscribe_email_id" class="form-control required" aria-required="true">
+                        </div>
+                        <div class="form-actions text-center">
+                             <button name="sendMeUpdate" id="sendMeUpdate" type="button" value="Submit" class="btn btn-lg blogPageBtn">Send me update</button>
+                        </div>
+                    </form>    
+                </div>
+            </div><?php */?>
+            
+             <div id="rightSection_1" class="overflow eachRightSection">
+                <h3 class="subscribe">Categories</h3>
+                <div>
+                	<ul class="BlogCatUl">
+                  		<? foreach($BlogCat as $cat){?>
+                        <li><span><a href="<? echo APPLICATION_URL?>blogs?category=<?=$cat['blog_category_title']?>"><?=$cat['blog_category_title']?></a></span></li>
+                  		<? } ?>  
+                   </ul>         
+                </div>
+            </div>
+            
+            <div id="rightSection_2" class="overflow">
+            	<form action="<? echo APPLICATION_URL?>/blogs" method="get" id="getsearchedblog">
+                    <div class=" form-group">
+                        <input type="search" placeholder="Looking for something" value="<?=$SeaschBlogTilte?>"  name="s" id="search_blog" class="form-control required" aria-required="true">
+                    </div>
+               </form>     
+            </div>
+            
+            <?php /*?><div id="rightSection_3" class="overflow eachRightSection">
+                <h3 class="subscribe">Get introduced to pros</h3>
+                <div>
+                    <form  method="get" id="prosearch" action="<? echo APPLICATION_URL?>ServiceProviders">
+                        <div class=" form-group ">
+                            <label for="whichService" class="required" aria-required="true">What service do you need?</label>
+                            <input id="service_type" name="service_type" class="required form-control" value="<?=$this->service_type?>" placeholder="flooring,tutor">
+                        </div>
+                        
+                        <div class=" form-group ">
+                            <label for="whichService" class="required" aria-required="true">Where do you need it?</label>
+                            <input id="post_code" name="post_code" class="required form-control" placeholder="Zip Code" value="<?=$this->post_code?>">
+                        </div>
+                         <div class="form-actions text-center">
+                            <button type="submit" name="getstartedButton" class="btn btn-default blogPageBtn">Get Started</button> 
+                        </div>
+                    </form>
+                </div>       
+            </div><?php */?>
+            
+            <div id="rightSection_4" class="overflow recentPostDiv">
+                <h3 class="subscribe">Recent Post</h3>
+                <?php foreach($RecentBlogs as $recentblog){ ?>
+                <article>
+                	<div class="blogLeftTitleDiv">
+                    	<h4 class="entryTitle"><a href="<?php echo $this->url(array('blog_url'=>$recentblog['blog_url']),'front_blog_details')?>"><?=$recentblog['blog_title']?></a></h4>
+                    </div>
+
+                	<a href="<?php echo $this->url(array('blog_url'=>$recentblog['blog_url']),'front_blog_details')?>" class="BlogImgRecentPost">
+                    	 <img class="recentBlogDivImage" src="<?=HTTP_BLOG_IMAGES_PATH?>/400/<?php echo $recentblog['blog_image']; ?>" alt="" />
+                    </a>
+                </article>
+                <?php  } ?>
+            </div>
+            
+           
+            
+        </div>
+	</div>
+    
+    
+</div>
+<script type="text/javascript">
+  window.fbAsyncInit = function() {
+    // init the FB JS SDK
+    FB.init({
+   appId      : facebook_appid,                                 
+      status     : true,                                 
+      xfbml      : true                                  
+    });
+
+  };
+  // Load the SDK asynchronously
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+   
+function FBShareOp(){
+   var share_title='<?=$share['caption']?>';var share_url='<?=$share_url?>';var share_img='<?=$share['image']?>';var share_desc='<?=$share['caption']?>';
+    FB.ui({
+        method: 'feed',
+        name: share_title,
+        link: share_url,
+        picture: share_img,
+        caption: "",
+        description: share_desc
+    }, function(response) {
+        if(response && response.post_id){}
+        else{}
+    });
+}
+
+</script>

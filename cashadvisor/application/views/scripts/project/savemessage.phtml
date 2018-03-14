@@ -1,0 +1,40 @@
+<? 
+$communication = $this->Send_msz;
+?>
+
+<div class="comment_body comnt12">  
+    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto;">
+        <div class="scroller" style="padding: 0px; margin: 0px; padding-right: 12px; overflow: hidden;    width: auto; ;">
+            <ul class="comments_ul">
+                <li class="out">
+                    <img class=" hidden-xs img-responsive img-thumbnail user_image user_comment_img" style="max-width:60px;" src="<?php echo getUserImage($this->user->user_image,'60') ;?>" />
+                    <div class="message">
+                   			<span class="comment_arrow"></span>
+                            <p class="name_ago_msz">
+                            
+                                <span class="msz_user_name_in_req capitalize">You</span>	 
+                                <span class="show_messz_time_P pull-right"><? echo showPostTime($communication['c_date']); ?> ago</span>
+                            </p>
+                            <p class="comment_show_p"><?=$communication['c_massage'] ?></p>
+                    </div>
+                    
+            </li>  
+            </ul> 
+        </div> 
+    </div>
+</div>
+
+
+<!--/*$(document).ready(function() {
+    $("div.request-tab-menu>div.list-group>a").click(function(e) {
+		  var visiblePaneId = $('div.list-group a.active').attr('id').replace(/\D/g,'')
+			alert(visiblePaneId);
+  });
+});
+*/-->
+
+
+
+<!--/* <? if ($communications === end($previous_communication)){ ?>
+<input type="hidden" value="<?=$communications['communication_id'];?> " name="last_msz"  />
+<?	echo 'LAST ELEMENT!'. $communications['communication_id']; } ?>*/-->

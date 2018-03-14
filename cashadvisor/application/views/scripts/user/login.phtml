@@ -1,0 +1,28 @@
+<div class="signup_pagesbgh">
+	<div class="row">
+    	<div class="col-md-6 col-md-offset-3 margin_class_login">
+        	<div class="signup_pagesbg_inner">
+            	<h1 class="signup_head text-center">
+					<a href="<?=$this->baseUrl('/index')?>"><img src="<?=HTTP_SITE_IMAGES?>/admin_logo.png"  alt="Logo"/></a>
+                </h1>
+                <h1 class="signup_head text-center">
+                  SIGN IN
+                </h1>
+                
+				<div class="content_pad_div">
+                	<div class="text-center label_left"><?=$this->form?></div>
+                  <br />
+                  <div class="fullwidthdiv text-center forgot_password"><a href="<?php echo $this->url(array(),'front_forgotpassword')?>"> Forgot your Password?</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(e) {
+    $('#cancel').click(function(e) {
+     
+	   window.location.href=baseUrl+'/index';
+    });
+});
+</script>

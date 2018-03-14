@@ -1,0 +1,509 @@
+<?php 
+$this->modelStatic = new Application_Model_Static();
+$jobb=$this->view_job;
+$current_active = $jobb['proposal_receiver'];
+//prd($jobb);
+$sender_id = $jobb['job_posted_by'];
+$job_id = $jobb['job_id'];
+$all_data=unserialize($jobb['job_all_data']);
+$get_city = $this->modelStatic->Super_Get("zips","zip='".$all_data['client_zip_code']."'","fetch");
+$lat = $get_city['lat'];
+$lng = $get_city['lng'];
+
+$all_proposal_sender=$this->all_proposal_sender;
+$totalProposal = count($all_proposal_sender);
+
+
+if($all_data['job_deadline']='1'){
+		$JobDeadline = "I'm flexible";
+	}
+	elseif($all_data['job_deadline']='2'){
+			$JobDeadline = "In the next few days";
+		}
+		elseif($all_data['job_deadline']='3'){
+			 	$JobDeadline = "As soon as possible";
+			}
+			elseif($all_data['job_deadline']='4'){
+						$JobDeadline = "on date";
+			}
+			
+if($all_data['how_receive_quote']=='0'){
+	$receiveQuoteBy = "Email Only";
+}else{
+	$receiveQuoteBy = "Email and Message both";
+	}
+	
+$ifReceiveCnfmMsz=$this->ifReceiveCnfmMsz;
+$IsReceive_ClientMsz = count($ifReceiveCnfmMsz);
+
+
+$get_new_proposal_limit = $this->modelStatic->Super_Get("more_quote","more_quote_job_id='".$job_id."' && more_quote_status='1'","fetch");
+
+if($get_new_proposal_limit['more_quote_admin_allowed']!='0'){
+	$max_proposal_limit = $this->site_configs['max_proposal_limit']+$get_new_proposal_limit['more_quote_admin_allowed'];
+}else {
+$max_proposal_limit = $this->site_configs['max_proposal_limit'];
+	}
+	
+	
+$TotalSecond = '';
+foreach($all_proposal_sender as $ProposalReceivedOn){ 
+
+		$PostedOn = strtotime($jobb['posted_job_created']);
+		$ProposalReceivedDate = strtotime($ProposalReceivedOn['proposal_date']);
+		$differenceInSeconds  = $ProposalReceivedDate-$PostedOn;
+		
+		$TotalSecond  = $TotalSecond+$differenceInSeconds;
+	}
+if(($totalProposal=='0')){ 
+	$avgSecond = '';
+}else{
+	$avgSecond = (int)($TotalSecond/$totalProposal);
+}
+//echo $avgSecond; die;
+
+function convert_seconds($avgSecond)   
+ {  
+  $dt1 = new DateTime("@0");  
+  $dt2 = new DateTime("@$avgSecond");  
+  return $dt1->diff($dt2)->format('%ad %hh %im  %ss');  
+  }  
+if(($totalProposal=='0')){
+		$FinalTimeDiff = '- -';
+	}else{  
+		$FinalTimeDiff = (str_ireplace(array('0d','0h','0m','0s'),array('','','',''),convert_seconds($avgSecond)));		
+	}
+?>
+<style type="text/css">
+</style>
+
+<div class="containerfluid overflow">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 overflow padding_zero QuoteMszMainDiv">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 request-tab-menu">
+                <div class="client_detail_left_div">
+                
+                    <div id="map_canvas" style="width:100%; min-height:160px;"></div>
+                    
+                     <img class="img-responsive img-thumbnail client_IMage_SendQuote" src="<?php echo getUserImage($jobb['user_image'],'60') ;?>" />
+                      <div class="overflow clear_both client_name_send_quote">
+                          <h3 class="capitalize"><?=$jobb['user_name']?></h3>
+                          <p class="capitalize service_provider_address_in_req_to_client"><?=$get_city['city']?> , <?=$get_city['state']?></p>
+                     </div>      
+                </div>  
+                
+                <div class="proCountDiv text-center">
+                              	<span>
+                                	<div>
+                                	  <p class="quotecountIcon"><img src="<?=HTTP_SITEIMG_PATH?>/menu-square-button-gross-symbol.png" alt="" />  <?=$totalProposal?>/<?=$max_proposal_limit?></p>
+                                      <p class="actfast">Quote Sent</p>
+                                   	</div>   
+                                     <? if($totalProposal<=$max_proposal_limit){ $Howmoreproposal = $max_proposal_limit-$totalProposal; ?>	
+                                      <p class="actfast">Only <?=$Howmoreproposal?> more pro can respond act fast.</p>
+                                     <? } else{ ?>
+                                      <p class="actfast">Only <?=$Howmoreproposal?> more pro can respond act fast.</p>
+                                     <? } ?> 
+                                </span>
+                                
+                                <span class="MaxWidth170">
+                                	<div>
+                                	  <p class="quotecountIcon">
+                                      	<img src="<?=HTTP_SITEIMG_PATH?>/wall-clock.png" alt="" /> 
+                                        <? if(($totalProposal=='0')){?>- -<? } else{
+												echo $FinalTimeDiff; 
+                                         } ?>
+                                        </p>
+                                       <p class="actfast">Avg pro response time</p>
+                                    </div>    
+                                      <p class="actfast">Average time for pro to Respond to a Request.</p>
+                                </span>
+                                
+                                <span>
+                                	<div>
+                                	  <p class="quotecountIcon"><img src="<?=HTTP_SITEIMG_PATH?>/copyright.png" alt="" />  <?=$jobb['service_price']?></p>
+                                      <p class="actfast">Credits</p>
+                                   </div>   
+                                      <p class="actfast">Quote on this request for <?=$jobb['service_price'] ?> credits. Credits never expire</p>
+                                </span>
+                              </div>
+                
+                
+                <div class="view_client_job_details">
+                    	<p class="job_q_headings">Job type: </p>
+						<p class="job_answers"><?=$jobb['Job_type']?></p>
+                       <p class="site_HR"></p>
+
+                        <? 
+							if (array_key_exists('post_field_value', $all_data)) {
+							if($all_data['post_field_value']!=''){
+						?>
+						<? foreach($all_data['post_field_value'] as $key => $ques_ans){
+							$Ques = $this->modelStatic->Super_Get('category_form','c_form_id = "'.$key.'"','fetch');
+								if(is_array($all_data["post_field_value"][$key]))
+								{
+								$implode_optipons=implode(",",$all_data["post_field_value"][$key]);
+								}
+								else
+								{
+									$implode_optipons=$all_data["post_field_value"][$key];
+								}
+								$ex_getdata=explode('other_options',$implode_optipons);
+								$test_check_id=$implode_optipons;
+								if(isset($ex_getdata[1]) && !empty($ex_getdata[1])){
+									$test_check_id=$ex_getdata[1];
+									if(isset($all_data['other_options'][$test_check_id]) &&  !empty($all_data['other_options'][$test_check_id])){
+											//echo $all_data['other_options'][$test_check_id];
+									}
+								}
+								//prd($ex_getdata);
+								$ans = $this->modelStatic->Super_Get('category_form_options','c_option_id IN('.$test_check_id.')','fetchAll');	
+								$totalAns = count($ans);
+							?>
+                                <p class="job_q_headings"><?=$Ques['c_form_field_name'];?></p>  
+                                    <ul class="viewJobUL">
+                                         <? if($totalAns!=0){ foreach($ans as $Ans){?>
+                                            <li class="job_answers"><?=$Ans['option_text']?></li>                		
+                                        <?  }}else{ $otherAnswerVal = $all_data['other_options'][$key]; ?>
+                                            <li class="job_answers"><?=$otherAnswerVal;?></li>                		
+                                        <? } ?>
+                                    </ul>
+                                    <p class="site_HR"></p>
+
+                        <? } ?>
+                        <? } } ?>
+                        <? 
+							if (array_key_exists('job_images', $jobb)) { 
+							if($jobb['job_images']!=""){?>
+                                <p class="job_q_headings">Would you like to add photos to describe your project? </p>
+                                <div class="col-sm-12 overflow clear_both">
+									<? 
+                                         $image= array(); $image = explode(',',$jobb['job_images']); 
+                                         foreach($image as $img){
+                                    ?>
+                                             <div class=" col-sm-4 col-xs-4 job_image_width overflow projectImgagesSendQuote">
+                                                <img src="<?=HTTP_CLIENT_JOB_IMAGES_PATH?>/150/<?=$img;?>" alt="" />
+                                 				<div class="Spacer-2"></div>
+                                            </div>
+                                    <? } ?>
+                                </div>
+                               <p class="site_HR"></p>
+
+                      <? } }
+					   ?> 
+                       
+                        <? 		if (array_key_exists('form_ID_and_Type', $jobb)) {
+								foreach($all_data['form_ID_and_Type'] as $key => $Answer){
+									if($Answer=='0' or $Answer=='1'){
+										$TextQuestion = $this->modelStatic->Super_Get('category_form','c_form_id= "'.$key.'"',"fetch");
+						?>
+						 <div>
+							<p class="job_q_headings"><?=$TextQuestion['c_form_field_name'];?></p>  
+							<ul class="viewJobUL">
+									<li class="job_answers"><?=$all_data['Textand_Area_'.$key];?></li>                		
+							</ul>
+						   <p class="site_HR"></p>
+						</div>
+						<? } } } ?>
+                       
+                       <?php /*?> <p class="job_q_headings">Phone no: </p>
+						<p class="job_answers"><?=$all_data['job_phone_client']?></p>
+                        <p class="site_HR"></p><?php */?>
+                        
+                         <? if($all_data['job_anything_else_know']=='0'){?>
+                            <p class="job_q_headings">Service Provider Should Know:</p>
+                            <p class="job_answers"><? echo $all_data['yes_else_know'];?></p>
+                            <p class="site_HR"></p>
+                        <? } ?>
+                        
+                        <p class="job_q_headings">How would you like to receive quotes?:</p>
+                        <p class="job_answers"><? echo $receiveQuoteBy;?></p>
+                        <p class="site_HR"></p>
+
+                         <p class="job_q_headings">When the work should be start:</p>
+           				 <p class="job_answers"><? echo $JobDeadline;?> &nbsp;<?=$all_data['job_deadline_date']?></p>
+                         <div class="Spacer-2"></div>
+                         <div class="Spacer-2"></div>
+                         <div class="Spacer-2"></div>
+              </div>
+            </div>
+            
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 QuoteMszRightDiv ClassForAllProposalCss" id="rightDetail_<?=$jobb['proposal_receiver']?>">
+                    <section>
+                            <div class="Spacer-2"></div>
+                            <div class="overflow">
+                            	<p class="chatingDetails">Chating with <?=$jobb['user_name']?></p>
+                            	<p class="chatingDetails"><?php echo date('F d, Y',strtotime($jobb['proposal_date'])); ?></p>
+                            </div> 
+                               
+                <div class="allComments col-sm-12" id="messageMainDiv_<?=$jobb['proposal_receiver']?>" style="max-height:400px;">   
+                    <?php 
+						 $extra = array();
+						 $joinArr = array(
+								'0'=>array("users","user_id='".$sender_id."'","left",array('CONCAT(user_first_name," ",user_last_name) as user_name','user_image as sender_image'))
+								);
+							
+$previous_communication = $this->modelStatic->Super_Get("communication","(c_sender_id='".$this->user->user_id."' or c_receiver_id= '".$this->user->user_id."') and (c_receiver_id='".$sender_id."' or c_sender_id= '".$sender_id."') and c_job_id='".$job_id."'","fetchAll", $extra,$joinArr);
+//prd($previous_communication);
+						if(count($previous_communication)>0){ 
+					?>
+                    <? 
+					 foreach($previous_communication as $communications){
+							//prd($communications);
+							if($communications['c_sender_id']==$this->user->user_id){
+									$in_out = "out";
+								}
+								else{
+										$in_out = "in";
+									}
+						 ?>                                                              
+                    <div class="comment_body comnt12">  
+                                <ul class="comments_ul">
+                                         <li class="<?=$in_out?>">
+                                                 <? if($in_out=="out"){ $name = "You";?>
+                                               			  <img class="img-responsive img-thumbnail user_image user_comment_img" style="max-width:60px;" src="<?php echo getUserImage($this->user->user_image,'60') ;?>" />
+                                                 <? } else { $name = $communications['user_name'];?>
+                                                     		 <img class="img-responsive img-thumbnail user_image user_comment_img" style="max-width:60px;" src="<?php echo getUserImage($communications['sender_image'],'60') ;?>" />
+                                                 <? } ?>
+                                                <div class="message">
+                                                		 <span class="comment_arrow"></span>
+                                                        <p class="name_ago_msz">
+                                                        
+                                                            <span class="msz_user_name_in_req capitalize"> <?=$name?></span>	 
+                                                            <span class="show_messz_time_P pull-right"><? echo showPostTime($communications['c_date']); ?> ago</span>
+                                                        </p>
+                                                        <p class="comment_show_p"><?=$communications['c_massage'] ?></p>
+                                                </div>
+                                               <? if ($communications === end($previous_communication)){ ?>
+                                                  <input type="hidden" value="<?=$communications['communication_id'];?> " id="last_msz_<?=$jobb['proposal_receiver']?>" name="last_msz"  />
+                                              <? } ?>
+                                        </li>  
+                                        
+                                        
+                                </ul> 
+                      
+                    </div>  
+                    <? } ?>
+                    <? } else {?>   
+ <!--Quote Msz Div-->
+                        <div class="col-xs-12 overflow QuoteMszDiv text-center">
+                            <div class="">
+                                   <p class="speech"><?=$jobb['proposal_description'];?></p>
+                            </div>
+                        </div>
+                     <? } ?>
+                </div> 
+                
+                
+
+                
+<!--Comment form--> 
+
+					<?
+					$msg_box_display="none";
+                    if(count($previous_communication)>0)
+					{
+						$msg_box_display="block";
+					}
+					?>                    
+              		<div class="comments_form_div overflow" style="display:<?=$msg_box_display?>">     
+                    <form name="comment_form" id="comment_form_<?=$sender_id?>" class="profile_form" enctype="multipart/form-data" method="post" action="<? echo APPLICATION_URL?>/project/quoterequest"> 
+                                <div >
+                                    <input type="hidden" name="job_id" value="<?=$job_id?>" />
+                                     <input type="hidden" name="c_receiver_id" value="<?=$sender_id?>" />
+                                     
+                                    <?php /*?><div class="col-sm-12 comment_label">
+                                        <?php echo $this->form->c_massage ;?>
+                                    </div><?php */?>
+                                    
+                                    
+                                    <div class="col-sm-12 comment_label">
+                                        <div class=" form-group  form-group "><label for="c_massage" class="required">Write Message...</label>
+                                            <textarea name="cmassage" id="cmassage_<?=$sender_id?>" class="form-control required  user_text userChatMsgInput" rows="3" placeholder="Enter your Message....." filter="StringTrim StripTags HtmlEntities" cols="80"></textarea>
+                                        </div>                                           
+                                    </div>
+                                                                                
+                                    <div class="col-sm-12">
+                                         <div class="form-actions text-right">
+                                            <button name="savebtn" onclick="saveMessage(<?=$sender_id?>)" id="savebtn" type="button" value="Send" class="btn-lg blue site_button  btn btn-default">
+                                            Send</button></div>
+                                    </div>    
+                              </div>
+                        </form>
+                </div>
+
+<!--Show all proposal Received and user Show proposal                    -->  
+<!--All other Proposals -->                 
+                      <div class="Spacer-2"></div>
+                      <? if($totalProposal>0){?>
+                      <div class="col-sm-12 AllProposalDiv overflow clear_both">
+                            <h3>All Proposals</h3>
+                            <p class="totalProposalReceive"> <span class="capitalize"><?=$jobb['user_name']?></span> has received <?=$totalProposal?> Proposal</p>
+                      </div>
+                        
+                     <ul class="allProposals_ul">
+                    <?  foreach($all_proposal_sender as $key => $all_proposal_sender){ ?>
+                         <li class="overflow">
+                           <? if($all_proposal_sender['proposal_decline_status']=='1' || $all_proposal_sender['proposal_decline_status']=='3'){?>
+                               <div class="Hiredribbon">
+                                     <span style="">Hired</span>
+                                </div>
+                            <? } ?>
+                            
+                            <div class="requestImg">
+                                    <img class="img-responsive img-circle MarginAuto RequestPageImage" src="<?php echo getUserImage($all_proposal_sender['user_image'],'160') ;?>" />
+                            </div>
+                            <div class="requestText">
+                                <p class="liProposalSenderName col_theme"><? if($all_proposal_sender['sender_id']==$this->user->user_id){?>You <? }else{?><?=$all_proposal_sender['user_name']?> <? }?></p>
+                                <p class="ProposalPriceAllProposal"><? echo showPostTime($all_proposal_sender['proposal_date']); ?> ago</p>
+                                
+                                <p class="ProposalPriceAllProposal">
+                                	<span class="headingsAllP"> Price:&nbsp;</span>
+                                    <? if($all_proposal_sender['sender_id']==$this->user->user_id){?>
+                                    ($<span><?=$all_proposal_sender['proposal_credit'];?></span>)
+                                    <? } else{?>
+                                    ($<span class="hidePrice">&nbsp; &nbsp; &nbsp;&nbsp;</span>)
+                                    <? } ?>
+                                </p>
+                                <? if($all_proposal_sender['sender_id']==$this->user->user_id){?>
+                                 <p class="ProposalDescAllProposal"><span class="headingsAllP">Description:&nbsp;</span><?=$all_proposal_sender['proposal_description'];?></p>
+                                 <? if($jobb['hire_quote_client']!=''){?>
+                                 <p class="ProposalDescAllProposal"><span class="headingsAllP">Client Quote Price: </span>$ <?=$jobb['hire_quote_client'];?></p>
+                                 <? } ?>
+                                 <? } ?>
+                           </div>
+                        </li>
+                        
+                        <? } ?>
+                    </ul>
+                      <? } else {?>
+                        <div class="col-sm-12 AllProposalDiv">
+                            <p class="totalProposalReceive"> <span class="capitalize"><?=$bid['user_name']?></span> has  not received any proposal yet.</p>
+                        </div>
+                      <? } ?>  
+              
+<!--Show all proposal Received and user Show proposal                    -->                    
+                    
+	                </section>
+            </div>
+        </div>
+</div>
+
+
+<!--/*Make Msz status as read in notification table*/-->
+<?php 
+$this->modelsuper = new Application_Model_SuperModel();
+$where = "notification_reciver='".$this->user->user_id."' and notification_type='10' and notification_status='0'";
+$changeStatus['notification_status']=1; 
+$change_mszStatus = $this->modelsuper->Super_Insert("notifications",$changeStatus,$where);
+?>
+<!--/* END Make  Msz status as read in notification table*/-->
+
+
+<input type="hidden" value="<?=$jobb['proposal_receiver']?>" id="current_active_div" />
+<input type="hidden" id="job_ID" value="<?=$job_id?>" />
+<input type="hidden" id="user_<?=$jobb['proposal_receiver']?>" value="<?=$jobb['proposal_receiver']?>"/>
+
+
+
+<script type="text/javascript">
+
+$('.userChatMsgInput').keyup(function(e) {
+    var code = e.keyCode || e.which;
+ var Status = 0;
+  
+  if(code == 13){
+   if(e.shiftKey){
+   Status = 1; 
+   }
+   else if(e.ctrlKey){
+    Status = 1; 
+   }
+   if(Status == 0){
+   var Input = $(this)[0].id;
+	   if($(this).val().trim()!=''){
+			var ID = Input.split("_");
+			//alert(ID);
+			$(this).blur();
+			saveMessage(ID[1]);
+	   }
+   }}
+});	
+
+	
+function saveMessage(Id){
+	var CurActive = $('#current_active_div').val();
+	if($('#comment_form_'+Id).valid()){
+		$.ajax({
+			url: baseUrl+"/project/savemessage",
+			type:'POST',
+			data: $('#comment_form_'+Id).serializeArray(),
+			success: function (data) 
+			{
+				/*$('#messageMainDiv_'+Id).append(data);*/
+				$('#rightDetail_'+CurActive+' .mCSB_container').append(data);
+				$('#comment_form_'+Id)[0].reset();
+			}
+	  });
+  }
+}
+$(document).ready(function() {
+  	setInterval(reloadChat ,1000);  
+});			
+
+$(document).ready(function() {
+	var x = window.innerWidth;
+	if(x>767){
+	var get_MainDiv_height = $('.QuoteMszMainDiv').outerHeight();
+	$('.QuoteMszRightDiv').css('height',get_MainDiv_height+'px');
+	}
+});			
+
+
+</script>
+
+<script type="text/javascript">
+
+var map;
+	function initialize() {
+	//	initialize(38.889931,-77.009003,"New York",5000,'map');
+		var mylatlng = {lat:<?=$lat?> , lng:<?=$lng?>};
+		var mapOptions = {
+			zoom: 12,
+			center: new google.maps.LatLng(<?=$lat?> ,<?=$lng?> ),
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			scrollwheel: false,
+			zoomControlOptions: {
+     			style: google.maps.ZoomControlStyle.SMALL,
+     		},
+			 mapTypeControlOptions: {
+			  style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+			},
+			
+ 		};
+		
+	
+		var infowindow = new google.maps.InfoWindow();
+		map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
+		
+    	var	marker = new google.maps.Marker({
+		                         position:mylatlng,
+								 map: map,
+								 title: 'Hello World!'
+						});
+		
+		google.maps.event.addListener(marker, 'click', (function (marker) {
+                return function () {
+                    infowindow.setContent('helloooo');
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+		
+ 		marker.setPosition(mapOptions.center);
+		
+	}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+</script>
+
+
+

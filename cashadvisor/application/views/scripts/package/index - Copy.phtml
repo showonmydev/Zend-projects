@@ -1,0 +1,165 @@
+<style type="text/css">
+</style>
+<?php 
+$package= array();
+$package= $this->package_details;
+//prn($package);
+$n=count($package);
+$history= array();
+$history =$this->package_history;
+//prd($history);
+?>
+	<div class="package_service_provider">
+            			<h1>Service Provider<span class="pay_paln_h1"> Payment Plans</span></h1>
+            </div>
+            
+    <div class="containerfluid">
+    		
+<!--Package  type -->  
+    		<div class="package_wrap">
+            	<div class="col-sm-12">
+            		<p>&nbsp;</p>
+            		<p> LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING AND TYPESETTING INDUSTRY. LOREM IPSUM HAS BEEN THE INDUSTRY'S STANDARD DUMMY TEXT EVER SINCE THE 1500S, WHEN AN UNKNOWN PRINTER TOOK A GALLEY OF TYPE AND SCRAMBLED IT TO MAKE A TYPE SPECIMEN BOOK.</p>
+                    <p>&nbsp;</p>
+                 </div> 
+                 
+                 <div class="credit"> 
+                 	<?php 
+							$k=0;
+							for($i=0;$i<$n;$i++){
+								if($k>3){ $k=0;}
+					?> 
+                    		<div class="col-sm-3 col-xs-6 margin_padding width_xs overflow">
+                            
+                    			<div class="pay_div shed_1">
+     <!--       Best offer ribbon -->                          		
+                                   <?php /*?> <?php if($i==0){ ?>
+                                    <div class="ribbon1">
+                                    		<span>Best Offer</span>
+                                    </div>
+   <!--       purchased ribbon -->              
+                                    <?php } ?><?php */?>
+                                    <?php
+									foreach($history as  $key => $in_history){
+									 	if($package[$i]['cp_id']==$in_history['package_id']){ 
+									  ?>
+                                    <div class="ribbon_purchased">
+                                    		<span>Purchased</span>
+                                    </div>
+                                  <? } }?>
+                            		<h3 class="backpack"><?php echo $package[$i]['cp_title'] ?></h3>
+                                    <p class="sup_140"><sup class="rm_sup">$</sup><?php echo $package[$i]['cp_price'] ?></p>
+                                   <!-- <hr />-->
+                                  
+                                    <i class="fa fa-angle-double-down"></i>
+                                    <p class="monthoffer">Point = <?php echo $package[$i]['cp_points'] ?></p>
+                                    <p>Lorem Ipsum is simply dummy text of the printing</p>
+                                    
+                                     <button onclick="payPackage(<?php echo $package[$i]['cp_id'] ?>)" type="button" class=" buy_btn btn btn-info btn-lg" data-toggle="modal" data-target="#<?php echo $package[$i]['cp_id'] ?>">Buy Package</button>
+                            </div>
+                            
+                            <div>
+
+  <!--   <a onclick="ViewMore(<?php // echo $package[$i]["cp_id"]?>)" href="#" class="btn btn-lg btn-success" data-toggle="modal"  data-target="#<?php // echo $package[$i]["cp_id"] ?>">                                                                               Buy & Send</a>-->
+                                                                        
+                                
+
+                            </div>    
+                            
+                    </div>
+                    
+                    <?php $k++; } ?>
+                    
+                </div>
+                    
+            </div>
+			
+    </div> 
+
+<!--model for pay cnfrm-->    
+
+<div id="payModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header model_surepay_header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        
+        <h4 class="modal-title model_title_pay">Payment Plan</h4>
+      </div>
+        <div class="modal-body model_body_pay ">
+        <?php $Price= $this->package_price;
+		?>
+            <div class="credit_msg">
+                <h4>You Have To Pay $ <span id="cpprice"></span>. Are You Sure You Want To Pay?</h4>
+                <form name="default_form" id="default_form" class="profile_form" enctype="multipart/form-data" action="<?php echo $this->url(array(),"pay_amount")?>" method="post"> 
+               			 <div id="pay_form" class="pay_form">
+                	<div class="col-sm-12">
+						 <?php echo $this->form->card_number; ?>
+                         <?php echo $this->form->cvv; ?>
+                         <?php echo $this->form->user_first_name; ?>
+                         <?php echo $this->form->user_last_name; ?>
+                     </div>
+                     
+                     <input id="price_input_field" type="hidden" name="package_id" value=""  />
+                     
+                     <div class="col-sm-12 overflow date_span_width">
+                         <div class="col-sm-3">
+                            <label class="dayy">Expiry date</label>
+                         </div>
+                         <div class="col-sm-3">
+                         		<?php echo $this->form->user_credit_card_expire_month; ?>
+                         </div>
+                          <div class="col-sm-3">
+                         		<?php echo $this->form->user_credit_card_expire_year; ?>
+                         </div>
+                         
+                     </div>
+                     <div class="col-sm-12">
+                     		<?php echo $this->form->bttnsubmit; ?>
+                     </div>
+                </div>
+                </form>
+                <div class="text-center">
+               		<button class="btn pay_continue" onclick="">Continue</button>
+                </div>    
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+    
+      
+
+<script type="text/javascript">
+
+
+function payPackage(cp_id)
+{		//alert(cp_id)
+	$.ajax({
+		url: baseUrl+'/package/paymodel',
+		type:"GET",
+		data: {current_package_id:cp_id},
+	
+		success: function(data) {
+			$('#payModal').modal('show');
+			$('#cpprice').html(data);
+			$('#price_input_field').val(cp_id);
+			  $(".pay_form").hide();
+		 $(".pay_continue").show();
+		},
+	});
+}
+
+$(document).ready(function(){
+    $(".pay_continue").click(function(){
+        $(".pay_form").show();
+		 $(".pay_continue").hide();
+    });
+});
+
+
+</script>
+
+
+

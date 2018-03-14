@@ -1,0 +1,28 @@
+<div class="custom-form-wrapper">
+<h3 class="profile_page_headings">Other Information</h3>
+            <?php echo $this->form ;?>
+ </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('[data-toggle=offcanvas]').click(function() {
+		$('.row-offcanvas').toggleClass('active');
+	  });
+	});
+	
+	$(document).ready(function(e) {
+					//alert('hello')
+					var presentstate = "<?php echo $this->user->user_state; ?>";
+					//console.log(presentstate);
+					var city = "<?php echo $this->user->user_city; ?>";
+					//alert(city);
+					getcity(presentstate);
+					window.setTimeout( function(e){
+							$('#user_city').val(city);
+					},2000);
+				});
+	
+</script>
+
+
+ 

@@ -1,0 +1,16 @@
+<? 
+$memberDetails = $this->memberDetails;
+
+$url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
+
+$string1 = preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $memberDetails['ateam_member_about']);
+?>
+<div class="AboutTeamOutterDiv">
+	<div class="aboutTeamImgDiv">
+	 	<img alt="" class="img-responsive" src="<? echo HTTP_TEAM_MEMBER_IMAGES_PATH?>/thumb/<?=$memberDetails['ateam_member_image']?>"> 
+     </div>
+     <div  class="aboutTeamDetailDiv">
+     	<h4 class="text-center"><?=$memberDetails['ateam_member_name']?></h4>
+        <p><?=$string1?></p>
+     </div>
+</div>

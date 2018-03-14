@@ -1,0 +1,8 @@
+[06-Dec-2017 18:40:49 UTC] PHP Fatal error:  Uncaught exception 'Braintree\Exception\Configuration' with message 'Braintree\Configuration::merchantId needs to be set (or accessToken needs to be passed to Braintree\Gateway).' in /home/casaadvisor03/public_html/public/Braintree/lib/Braintree/Configuration.php:254
+Stack trace:
+#0 /home/casaadvisor03/public_html/public/Braintree/lib/Braintree/TransactionGateway.php(29): Braintree\Configuration->assertHasAccessTokenOrKeys()
+#1 /home/casaadvisor03/public_html/public/Braintree/lib/Braintree/Gateway.php(212): Braintree\TransactionGateway->__construct(Object(Braintree\Gateway))
+#2 /home/casaadvisor03/public_html/public/Braintree/lib/Braintree/Transaction.php(541): Braintree\Gateway->transaction()
+#3 /home/casaadvisor03/public_html/testpay/pay.php(13): Braintree\Transaction::sale(Array)
+#4 {main}
+  thrown in /home/casaadvisor03/public_html/public/Braintree/lib/Braintree/Configuration.php on line 254

@@ -1,0 +1,196 @@
+<?php /*?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><?php */?>
+<head>
+<?
+$link=urlencode("https://casaadvisor.com");
+$name="Casa Advisor";
+$desc="Casa Advisor";
+$image = "https://casaadvisor.com/comingsoon/image/share_page_image.jpg";
+
+$display_msg="none";
+if(isset($_GET['success']) && $_GET['success']=='1')
+{
+	$display_msg="block";
+}
+?>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+<meta name="keywords" content="Merkao" >
+<meta name="description" content="Merkao" >
+<!--<meta property="og:url" content="<?=$link?>" />-->
+<meta property="og:title" content="<?=$name?>" />
+<meta property="og:description" content="<?=$desc?>" />
+<meta property="og:image" content="<?=$image?>" />
+
+<!--<meta property="og:image:width" content="300">
+<meta property="og:image:height" content="330">-->
+
+<meta property="fb:app_id" content="1637930056519294" />
+
+<meta itemprop="name" content="<?=$name?>" />
+<meta itemprop="description" content="<?=$desc?>" />
+<meta itemprop="image" content="<?=$image?>" />
+
+
+<link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="comingsoon/css/bootstrap.css"  media="screen" >
+<link rel="stylesheet" type="text/css" href="comingsoon/css/font-awesome.min.css" media="screen" >
+<link rel="stylesheet" type="text/css" href="comingsoon/css/commingsoon.css" media="screen" > 
+
+
+
+<link rel="image_src" href="<?=$image?>"/>
+<title>Casa Advisor</title>
+<?
+$share=array();
+$share['link']=$link;
+$share['name']=$name;
+$share['redirect_url']='https://www.casaadvisor.com';
+$share['caption']=$name;
+$share['desc']=$desc;
+$share['image']=$image;
+
+
+?>
+</head>
+<body>
+<?php 
+  	        $days_after1 = date("Y-m-d", strtotime("+4 month", strtotime(date("Y-m-d"))));
+			//echo $days_after1;
+			$days_after = "2017-01-31";
+			//echo $days_after; die;
+			$target_arr=explode("-",$days_after);
+			
+			$name ="Casa Advisor";
+		
+			$site_path=dirname($_SERVER['PHP_SELF']);
+			
+			
+if(preg_match('/192.168/',$_SERVER['REMOTE_ADDR'])){
+	$site_path="http://192.168.0.99/CasaAdvisor/";
+}else{
+	$site_path="https://www.casaadvisor.com/";
+}
+			$share_url =$site_path;
+?>
+<!--Comming soon Section-->
+<!--<div class="BgFixed">
+</div>-->
+ <div class="containerfluid">
+        <div class="coming_bg">
+            <div class="coming_wlcm_bg">
+                <div class="text-center wlcm_div">
+                    <h3 class="wlcm_h">Welcome To </h3> <img itemprop="image" src="https://casaadvisor.com/comingsoon/image/coming_logo.png" alt=""/>
+                 </div>
+                 
+                <p class="our_site">Our website is under construction, we are working very hard to give you the best experience with this one.</p>
+                
+               
+				<div class="time_show_ll">  
+                    <div class="display_b left_border text-center"> <div id="dday"> <div class="day_col">&nbsp;</div></div><div style="margin:0 0 0px">Days</div></div>
+                    <div class="display_b left_border text-center"><div id="dhour"><div class="h_col">&nbsp;</div></div><div style="margin:0 0 0px">Hours</div></div>
+                    <div class=" display_b left_border text-center"><div id="dmin"><div class="m_col">&nbsp;</div></div><div style="margin:0 0 0px">Minutes</div></div>
+                    <div class=" display_b text-center"><div id="dsec"><div class="m_col">&nbsp;</div></div><div style="margin:0 0 0px">Seconds</div></div>
+             	</div>
+                
+                <div class="share_email_div">
+                      <p class="stay_close">Stay close. We'll bring it back as fast we can. Subscribe to our list and we'll notice you!</p>
+                   <div class="success_msg" style="display:<?=$display_msg?>">Thank you for subscribing newsletter!</div>
+                     <form method="post"  id="validate" role="form" name="search_product" novalidate class="profile_form" enctype="multipart/form-data" 
+                        action="<?=$site_path?>/index/commingsoon/">
+                            <div class="share_input_div"><input class="share_input required email subscriber_email" name="newsletter_email" placeholder="Enter your email address" type="text" /></div>
+                            <div class="share_img_div"><button  class="share_btn" type="submit"></button></div>
+                       </form>
+              </div>
+                 
+                <div class="col-md-12 col-xs-12 col-sm-12  text-center">
+                   
+                    <a onclick='FBShareOp();' class="social-icon" target="_blank"><img src="comingsoon/image/facebook.png" class="img-responsive imgclass" alt=""></a>
+    
+                    <a onclick='window.open("https://twitter.com/intent/tweet?url=https://www.casaadvisor.com/","sharer","toolbar=0,status=0,width=580,height=325","sharer","toolbar=0,status=0,width=580,height=325")' class="social-icon" target="_blank"><img src="comingsoon/image/twitter.png" class="img-responsive imgclass" alt=""></a>
+                              
+                    <a  href="https://www.instagram.com/" class="social-icon" target="_blank"><img src="comingsoon/image/instagram.png" class="img-responsive imgclass" alt=""></a>
+    
+                     <a onClick='globalsharing(<?php echo json_encode($share)?>,3);' class="social-icon" target="_blank"><img src="comingsoon/image/googleplus.png" class="img-responsive imgclass" alt=""></a> 
+                    <?php /*?> <button type="button" class="button button--sacnite button--round-l button--sacnite2" onClick='window.open("https://plus.google.com/share?url=<?=$link?>","sharer","toolbar=0,status=0,width=580,height=325","sharer","toolbar=0,status=0,width=580,height=325");'><i class="button__icon fa fa-google-plus"></i></button><?php */?>
+            </div>
+            </div>
+        </div>
+</div>
+<script>var baseUrl = SITEURL = SITE_URL = '<?php echo $site_path?>';</script>
+<script src="comingsoon/js/jquery-1.11.0.min.js"></script>
+<script src="comingsoon/js/bootstrap.min.js"></script>
+<script src="comingsoon/js/countdown.js"></script>
+<script src="comingsoon/js/jquery.validate.min.js"></script>
+<script src="comingsoon/js/general.js"></script>
+
+
+</body>
+</html>
+<script type="text/javascript">
+ var goal_timer;
+ theyear='<?=$target_arr[0]?>';themonth='<?=$target_arr[1]?>';theday='<?=$target_arr[2]?>';thehour='00';theminute='000'; 
+						
+	goal_timer=setInterval(function() {
+		countdown();
+	}, 1000);
+</script>		
+
+<script type="text/javascript">
+  window.fbAsyncInit = function() {
+    // init the FB JS SDK
+    FB.init({
+	  appId      : 1637930056519294,                                 
+      status     : true,                                 
+      xfbml      : true                                  
+    });
+
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+
+function FBShareOp(){
+   var share_title='<?=$share['name']?>';var share_url='<?=$share_url?>';var share_img='<?=$share['image']?>';var share_desc='<?=$share['desc']?>';
+    FB.ui({
+        method: 'feed',
+        name: share_title,
+        link: share_url,
+        picture: share_img,
+        caption: "",
+        description: share_desc
+
+    }, function(response) {
+        if(response && response.post_id){}
+        else{}
+    });
+
+}
+
+function globalsharing11(share,type)
+{ 
+
+  switch(type)
+   {
+   case 1:
+   window.open("https://www.facebook.com/dialog/feed?_path=feed&app_id="+facebook_appid+"&redirect_uri="+share['redirect_url']+"&display=popup&link="+share['link']+"&picture="+share['image']+"&name="+share['caption'],"sharer","toolbar=0,status=0,width=580,height=325");
+   break;
+   case 2:window.open("https://twitter.com/intent/tweet?screen_name="+share['caption']+"&text="+share['caption']+"&url="+share['link'],"sharer","toolbar=0,status=0,width=580,height=325");
+   break;
+   case 3:window.open("https://plus.google.com/share?title="+share['caption']+"&url="+share['link']+"","sharer","toolbar=0,status=0,width=580,height=325");
+   break;
+   case 4:
+     window.open("https://www.linkedin.com/shareArticle?mini=true&url="+share['link']+"&title="+share['caption']+"&summary="+share['desc'],"sharer","toolbar=0,status=0,width=580,height=325");
+   break;
+   }
+}
+
+
+</script>		
+				

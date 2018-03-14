@@ -1,0 +1,23 @@
+<?php   foreach($this->comments as $comments){
+
+?>
+		<div class="blog_comment_body comnt<?=$comments['b_comment_id']?>">  
+				  <ul class="blog_comments_ul">
+					   <li class="blog_in">
+                            <img src="<?php echo getUserImage($comments['user_image'],'60')?>" alt="" class="img-thumbnail blog_user_image user_comment_img " />
+							 <div class="blog_message">
+								 <span class="blog_arrow"></span>
+								  <span class="blog_comment_user"><?php echo $comments['user_first_name']; ?> <?php echo $comments['user_last_name']; ?></span>    
+								  <span class="blog_comment_user_date"><?php echo showPostTime($comments['blog_comment_date']); ?> ago</span>
+    <!--delete comment-->       
+    							<? if($comments['user_id']==$this->user->user_id){?>				
+                                  <span onclick="suredel(<?php echo $comments["b_comment_id"]?>)" class="delete_icon delCommentBtn"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
+                                <? } ?>  
+								  <span class="blog_comment_show_p"><p class="blog_comment_show_p"> <?php echo $comments['blog_comment']; ?></span>
+							  </div>
+					   </li>  
+				  </ul> 
+	   </div>      
+			 
+<?php }exit();?>
+

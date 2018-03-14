@@ -1,0 +1,64 @@
+<div class="row">
+ 	<div class="col-md-12 ">
+		<!-- BEGIN SAMPLE FORM PORTLET-->
+		<div class="portlet box purple">
+			<div class="portlet-title">
+				<div class="caption"><i class="<?php echo $this->pageIcon?>"></i> <?php echo $this->pageHeading?> </div>
+			</div>
+			
+			<div class="portlet-body">
+                <form action="<?php echo $this->baseUrl() ?>/privatepanel/blog/removeblogcat" method="post" onsubmit="return checkSelects();" >
+                       <div class="table-toolbar">
+                              <div class="btn-group">
+                                      <button type="button" onclick="window.location='<?php echo $this->baseUrl()?>/privatepanel/blog/addblogcat'" class="btn green">
+                                             <i class="fa fa-plus"></i> Add New 
+                                      </button>
+                                      <button id="sample_editable_1_new" class="btn red"> <i class="fa fa-trash-o"></i> Delete Selected </button>
+                              </div>	
+                              <div>
+                              		<table class="table table-striped table-bordered table-hover dataTable" id="sample_1">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%">S.NO</th>
+                                                <th width="5%"><input type="checkbox" class="group-checkable"  data-set="#sample_1 .checkboxes"  name="deletebcchk" id="deletebcchk" /></th>
+                                                <th>Blog Category Title</th>
+                                                <th>Last Modified</th>
+                                                <th  width="10%">Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                </table>
+                              </div>
+                        </div>
+                </form>
+			</div>
+		</div>
+		<!-- END SAMPLE FORM PORTLET-->
+	</div>
+</div>
+
+
+
+<!-- END EXAMPLE TABLE PORTLET-->
+<script type="text/javascript" charset="utf-8">
+$(document)	 .ready(function(e) {
+	$('#sample_1').dataTable( {
+		"bProcessing": true,
+		"bServerSide": true,
+ 		"sAjaxSource": "<?php echo $this->baseUrl()?>/privatepanel/blog/getblogcat" ,
+		"aaSorting": [],/*[ 0, "desc" ]*/
+		"aoColumnDefs": 
+		 [
+			{ "bSortable": false, "aTargets": [0,1,2] },
+		 ],
+		"iDisplayLength":50,
+	    "aLengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]],
+		"fnDrawCallback": function( oSettings ) {
+			re_init();
+		}
+	} );
+});
+</script>
+
+ 

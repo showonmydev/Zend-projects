@@ -1,0 +1,734 @@
+<?php 
+$this->modelStatic = new Application_Model_Static();
+$job_id=$this->job_id;
+$proposals = $this->proposal_received;
+$job = $this->job;
+$all_data=unserialize($job['job_all_data']);
+$totalQuote = count($proposals);
+$ifReceiveCnfmMsz=$this->ifReceiveCnfmMsz;
+$IsReceive_ClientMsz = count($ifReceiveCnfmMsz);
+$quote_senderID = $this->quote_senderID;
+$max_proposal_limit = $this->site_configs['max_proposal_limit'];
+
+if($quote_senderID=='\+d'){
+	$quote_senderID='';
+	}
+
+
+//prd($job);
+if($all_data['job_deadline']=='1'){
+		$JobDeadline = "I'm flexible";
+	}
+	elseif($all_data['job_deadline']=='2'){
+			$JobDeadline = "In the next few days";
+		}
+		elseif($all_data['job_deadline']=='3'){
+			 	$JobDeadline = "As soon as possible";
+			}
+			elseif($all_data['job_deadline']=='4'){
+						$JobDeadline = "on date";
+			}
+
+if($all_data['how_receive_quote']=='0'){
+	$receiveQuoteBy = "Email Only";
+}else{
+	$receiveQuoteBy = "Email and Message both";
+	}
+
+?>
+<style type="text/css">
+.comments_ul{ margin:0px;}
+</style>
+<div class="containerfluid overflow">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 request-tab-container">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 request-tab-menu">
+            	
+              <div class="list-group">
+              <? 	$active = '';?>
+              	<a href="#" id="leftDetail_overview" class=" header_left_div list-group-item">
+                	<div class="overflow clear">
+                    		<div>
+                                        <div class="QuoteReqProjectTieleDiv pull-left overflow hidden-xs" style="margin-top:10px;">
+                                            <i class="fa fa-file-text font40" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="QuoteReqProjectTieleDiv SeeTitle">
+                                            <p class="pro_overview"><?=$job['service_name']?></p>
+                                            <p class="seeOverview">See Project Overview</p>
+                                        </div>
+                                        <div class="QuoteReqProjectTieleDiv pull-right hidden-xs" style="margin-top:4px;">
+                                            <i class="fa fa-angle-right font40" aria-hidden="true"></i>
+                                        </div>
+                            </div>
+                     </div>       
+                </a>
+                <div class="overflow clear QuoteReceivedP">
+                		<p >Quote Received</p>
+                        <p ><i class="fa fa-angle-double-down" aria-hidden="true"></i></p>
+                </div>
+               <? 
+				$current_active = 0;
+			   foreach($proposals as $key => $proposal){ 
+			   if($quote_senderID ==$proposal['sender_id']){
+				   $active = "active";
+				   $current_active = $proposal['sender_id'];
+				}
+			   else if($key==0 && $quote_senderID==''){
+				   	$current_active = $proposal['sender_id'];
+					 $active = "active";
+				 }
+				?>
+                <input type="hidden" id="user_<?=$proposal['sender_id']?>" value="<?=$proposal['sender_id']?>"/>
+                <a href="#" id="leftDetail_<?=$proposal['sender_id']?>" class="QuoteRequestHiredRibbonOutterDiv list-group-item <?=$active;$active='';?>">
+                
+                <? if(($job['job_status']=='running' || $job['job_status']=='completed') && $job['hired_provider_id']==$proposal['sender_id']){?>
+                    <div class="Hiredribbon">
+                         <span style="">Hired</span>
+                    </div>
+                <? } ?>
+                
+                     <div class="inner_request_li"> 
+                                 <img class="img-responsive img-circle display_inline" style="max-width:50px;" src="<?php echo getUserImage($proposal['user_image'],'60') ;?>" />
+                                  <p class="inner_li_pro_name capitalize"><?=$proposal['user_name']?></p>
+                                  <p class="pro_price_req capitalize">$<?=$proposal['proposal_credit']?></p>
+                                   <? //if($totalMsz['totalMsg']>0){?>
+                                            <!-- <label class="MszNoticIndex">6</label>-->
+                                   <? // } ?>
+                     </div>
+                </a>
+				<? }?>
+              </div>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 request-tab">
+                <!-- flight section -->
+                <? 	$active = '';?>
+              	 <div class="request-tab-content  "  id="rightDetail_overview"  >
+                 	<section>
+                    	<div class="view_job_ajax_div">
+                            <div class="view_job_client_img text-center">
+                                            <p class="job_title"><? echo $job['service_name'];?></p>
+                             </div>
+                            <div class="view_job_ajax_inner_div">
+                                <div>
+                                    <p class="job_q_headings">Job Type:</p>
+                                    <p class="job_answers"><? echo $job['service_name'];?></p>
+                                    <p class="site_HR"></p>
+                                </div>
+                                
+                                <?	
+                                    if (array_key_exists('post_field_value', $all_data)) {
+                                     foreach($all_data['post_field_value'] as $key => $Answer){
+                                         //prd($all_data["post_field_value"][$key]);
+                                            $Question = $this->modelStatic->Super_Get('category_form','c_form_id= "'.$key.'"',"fetch");
+                                        //	prd($Question);
+                                            if(is_array($all_data["post_field_value"][$key]))
+                                            {
+                                            $implode_optipons=implode(",",$all_data["post_field_value"][$key]);
+                                            }
+                                            else
+                                            {
+                                                $implode_optipons=$all_data["post_field_value"][$key];
+                                            }
+                                            
+                                            $ex_getdata=explode('other_options',$implode_optipons);
+                                            $test_check_id=$implode_optipons;
+                                            if(isset($ex_getdata[1]) && !empty($ex_getdata[1])){
+                                                $test_check_id=$ex_getdata[1];
+                                                if(isset($all_data['other_options'][$test_check_id]) &&  !empty($all_data['other_options'][$test_check_id])){
+                                                        //echo $all_data['other_options'][$test_check_id];
+                                                }
+                                            }
+                                        
+                                        $ans = $this->modelStatic->Super_Get('category_form_options','c_option_id IN('.$test_check_id.')','fetchAll');
+                                        $totalAns = count($ans);
+                        
+                                ?>
+                                <div>
+                                    <p class="job_q_headings"><?=$Question['c_form_field_name'];?></p>  
+                                    <ul class="viewJobUL">
+                                        <? if($totalAns!=0){ foreach($ans as $Ans){?>
+                                            <li class="job_answers"><?=$Ans['option_text']?></li>                		
+                                        <?  }}else{ $otherAnswerVal = $all_data['other_options'][$key]; ?>
+                                            <li class="job_answers"><?=$otherAnswerVal;?></li>                		
+                                        <? } ?>
+                                    </ul>
+                                   <p class="site_HR"></p>
+                                </div>
+                                <? } }?>
+                                 <? 
+                                    if (array_key_exists('job_images', $job)) {
+                                    if($job['job_images']!=""){?>
+                                            <p class="job_q_headings">Would you like to add photos to describe your project? </p>
+                                             <div class="col-sm-12 overflow clear_both">
+                                                <? 
+                                                     $image= array(); $image = explode(',',$job['job_images']); 
+                                                     foreach($image as $img){
+                                                ?>
+                                                         <div class=" col-sm-4 col-xs-12 overflow projectImgagesSendQuote">
+                                                            <img src="<?=HTTP_CLIENT_JOB_IMAGES_PATH?>/150/<?=$img;?>" alt="" />
+                                                            <div class="Spacer-2"></div>
+                                                            <div class="Spacer-2"></div>
+                                                        </div>
+                                                <? } ?>
+                                            </div>
+                                           <p class="site_HR"></p>
+                                  <? }  }
+                                  ?> 
+                                  
+                                   <? 	if (array_key_exists('form_ID_and_Type', $job)) {
+                                        foreach($all_data['form_ID_and_Type'] as $key => $Answer){
+                                            if($Answer=='1' or $Answer=='0'){
+                                                $TextQuestion = $this->modelStatic->Super_Get('category_form','c_form_id= "'.$key.'"',"fetch");
+                                    ?>
+                                     <div>
+                                        <p class="job_q_headings"><?=$TextQuestion['c_form_field_name'];?></p>  
+                                        <ul class="viewJobUL">
+                                                <li class="job_answers"><?=$this->all_data['Textand_Area_'.$key];?></li>                		
+                                        </ul>
+                                       <p class="site_HR"></p>
+                                    </div>
+                                    <? } } } ?>
+                                  
+                                <div>
+                                    <p class="job_q_headings">When the work should be start:</p>
+                                    <p class="job_answers"><? echo $JobDeadline;?> &nbsp;<?=$all_data['job_deadline_date']?></p>
+                                    <p class="site_HR"></p>
+                                </div>
+                                
+                               <div>
+                                    <p class="job_q_headings">Phone Number:</p>
+                                    <p class="job_answers"><? echo $all_data['job_phone_client'];?></p>
+                                    <p class="site_HR"></p>
+                                </div>
+                                
+                               <div>
+                                    <p class="job_q_headings">How would you like to receive quotes?:</p>
+                                    <p class="job_answers"><? echo $receiveQuoteBy;?></p>
+                                    <p class="site_HR"></p>
+                                </div>
+                        
+                                
+                                <div>
+                                    <p class="job_q_headings">Posted On:</p>
+                                    <p class="job_answers"><? echo $job['posted_job_created'];?></p>
+                                    <p class="site_HR"></p>
+                                </div>
+                            </div>
+                           
+                        </div>     
+                    </section>
+                 </div>
+              <? 
+			   foreach($proposals as $key => $proposal){ 
+			      if($quote_senderID ==$proposal['sender_id']){
+				   $active = "active";
+				   $current_active = $proposal['sender_id'];
+				}
+			   else if($key==0 && $quote_senderID==''){ 
+				   	$current_active = $proposal['sender_id'];
+					 $active = "active";
+				 }
+			   $sender_id = $proposal['sender_id'];
+			   $get_city = $this->modelStatic->Super_Get("zips","zip_id='".$proposal['user_city']."'","fetch");
+			 ?>
+<!--Right Div-->
+                 <div class="request-tab-content <?=$active;$active='';?> "  id="rightDetail_<?=$proposal['sender_id']?>"  >
+                 
+                 <?
+		// Change Status in proposal table
+		$whereproposal = "proposal.receiver_id='".$this->user->user_id."' && p_job_id='".$proposal['p_job_id']."' && proposal.sender_id='".$proposal['sender_id']."'";
+		$changeStatusproposal['proposal_status']='1'; 
+		$change_proposalStatus = $this->modelStatic->Super_Insert("proposal",$changeStatusproposal,$whereproposal);
+					
+		// Change Status in notice table
+		$where = "notification_reciver='".$this->user->user_id."' and (notification_type='2' || notification_type='6' || notification_type='7') && notification_status='0' && notification_job_id='".$proposal['p_job_id']."' && notification_sender='".$proposal['sender_id']."'";
+		$changeStatus['notification_status']='1'; 
+		$change_norificationStatus = $this->modelStatic->Super_Insert("notifications",$changeStatus,$where);
+		
+// Change Status in notice table for seen more Quote Request response
+$whereMore = "notification_reciver='".$this->user->user_id."' and ( notification_type='6' || notification_type='7') and  notification_job_id='".$job_id."' and notification_sender='1'";
+	$changeMoreStatus['notification_status']='1'; 
+	$change_MorenorificationStatus = $this->modelStatic->Super_Insert("notifications",$changeMoreStatus,$whereMore);
+                 ?>
+                 
+                    <section>
+<!--Right Div if Complete -->   
+						<? if($job['job_status']=='running' && ($job['hired_provider_id']==$proposal['sender_id'])){?>
+                              <div class="col-sm-11 Is_complete_job_Msz_Div ">
+                                    <div class="col-sm-12 padding_zero">
+                                         <h4 class="overflow">
+                                             <img src="<?=HTTP_SITEIMG_PATH?>/info.png" width="28px" class="img-responsive pull-left" alt="">
+                                             <label>Please tell us if <?=$proposal['user_first_name']?> had completed your project ..&nbsp; 
+                                                 <a href="<?php echo $this->url(array('proposalID'=>$job['hired_proposal_id']),'front_review')?>">Done</a>
+                                             </label>
+                                         </h4>
+                                    </div>
+                             </div> 
+                        <? } ?>
+<!--Right Div header-->
+                        <div class="right_request_div_header">
+                            <h3 class="capitalize service_provider_name_in_req_to_client" id="SpName_<?=$proposal['sender_id']?>"><?=$proposal['user_name']?></h3>
+                            <p class="capitalize service_provider_address_in_req_to_client"><?=$get_city['city']?> , <?=$proposal['user_state']?> (<?=$proposal['user_zip_code']?>)</p> 
+                            <? //echo $proposal['sender_id'];?>
+                            <p><a href="<?php echo $this->url(array('user_id'=>$proposal['sender_id']),"front_user_SPprofile")?>" class="vier_service_provider_profile">View Profile</a> <span class="sp_phone_in_req_to_cl"><i class="fa fa-phone" aria-hidden="true"></i> <?=$proposal['user_phone']?></span></p>
+                        </div>   
+<!--Hire decline div-->                                             
+                        <div class="right_div_fixed_header overflow col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-0">
+                                <div class="fixed_right_inner_div">
+                                    <div class="left_total_div your_SP_quote">
+                                        <p class="m_0">Provider Quote</p>
+                                        <p><b>$ <?=$proposal['proposal_credit']?></b></p>
+                                    </div>
+                                    <? if($job['job_status']=='pending'){?>
+                                    <div class="right_hire_div">
+                                    
+                                    	<? if($totalQuote==$max_proposal_limit) { ?>
+                                       
+											<? if( $job['job_reminder_status']=='0'){?>
+                                            	  <a onclick="needMoreQuote()" class="add_project">Need More Quote?</a>  
+                                            <? }else{ ?>
+                                           		 <a class="add_project" type="submit">Reminder Sent</a>
+                                            <? }?>
+                                        <? } ?>
+                                        
+                                        <? if($job['job_status']=='pending' && $proposal['proposal_decline_status']=='2'){?>
+                                        	<p class="declinrSP">Declined</p>
+                                        <? }else{ ?>
+                                        <a onclick="declineprovider(<?=$proposal['sender_id']?>,<?=$proposal['proposal_id']?>)" class="add_project" type="submit">Decline</a>
+                                        <a onclick="hireprovider(<?=$proposal['sender_id']?>,<?=$proposal['proposal_credit']?>,<?=$proposal['proposal_id']?>)" class="add_project">Hire</a>  
+                                        <? } ?>
+                                    </div>
+                                    <?  }?>
+                                    
+                                    <? if($job['job_status']=='completed' || $job['job_status']=='running'){?>
+                                    <div class="right_hire_div">
+                                    	<? if($job['hired_provider_id']==$proposal['sender_id']){?>
+                                            <div class="your_SP_quote">
+                                                <p class="m_0">Your Quote</p>
+                                                <p><b>$ <?=$job['hire_quote_client']?></b></p>
+                                            </div>
+                                        <? } else{?>
+                                        	<p class="declinrSP">Declined</p>
+										<?	}?>
+                                    </div>
+                                    <?  }?>
+                                </div>
+                        </div>
+<!--Privious chat hire_quote_client-->	
+                        <div class="allComments col-sm-12" id="messageMainDiv_<?=$proposal['sender_id']?>"  style="max-height:400px;">   
+                         <?php 
+                         $extra = array();
+                         $joinArr = array(
+                                '0'=>array("users","user_id='".$sender_id."'","left",array('CONCAT(user_first_name," ",user_last_name) as user_name','user_image as sender_image'))
+                                );
+                            
+$previous_communication = $this->modelStatic->Super_Get("communication","(c_sender_id='".$this->user->user_id."' or c_receiver_id= '".$this->user->user_id."') and (c_receiver_id='".$sender_id."' or c_sender_id= '".$sender_id."') and c_job_id='".$proposal['p_job_id']."'","fetchAll", $extra,$joinArr);
+//echo "sender--".$sender_id ;
+//prn($previous_communication);
+					if(count($previous_communication)>0){ 
+                     foreach($previous_communication as $communications){
+                            if($communications['c_sender_id']==$this->user->user_id){
+                                    $in_out = "out";
+                                }
+                                else{
+                                        $in_out = "in";
+                                    }
+                         ?>                                                          
+                        <div class="comment_body comnt12">  
+                                    <ul class="comments_ul">
+                                            <li class="<?=$in_out?>">
+                                                <? if($in_out=="out"){ $name = "You";?>
+                                                     <img class=" hidden-xs img-responsive img-thumbnail user_image user_comment_img" style="max-width:60px;" src="<?php echo getUserImage($this->user->user_image,'60') ;?>" />
+                                                     <? } else { $name = $communications['user_name'];?>
+                                                          <img class=" hidden-xs img-responsive img-thumbnail user_image user_comment_img" style="max-width:60px;" src="<?php echo getUserImage($communications['sender_image'],'60') ;?>" />
+                                                     <? } ?>
+                                                <div class="message">
+                                                    <span class="comment_arrow"></span>
+                                                    <p class="name_ago_msz">
+                                                    
+                                                        <span class="msz_user_name_in_req capitalize"> <?=$name?></span>	 
+                                                        <span class="show_messz_time_P pull-right"><? echo showPostTime($communications['c_date']); ?> ago</span>
+                                                    </p>
+                                                    
+                                                    <p class="comment_show_p"><?=$communications['c_massage'] ?></p>
+                                                </div>
+                                                    <? if ($communications === end($previous_communication)){ ?>
+                                                         <input type="hidden" value="<?=$communications['communication_id'];?> " id="last_msz_<?=$proposal['sender_id']?>" name="last_msz"  />
+                                                    <? } ?>
+                                            </li>  
+                                            
+                                    </ul> 
+                        </div>  
+                        <? } ?> 
+                     <? } else {?>   
+ <!--Quote Msz Div-->
+                        <div class="col-xs-12 overflow QuoteMszDiv">
+                            <div class="Spacer-2"></div>
+                            <div class="Spacer-2"></div>
+                            <div class="Spacer-2"></div>
+                            <div class="Spacer-2"></div>
+                            <div class="">
+                            	 <img class="img-responsive img-circle display_inline" style="max-width:40px; display:inline-block; margin-right:20px;" src="<?php echo getUserImage($proposal['user_image'],'60') ;?>" />
+                                   <p class="speech"><?=$proposal['proposal_description'];?></p>
+                            </div>
+                        </div>
+                     <? } ?>
+   
+                    </div>
+<!--comment form-->                                   
+                       <div class="comments_form_div overflow">     
+                            <form name="comment_form" id="comment_form_<?=$proposal['sender_id']?>" class="profile_form" enctype="multipart/form-data" method="post" action="<? echo APPLICATION_URL?>/project/quoterequest"> 
+                                        <div >
+                                            <input type="hidden" name="job_id" value="<?=$job_id?>" />
+                                             <input type="hidden" name="c_receiver_id" value="<?=$sender_id?>" />
+                                             
+                                           <?php /*?> <div class="col-sm-12 comment_label">
+                                                <?php echo $this->form->c_massage ;?>
+                                            </div><?php */?>
+                                            
+                                            <div class="col-sm-12 comment_label">
+                                                <div class=" form-group  form-group "><label for="c_massage" class="required">Write Message...</label>
+                                            	    <textarea name="cmassage" id="cmassage_<?=$proposal['sender_id']?>" class="form-control required  user_text userChatMsgInput" rows="3" placeholder="Enter your Message....." filter="StringTrim StripTags HtmlEntities" cols="80"></textarea>
+                                                </div>                                           
+                                            </div>
+                                            
+                                            <div class="col-sm-12">
+                                                 <div class="form-actions text-right">
+                                                    <button name="savebtn" onclick="saveMessage(<?=$proposal['sender_id']?>)" id="savebtn" type="button" value="Send" class="btn-lg blue site_button  btn btn-default">
+                                                    Send</button></div>
+                                            </div>    
+                                      </div>
+                                </form>
+                        </div>
+
+	                </section>
+                </div>
+                <? } ?>
+        </div>
+		</div>
+</div>
+<input type="hidden" value="<?=$current_active?>" id="current_active_div" />
+<input type="hidden" id="job_ID" value="<?=$job_id?>" />
+
+
+ <!--view project Model-->
+ <div class="modal fade" id="viewprojectmodel" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+       
+         <button aria-label="Close" data-dismiss="modal" class="close" type="button"><img class="viewProjectClose" src="<?=HTTP_SITEIMG_PATH?>/close_image_x.png" alt="" /></button>
+         
+        <div class="modal-body" style="padding:0px;">
+        </div> 
+      </div>
+    </div>
+</div>
+<!--/*Make Msz status as read in notification table*/-->
+<?php 
+$this->modelsuper = new Application_Model_SuperModel();
+$where = "notification_reciver='".$this->user->user_id."' and notification_type='10' and notification_status='0'";
+$changeStatus['notification_status']=1; 
+$change_mszStatus = $this->modelsuper->Super_Insert("notifications",$changeStatus,$where);
+?>
+<!--/* END Make  Msz status as read in notification table*/-->
+
+
+<!--model for Hire Service Provider  -->    
+<div id="hireProviderModel" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header model_surepay_header modelHireHeader">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title model_title_pay">Hire</h4>
+        </div>
+        <div class="modal-body model_body_hire ">
+            <div class="credit_msg">
+               		<h4 class="text-center"></h4>
+                    <form name="hire_SP" id="default_form" class="hireForm" enctype="multipart/form-data" action="<? echo APPLICATION_URL?>/project/hire/" method="post"> 
+                         <div id="pay_form" class="pay_form">
+                                <div class="col-sm-12">
+                                    <input type="hidden" value="<?=$proposal['sender_id']?>" id="hired_provider_id" name="provider_id"> 
+                                    <input type="hidden" value="<?=$this->user->user_id;?>" id="client_ID" name="client_ID"> 
+                                    <input type="hidden" value="<?=$job_id;?>" id="hire_job_id" name="hire_job_id"> 
+                                    <input type="hidden" value="<?=$proposal['proposal_credit'];?>" id="hire_job_Quote_SP" name="hire_job_Quote_SP">
+                                    <input type="hidden" value="<?=$proposal['proposal_credit'];?>" id="hire_proposal_ID" name="hire_proposal_ID">
+                                    <?php echo $this->form1->hire_quote_client; ?>
+                                 </div>
+        
+                                 <div class="col-sm-12">
+                                        <?php echo $this->form1->bttnsubmit; ?>
+                                 </div>
+                         </div>
+                    </form>
+                    <div class="text-center yesHireDiv">
+                            <button data-dismiss="modal" class="btn btn-default" type="button"> No</button>
+                            <button class="btn btn-info yesHire" type="submit">Yes</button>
+                   </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!--Post Review for Service Provider Model-->
+<div id="postReviewModel" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header model_surepay_header modelHireHeader">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title model_title_pay">Leave a review</h4>
+        </div>
+        <div class="modal-body model_body_hire ">
+             <input type="hidden" value="<?=$proposal['sender_id']?>" id="hired_provider_id" name="provider_id"> 
+        </div>
+    </div>
+  </div>
+</div>
+
+<!--Send Reminder to admin-->
+<div id="sendReminder" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+    	
+                <div class="modal-header model_surepay_header modelHireHeader">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title model_title_pay">Send Reminder</h4>
+                </div>
+                <div class="modal-body model_body_hire ">
+                     <h4 class="text-center">Are you sure, you want more Quotes.</h4>
+                     
+                     <form name="QuoteRequestClient" id="default_form" class="MoreQuoteForm" enctype="multipart/form-data" action="<? echo APPLICATION_URL?>/project/morequoteadmin/" method="post"> 
+                         <div id="pay_form" class="pay_form">
+                                <div class="col-sm-12">
+                                    <input type="hidden" value="<?=$this->user->user_id;?>" id="more_quote_sender" name="more_quote_sender"> 
+                                    <input type="hidden" value="<?=$job_id;?>" id="more_quote_job_id" name="more_quote_job_id"> 
+                                    <?php echo $this->form2->more_quote_client_request; ?>
+                                 </div>
+        
+                                 <div class="col-sm-12">
+                                        <?php echo $this->form2->bttnsubmit; ?>
+                                 </div>
+                         </div>
+                    </form>
+                     
+                     
+                      <div class="text-center yesMoreDiv">
+                                    <button data-dismiss="modal" class="btn btn-default" type="button"> No</button>
+                                    <button class="btn btn-info yesNeedmore" type="submit">Yes</button>
+                      </div>
+                </div>
+    </div>
+  </div>
+</div>
+
+
+<!--model for Decline Service Provider  -->    
+<div class="modal fade" id="declineSPModel" role="dialog" data-backdrop="" aria-hidden="true">
+ <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header model_surepay_header modelHireHeader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title model_title_pay">Decline</h4>
+            </div>
+            
+           <form name="decline_pro" method="post" action="<? echo APPLICATION_URL?>/project/declinepro/">
+              <div class="modal-body model_body_hire">
+                <h4 class="text-center"></h4>
+                <input type="hidden" value="<?=$proposal['sender_id']?>" id="declined_provider_id" name="declined_provider_id"> 
+                <input type="hidden" value="<?=$this->user->user_id;?>" id="client_ID" name="client_ID"> 
+                <input type="hidden" value="<?=$job_id;?>" id="decline_job_id" name="decline_job_id"> 
+                <input type="hidden" value="<?=$proposal['proposal_credit'];?>" id="decline_proposal_ID" name="decline_proposal_ID">
+                <div class="text-center">
+                    <button data-dismiss="modal" class="btn btn-default" type="button"> No</button>
+                    <button class="btn btn-info" type="submit">Yes</button>
+                </div>
+              </div>
+             </form>
+         </div>
+         
+     </div>
+</div>
+
+<script type="text/javascript">
+
+function needMoreQuote(){
+		$(".pay_form").hide();
+		$(".yesMoreDiv").show();
+		$('#sendReminder').modal('show');
+}
+
+$(document).ready(function(){
+    $(".yesNeedmore").click(function(){
+        $(".pay_form").show();
+		$(".yesMoreDiv").hide();
+    });
+});
+
+
+
+
+// hire SP
+function hireprovider(provider_id,QuotePrice,hireProposal){
+	 var SPname = $('#SpName_'+provider_id).html();
+	 $('#hireProviderModel .modal-title').text('Hire '+SPname);
+	 $('#hireProviderModel .model_body_hire h4').html('Are you sure, you want to hire <b>'+SPname+'</b> ?');
+		$("#hired_provider_id").val(provider_id);
+		$("#hire_job_Quote_SP").val(QuotePrice);
+		$("#hire_proposal_ID").val(hireProposal);
+		$(".pay_form").hide();
+		$(".yesHireDiv").show();
+		$('#hireProviderModel').modal('show');
+}
+
+$(document).ready(function(){
+    $(".yesHire").click(function(){
+        $(".pay_form").show();
+		$(".yesHireDiv").hide();
+    });
+});
+
+// decline SP
+function declineprovider(dprovider_id,declinedProposal){
+	 var SPname = $('#SpName_'+dprovider_id).html();
+	 $('#declineSPModel .modal-title').text('Decline '+SPname);
+	 $('#declineSPModel .model_body_hire h4').html('Are you sure, you want to decline <b>'+SPname+'</b> ?');
+	 
+		$("#declined_provider_id").val(dprovider_id);
+		$("#decline_proposal_ID").val(declinedProposal);
+		$("#declineSPModel").modal('show');
+}
+
+
+
+
+function postreview(provider_id,proposalId){
+	$.ajax({ 
+		url:baseUrl+'/project/postreview/',
+		data : {provider_id:provider_id,proposalId:proposalId},
+		success:function(data){
+			$('#postReviewModel .modal-body').html(data);
+			$('#postReviewModel').modal('show');
+
+		}
+	});
+}
+
+
+
+</script>
+
+
+<script type="text/javascript">
+function viewproject(job_id){
+	$.ajax({ 
+		url:baseUrl+'/project/viewproject/cur_action/'+action,
+		data : {id:job_id},
+		success:function(data){
+			$('#viewprojectmodel .modal-body').html(data);
+			$('#viewprojectmodel').modal('show');
+		}
+	});
+}
+
+
+$(document).ready(function() {
+    $("div.request-tab-menu>div.list-group>a").click(function(e) {
+		var getID = $(this).attr('id')
+		
+		if(getID==leftDetail_overview){
+			 $('.request-tab-content').removeClass('active');
+			 $('#rightDetail_overview').addClass('active');
+		}
+		else{
+        e.preventDefault();
+		var Index = $(this)[0].id;
+		$('.list-group-item').removeClass('active');
+		$(this).addClass('active');
+		var NewId = Index.split("_");
+		
+		 $('.request-tab-content').removeClass('active');
+		 $('#rightDetail_'+NewId[1]).addClass('active');
+		}
+		
+  });
+  
+  
+});
+
+
+$(document).ready(function() {
+    $("div.request-tab-menu>div.list-group>a").click(function(e) {
+		  var visiblePaneId = $('div.list-group a.active').attr('id').replace(/\D/g,'')
+		 
+		$('#current_active_div').val(visiblePaneId);
+		
+		var getWidth = window.innerWidth;
+		if(getWidth<768){
+			if(visiblePaneId!=''){
+				window.setTimeout(function(e){
+					 $('html, body').animate({
+					   scrollTop: $("#rightDetail_"+visiblePaneId).offset().top
+					 }, 1000); 
+					},500);
+			}else{
+				window.setTimeout(function(e){
+				 $('html, body').animate({
+				   scrollTop: $("#rightDetail_overview").offset().top
+				 }, 1000); 
+				},500);
+			}
+		}
+  });
+  	setInterval(reloadChat ,1000);   
+});			
+
+
+
+$('.userChatMsgInput').keyup(function(e) {
+    var code = e.keyCode || e.which;
+ var Status = 0;
+  
+  if(code == 13){
+   if(e.shiftKey){
+   Status = 1; 
+   }
+   else if(e.ctrlKey){
+    Status = 1; 
+   }
+   if(Status == 0){
+   var Input = $(this)[0].id;
+	   if($(this).val().trim()!=''){
+			var ID = Input.split("_");
+			//alert(ID);
+			$(this).blur();
+			saveMessage(ID[1]);
+	   }
+   }}
+});		
+		
+
+function saveMessage(Id){
+	
+	var CurActive = $('#current_active_div').val();
+	if($('#comment_form_'+Id).valid()){
+		$.ajax({
+			url: baseUrl+"/project/savemessage",
+			type:'POST',
+			data: $('#comment_form_'+Id).serializeArray(),
+			success: function (data) 
+			{ 
+				$('#rightDetail_'+CurActive+' .mCSB_container').append(data);
+
+				$('#comment_form_'+Id)[0].reset();
+			}
+	  });
+  }
+}
+
+
+		
+</script>
+
+

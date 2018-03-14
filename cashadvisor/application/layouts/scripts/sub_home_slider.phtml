@@ -1,0 +1,85 @@
+<?php if((($this->current_controller=="index" && $this->current_action=="index") || ($this->current_controller=="user" && $this->current_action=="registerpro" ))){?>
+<!-- Carousel
+    ================================================== -->
+<? $service = $this->services; ?>
+<div id="myCarousel" class="carousel slide"> 
+  <!-- Indicators --> 
+	  	<?php 
+			$active = "active";
+			foreach($this->slider_images as $values){?>
+ 			
+ 		<?php  }?>
+  
+ 	 <div class="carousel-inner">
+		<?php 
+                $active = "active";
+                foreach($this->slider_images as $values){
+        ?>
+        <div class="item <?php echo $active;$active="";?> text-center" >
+            <img class="slider_bg_image <?php if($this->current_controller=="user" && $this->current_action=="registerpro"){?>  pro_slider<? }?>" src="<?php echo HTTP_SLIDER_IMAGES_PATH."/".$values['slider_image_path']?>" alt="<?php echo $values['slider_image_alt']?>"> 
+            <div class="sub_home">
+          	  <div id="myCarousel1" class="carousel-caption">
+				<? if($this->current_controller=="index" and $this->current_action=="index"){?>
+                        <img src="<?php echo HTTP_SITEIMG_PATH?>/slider_home.png" class=" home_cap" alt="" />
+                        <h1 class="hire"><?=$values['slider_image_title']?></h1>
+
+                           <p class="quality"><?=$values['slider_image_alt']?></p>   
+                        
+                        <form method="get" class="profile_form" action="<? echo APPLICATION_URL?>/search/homesearch">
+                            <div class="row search_form">
+                                    <div class="rewilla_home_service_div">
+                                        <input type="text" name="services" placeholder="What service do you need?" id="searchServices" class="form-control what_need" />
+                                        <img class="search_img " src="<?php echo HTTP_SITEIMG_PATH?>/search.png" alt=""  />
+                                    </div>
+                                    
+                                    <div class="rewilla_home_service_button_div">
+                                         <button type="submit" onclick="getSerarchService()" class="btn-custom get_start">Get Started</button>
+                                    </div>
+                            </div>
+                        </form>
+                 
+                        
+               
+                    <? }?>
+                    
+                <? if($this->current_controller=="user" and $this->current_action=="registerpro"){?>
+                        <img src="<?php echo HTTP_SITEIMG_PATH?>/slider_home.png" class=" home_cap" alt="" />
+                        <h1 class="hire"> BECOME A PRO</h1>
+                        
+                         <form name="signup_form"  action="<?php echo APPLICATION_URL?>/user/registerbusniess" method="get" id="search_form"  class="profile_form">
+        						<select class="custom_select form-control required" name="type" required>
+            							<option value="">Select a profession</option>
+										<?php foreach($this->result as $val){ ?>
+                                        <option value='<?=$val['service_name']?>'><?=$val['service_name']?></option>
+                                        <?php } ?>
+          						 </select>
+                                 <br />
+          						  <button type="submit" class="btn btn-lg site_button">Get Started</button>
+       					 </form>
+                 
+                        
+                    <? }?>    
+            </div>
+            </div>
+        </div>
+    
+    <?php  }?>
+    
+   
+  </div>
+<?php if(($this->current_controller=="index" )){?>
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev"> <img class="left_img_carosal_1" src="<?php echo HTTP_SITEIMG_PATH?>/left-arrow.png" alt="" /></a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next"> <img class="right_img_carosal_1" src="<?php echo HTTP_SITEIMG_PATH?>/right-arrow.png" alt="" />  </a> 
+      <? } ?>
+
+</div>
+
+<!-- /.carousel --> 
+
+<script type="application/x-javascript">
+function getSerarchService(){
+//	alert('serach in progress.. ;-)');
+}
+
+</script>
+<?php  } ?>

@@ -1,0 +1,55 @@
+<style type="text/css">
+.profile_fa_icon{ display:inline-block; width:20px;}
+</style>
+<?
+if(($this->current_controller=="profile" && (/*$this->current_action=="index" ||*/ $this->current_action=="image" || $this->current_action=="password" || $this->current_action=="password")) || ($this->current_controller=="serviceprovider" && ($this->current_action=="index" || $this->current_action=="otherinfo" || $this->current_action=="updateservice" ) )){
+$in = "in";
+$bg_col = "profile_dropdown_p_a";
+}else { $in = ''; $bg_col='';}
+
+?>
+<div class="list-group">
+  <h3 style="margin:0;">Profile </h3>
+  <a class="list-group-item text-center noback"> <img class="img-responsive img-circle" style="display:inline-block;" src="<?php echo getUserImage($this->user->user_image,'160')?>" alt="<?php echo $this->user->user_first_name?>" title="" /> </a> 
+  
+<p class="profile_dropdown_p">
+        <a data-title="front_profile" class="list-group-item noback <?=$bg_col?>" data-toggle="collapse" onclick="toggleColor()" href="#collapseprofile_sidebar" aria-expanded="false" aria-controls="collapseExample">
+        	<span class="profile_fa_icon"><i class="fa fa-user" aria-hidden="true"></i></span>
+             Profile  
+            <i id="leftt" class="fa fa-angle-left fa_left_cls undo_rotate_arroww" aria-hidden="true"></i>
+        </a>
+</p>
+
+<div class="collapse <?=$in?>" id="collapseprofile_sidebar">
+  <div class="card card-block">
+ 	<a class="list-group-item" data-title="front_profile" href ="<?php echo $this->url(array(),'front_profile')?>"> <div class="profile_fa_icon"><i class="fa fa-user"></i></div> Edit Profile </a>
+	<a class="list-group-item" data-title="front_image" href ="<?php echo $this->url(array(),'front_image')?>"> <div class="profile_fa_icon"><i class="fa fa-image"></i></div> Change Image</a> 
+    <a class="list-group-item" data-title="change_password"  href ="<?php echo $this->url(array(),'change_password')?>"><div class="profile_fa_icon"><i class="fa fa-tags"></i></div> Change Password</a>
+   <? if($this->user->user_type=='service_provider'){ ?>
+     <a class="list-group-item" data-title="change_service"  href ="<?php echo $this->url(array(),'front_service_provider_services')?>" ><div class="profile_fa_icon"><i class="fa fa-cog"></i></div> Change Service</a>
+     <a class="list-group-item" data-title="change_other_info"  href ="<?php echo $this->url(array(),'front_service_provider_other_info')?>" ><div class="profile_fa_icon"><i class="fa fa-cog"></i></div> Change other info</a>
+   <? } ?>
+  </div>
+</div>
+
+	<?  if($this->user->user_type=='service_provider'){ ?>
+        <a class="list-group-item" data-title="wallet"  href ="<?php  echo $this->url(array(),"package_purchased_history")?>" ><div class="profile_fa_icon"><i class="fa  fa-usd"></i></div> Credit History</a>
+    <? } ?>
+    
+    <? 
+   if($this->user->user_type=='client'){ ?>
+  <?php /*?> <a class="list-group-item" data-title=""  href ="<?php echo $this->url(array(),"front_project")?>"><i class="fa fa-tags"></i> Projects</a><?php */?>
+   <? } ?>
+</div>
+<script  type="text/javascript">
+	$(document).ready(function(e){$('a[data-title="<?php echo $this->show?>"]').addClass("active");});
+	
+	
+function toggleColor() {
+ 
+ document.getElementById("leftt").classList.toggle("rotate_arroww");
+ 
+ document.getElementById("leftt").classList.toggle("undo_rotate_arroww");
+ 
+}
+</script> 

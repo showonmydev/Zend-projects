@@ -1,0 +1,7 @@
+<?php $category = $this->categories; foreach($category as  $key => $category) {?>
+<div class="casa_9_img" style="background-image:url(<?php echo HTTP_SERVICE_IMAGES_PATH.'/'.$category['service_image'];?>);"> 
+    <div class="overlay_service_name">
+   		 <a class="expand" href=" <?php  echo $this->url(array('service_id'=>$category['service_id'],"service_name"=>$category['service_name'],'service_parent_id'=>$category['service_parent_id']),'front_seeallsubcategory')?>" > <?php echo $category['service_name']  ?></a>
+    </div>       
+</div>
+<? } ?>

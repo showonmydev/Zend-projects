@@ -1,0 +1,36 @@
+
+<!--BEGIN TABS-->
+<div class="profile-account">
+
+		 <div class="custom-form-wrapper">
+         <h3 class="profile_page_headings">Change Profile Image</h3>
+			<form role="form" enctype="multipart/form-data" method="post">
+				<div class="text-center">
+					<div class="fileinput fileinput-new    " data-provides="fileinput">
+						<div class="fileinput-new thumbnail" style="max-width: 350px; max-height: 350px; ">
+							
+							
+							
+							<img src="<?php echo getUserImage($this->user->user_image,"thumb")?>" alt=""/>
+						</div>
+						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 350px; max-height: 350px;">
+						</div>
+						<div>
+							<span class="btn btn-info btn-file">
+								<span class="fileinput-new"> Select image </span>
+								<span class="fileinput-exists"> Change </span>
+								<?php echo $this->form->user_image?>
+							</span>
+							<a href="#" class="btn btn-danger default fileinput-exists" data-dismiss="fileinput">Remove </a>
+						</div>
+						<p></p>
+						
+					</div>
+					
+					
+				</div>
+				<div class="margin-top-10 text-right "><button class="btn site_button btn-primary    block_ui" type="submit"> Save </button></div>
+			</form>
+		 </div>
+</div>
+

@@ -1,0 +1,709 @@
+<style type="text/css">
+</style>
+<? 
+$this->modelStatic = new Application_Model_Static();
+$sub_Category_ID = $this->service_id; 
+$Cat_detail = $this->Cat_detail; 
+$formfetails = $this->category_form;
+$job_data = $this->job_data;
+$action_type = $this->action_type;
+$all_data=unserialize($job_data['job_all_data']);
+//prn($all_data);
+if($action_type=='1'){
+		$Action = "postjob";
+	}else{
+		$Action = "editjob/".$this->job_id_EDIT;
+		}
+//prd($Action);
+		
+?>
+
+<?php /*?><script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/main.js"></script><?php */?>
+<script  src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-validation/js/additional-methods.min.js"></script>
+<?php /*?><script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/bootstrap-wizard/jquery.bootstrap.wizard.js"></script>
+<?php */?>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/tmpl.min.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/load-image.min.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/canvas-to-blob.min.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/jquery.blueimp-gallery.min.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/jquery.fileupload-process.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/jquery.fileupload-image.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/jquery.fileupload-audio.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/jquery.fileupload-video.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/jquery.fileupload-validate.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/plugins/jquery-file-upload/js/jquery.fileupload-ui.js"></script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/admin_js/bootstrap-datepicker.js"></script>
+
+<div class="company-register">
+    <div id="rootwizard" class="form-wizard">
+         <div class="steps">
+              <div class="navbar-inner" style="visibility:visible; height:150px;">
+                    <ul class="list-inline nav">
+                             <li class="col-sm-4 <? if($this->active_step==1) {?> active <? }?>" id="tab1_li">
+                                  <a href="#tab1" data-toggle="tab" class="step">
+                                         <span class="custombadge badge">1</span>
+                                          <span class="desc label_style"><i class="icon-ok"></i>Select Plan</span>
+                                   </a>
+                              </li>
+                               <? $li_step=2;
+                                foreach($formfetails as $form_element) {?>
+                                <li id="tab<?=$li_step;?>_li">
+                                     <a href="#tab<?=$li_step;?>" data-toggle="tab" class="step">
+                                             <span class="custombadge badge">1</span>
+                                              <span class="desc label_style"><i class="icon-ok"></i>Select Plan</span> 
+                                     </a>
+                                </li>
+                                <? $li_step++;   }?>
+                                
+                                <li id="tab<?=$li_step;?>_li"> 
+                                    <a href="#tab<?=$li_step;?>" data-toggle="tab" class="step">
+                                        <span class="custombadge badge">1</span>
+                                        <span class="desc label_style"><i class="icon-ok"></i>Select Plan</span> 
+                                    </a>
+                                </li>
+                                
+                                <? $li_step++;?>
+                                <li id="tab<?=$li_step;?>_li">
+                                    <a href="#tab<?=$li_step;?>" data-toggle="tab" class="step">
+                                        <span class="custombadge badge">1</span>
+                                        <span class="desc label_style"><i class="icon-ok"></i>Select Plan</span> 
+                                    </a>
+                                </li>
+                                
+                                <? $li_step++;?>
+                                <li id="tab<?=$li_step;?>_li">
+                                    <a href="#tab<?=$li_step;?>" data-toggle="tab" class="step">
+                                        <span class="custombadge badge">1</span>
+                                        <span class="desc label_style"><i class="icon-ok"></i>Select Plan</span>
+                                    </a>
+                                </li>
+                                
+                                <? $li_step++;?>
+                                <li id="tab<?=$li_step;?>_li">
+                                    <a href="#tab<?=$li_step;?>" data-toggle="tab" class="step">
+                                        <span class="custombadge badge">1</span>
+                                        <span class="desc label_style"><i class="icon-ok"></i>Select Plan</span>
+                                    </a>
+                                </li>
+                                
+                                <? $li_step++;?>
+                                <li id="tab<?=$li_step;?>_li">
+                                    <a href="#tab<?=$li_step;?>" data-toggle="tab" class="step">
+                                        <span class="custombadge badge">1</span>
+                                        <span class="desc label_style"><i class="icon-ok"></i>Select Plan</span>
+                                    </a>
+                                </li>
+                                
+                                <? $last_step = $li_step;?>
+                    </ul>
+                    
+                      <div>&nbsp;</div>
+                      
+              </div>
+              
+              <form method="post" id="fileupload" role="form" novalidate="novalidate" class="profile_form" enctype="multipart/form-data" action="<? echo APPLICATION_URL?>/<?=$Action?>"> 
+                
+             	<div class="tab-content">
+                
+               <div id="bar" class="progress progress-striped active">
+                    <div class="bar"></div>
+              </div>
+			  <div class="overflow text-center stepLoadingImg">
+              		 <img src="<?=HTTP_SITEIMG_PATH?>/stepLoader.gif" alt="" />
+              </div>
+                                    
+                        <div id="tab1" class="col-md-12 col-sm-12 col-xs-12 inline-block frm padding_0  tab-pane active">
+                               <fieldset class="askk">
+                                    <div class="ask_few_question text-center">
+                                        <p class="ask_few_p">We're asking you a few questions so we can bring you the right pros. </p>
+                                          <input type="hidden" name ="service_parent_id" value="<?=$Cat_detail['service_parent_id']?>" />
+                                          <input type="hidden" name ="service_sub_parent_id" value="<?=$Cat_detail['service_sub_parent_id']?>" />
+                                          <input type="hidden" name ="Cat_id" value="<?=$Cat_detail['service_id']?>" />
+                                    </div>
+                               </fieldset>
+                        </div>
+                    
+                        <!--===============* START BACKEND FORM * ======================-->           	 
+            <?  $i=1;
+            $step=2;
+			
+                foreach($formfetails as $form_element) {
+                //
+				 $path_for_user=ROOT_PATH.'/public/resources/uploads/image_'.$this->user->user_id;
+				 $path_for_question=ROOT_PATH.'/public/resources/uploads/image_'.$this->user->user_id.'/'."media_".$form_element['c_form_id'];
+				 
+				  $path_for_question_th=ROOT_PATH.'/public/resources/uploads/image_'.$this->user->user_id.'/'."media_".$form_element['c_form_id'].'/thumbnail';
+				  $path_for_question_md=ROOT_PATH.'/public/resources/uploads/image_'.$this->user->user_id.'/'."media_".$form_element['c_form_id'].'/medium';
+				  
+				  if(!is_dir($path_for_user)){ 
+				  			mkdir($path_for_user,0755);
+						   chmod($path_for_user,0777);
+
+					  if(!is_dir($path_for_question)){
+						   mkdir($path_for_question,0755);
+						   chmod($path_for_question,0777);
+						   
+						   mkdir($path_for_question_th,0755);
+						   chmod($path_for_question_th,0777);
+						   
+						   mkdir($path_for_question_md,0755);
+						   chmod($path_for_question_md,0777);
+					  }
+				  }
+				
+
+?>
+				
+<script type="text/javascript">
+var file_cnt=-1;
+var file_id;
+var FILE_PATH='<?=SITE_HTTP_URL."/public/resources/uploads/image_".$this->user->user_id.'/'."media_".$form_element['c_form_id'];?>/';
+var THUMB_FILE_PATH='<?=SITE_HTTP_URL."/public/resources/uploads/image_".$this->user->user_id.'/'."media_".$form_element['c_form_id'].'/thumbnail/';?>';
+var THUMB_FILE_PATH='<?=SITE_HTTP_URL."/public/resources/uploads/image_".$this->user->user_id.'/'."media_".$form_element['c_form_id'].'/medium/';?>';
+var APPLICATION_PATH_USER='<?=SITE_HTTP_URL?>/project/companymedia2/qa_id/<?=$form_element['c_form_id']?>';
+
+console.log(APPLICATION_PATH_USER);
+</script>
+<script>
+$('#fileupload').fileupload({
+		
+		autoUpload: true,
+        // Uncomment the following to send cross-domain cookies:
+        //xhrFields: {withCredentials: true},
+        url:APPLICATION_PATH_USER
+    });
+</script>      
+
+<?
+
+                    if($form_element['c_required_optional']==1){
+                        $required = "required";
+                        }else{
+                            $required = "";
+                            }
+                            
+                            if($form_element['c_form_field_type']==0){
+                                            $field_type ="text";
+                                            }
+                                            elseif($form_element['c_form_field_type']==1){
+                                                $field_type ="textarea";
+                                            }elseif($form_element['c_form_field_type']==2){
+                                                $field_type ="radio";
+                                                }elseif($form_element['c_form_field_type']==3){
+                                                    $field_type ="checkbox";
+                                                    }elseif($form_element['c_form_field_type']==4){
+                                                        $field_type ="file";
+                                                  }
+            ?>
+    
+    
+             <div id="tab<?=$step?>" class="col-md-12 col-sm-12 col-xs-12 inline-block frm padding_0  tab-pane">
+                <fieldset>
+                    <div class="form-group">
+                         <label for="<?=$field_type?>" class="required" aria-required="true"><?=$form_element['c_form_field_name']?></label>
+                             <input type="hidden" name="form_ID_and_Type[<?=$form_element['c_form_id']?>]" value="<?=$form_element['c_form_field_type']?>" />
+             <!--==================================== * START Counting OPTIONS * =========================================-->                
+                        <?
+                         if($form_element['total_options']!=0){
+                                $t_options= $form_element['total_options'];
+                                $get_options=array();
+                                /*for($k=1;$k<=$t_options; $k++){*/
+								
+                                    $get_options=$this->modelStatic->Super_Get("category_form_options","category_fom_id='".$form_element['c_form_id']."'","fetchAll");
+                                    $j=0; 
+                                /*}*/
+                               
+                                    foreach($get_options as $option) {
+                                    ?>
+             <!--===================================== * START CHECKBOX OPTIONS * ==============================================-->                
+                                   <? if($field_type =="checkbox"){ 
+                                   $other_option_input_name = "post_field_value[".$form_element['c_form_id']."][]";
+                                   $input_group = "input-group"; 
+                                 
+                                 ?>
+                                       
+                                       
+                                       <label class="<?=$field_type?> control control--<?=$field_type?>" for="<?=$form_element['c_form_field_name']?>-<?=$j?>">
+                                      
+                                       <input type="<?=$field_type?>" name="post_field_value[<?=$form_element['c_form_id']?>][]" id="<?=$form_element['c_form_field_name']?>-<?=$j?>" value="<?=$option['c_option_id']?>" <? if($action_type=='0'){ if(isset($this->all_data['post_field_value'][$form_element['c_form_id']]) && in_array($option['c_option_id'],$this->all_data['post_field_value'][$form_element['c_form_id']])){?> checked="checked" <? } }?> title="Please select one options" class="<?=$required?> User_job_Post_Form input-group"  required="" aria-required="true" aria-invalid="false"><?=$option['option_text'];?>
+                                       <div class="control__indicator"></div>
+                                     </label>
+                                       
+                                       
+             <!--==================================== * END CHECKBOX OPTIONS * =============================================-->
+             
+              <!--======================================== * START RADIO BOX OPTIONS * ===============================================-->                
+                                            <? }else{  
+                                            $other_option_input_name = "post_field_value[".$form_element['c_form_id']."]"; 
+                                            $input_group = "";
+											?>
+            
+            
+                                             <label class="<?=$field_type?> control control--<?=$field_type?>" for="<?=$form_element['c_form_field_name']?>-<?=$j?>">
+                                                  <?php if(isset($option['c_option_id']) && !empty($option['c_option_id'])){?>
+                                                   <input  <? if($action_type=='0'){ if(isset($this->all_data['post_field_value'][$form_element['c_form_id']]) && $this->all_data['post_field_value'][$form_element['c_form_id']]==$option['c_option_id']){?> checked="checked"  <? } }?>  type="<?=$field_type?>" name="post_field_value[<?=$form_element['c_form_id']?>]" id="<?=$form_element['c_form_field_name']?>-<?=$j?>" value="<?=$option['c_option_id']?>" title="Please select one options" class="<?=$required?> User_job_Post_Form" required="" aria-required="true" aria-invalid="false" onclick="chk_other_option('<?=$form_element['c_form_id']?>');" ><?=$option['option_text'];?>					
+                                                   <div class="control__indicator"></div>
+                                                   <? }?>
+                                             </label>
+                                            <?	}?>
+                                     
+                        <?  $j++; }?>
+                        
+                           <!--other input field-->  
+                           <? if(($form_element['c_other'] =='1') && ($field_type =="radio")){?>    
+                                      <label class="<?=$field_type?> control control--<?=$field_type?>" for="<?=$form_element['c_form_field_name']?>-<?=$j?>">
+                                             <input <? if($action_type=='0'){ if(isset($this->all_data['other_options'][$form_element['c_form_id']]) && !empty($this->all_data['other_options'][$form_element['c_form_id']])){?>checked="checked"  <? } }?> type="<?=$field_type?>" name="<?=$other_option_input_name?>" id="<?=$form_element['c_form_field_name']?>-<?=$j?>" value="other_options<?=$form_element['c_form_id']?>" title="Please select one options" class="<?=$required?> User_job_Post_Form <?=$input_group?> otherOptionClass" required="" aria-required="true" aria-invalid="false" onclick="chk_other_option('<?=$form_element['c_form_id']?>');">
+                                            
+                                     <input  <? if($action_type=='0'){ if(isset($this->all_data['other_options'][$form_element['c_form_id']]) && !empty($this->all_data['other_options'][$form_element['c_form_id']])){?> value="<?=$this->all_data['other_options'][$form_element['c_form_id']]?>" <? } }?> name="other_options[<?=$form_element['c_form_id']?>]" class="input_for_other_option" type="text" placeholder="Other" />
+                                      <br/> 
+                                      <br />
+                                      <span for="other_options[<?=$form_element['c_form_id']?>]" class="help-block">This field is required.</span>
+                                       
+                                             <div class="control__indicator"></div>
+                                     </label> 
+                           <? } ?>
+                     <!-- end  other input field-->       
+               <!--========================================= * END RADIO BOX OPTIONS * =====================================-->                
+             <!--================================== * END Counting OPTIONS * ==============================================-->
+             
+             
+             <!--==================================== * START FILE TYPE INPUT * ============================================-->           	 
+                         <? }  else {?> 
+                           
+                       <? if($field_type=="file"){ $id = "form_service_image"; ?>
+                          
+                               <label class="radio control control--radio" for="add_service_image-1_<?=$form_element['c_form_id'];?>">
+                                <input <? if($action_type=='0'){  if($job_data['job_images']!=""){?> checked="checked"  <? } }?> type="radio" name="add_service_image_<?=$form_element['c_form_id'];?>" id="add_service_image-1_<?=$form_element['c_form_id'];?>" value="1"  title="Please select one options" class="<?=$required?> add_service_image User_job_Post_Form" required="" aria-required="true" aria-invalid="false"  />Yes
+                                  <div class="control__indicator"></div>
+                              </label>
+                          
+                              <label class="radio control control--radio" for="add_service_image-0_<?=$form_element['c_form_id'];?>">
+                                <input type="radio" name="add_service_image_<?=$form_element['c_form_id'];?>" id="add_service_image-0_<?=$form_element['c_form_id'];?>" value="0"  title="Please select one options" class="<?=$required?> add_service_image User_job_Post_Form" required="" aria-required="true" aria-invalid="false"  />No
+                                  <div class="control__indicator"></div>
+                              </label>
+                            <? 
+							if($action_type=='0'){
+								 if($job_data['job_images']!=""){
+									  $image= array(); $image = explode(',',$job_data['job_images']); 
+										 foreach($image as $img){
+						   ?>	
+                           		<div class="overflow inline_block">
+                                    <img src="<?=HTTP_CLIENT_JOB_IMAGES_PATH?>/150/<?=$img;?>" alt="" />
+                                </div>
+                            		
+                            <? } } } ?>   
+            <!--================================ * START ADD MORE IMAGES * =====================================-->
+            
+            <div id="image_upload_btn_div">
+              <!--  Redirect browsers with JavaScript disabled to the origin page -->
+                <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
+              <!--/*   The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload */-->
+                <div class="col-xs-12 form-group  inline-block padding_0">
+                
+               		 <? if($this->edit!='1'){?>  
+                        <div id="errormsg" style="display:none;" class="error_div_cls"></div>   
+                        <div id="errormsgnew" style="display:none; width:500px;" class="error_div_cls"></div>   
+                        <label class="col-sm-3 required" style="padding:0px;"> Upload image </label>
+                    
+                        <div class="col-sm-9 padding_0" align="left">
+                               <!--  The fileinput-button span is used to style the file input field as button -->
+                                <span class="btn btn-success fileinput-button" style="background-color:#398439;">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span><?="Add files"?>...</span>
+                                    <input type="file" name="files[]" id="uploadify_file" multiple="multiple" style="font-size:22px;" accept="image/*">
+                                </span>
+                            
+                             <!--    The global file processing state -->
+                                <span class="fileupload-process"></span>
+                        </div>
+                        <? } ?>
+                        
+                        <!-- The global progress state -->
+                        <div class="col-lg-5 fileupload-progress fade">
+                             <!--The global progress bar -->
+                            <!--<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="height:10px;">
+                                <div class="progress-bar progress-bar-success" style="width:0%; display:none;"></div>
+                            </div>-->
+                            <!-- The extended global progress state -->
+                            <div class="progress-extended" style="height:5px; display:none;">&nbsp;</div>
+                        </div>
+                </div>
+            <!-- The table listing the files available for upload/download -->
+                 <div class="col-xs-12 padding_0 inline-block" align="left">
+                      <table role="presentation" class="table" style="border-bottom:solid #dddddd 1px;">
+                      <tbody class="files"></tbody></table>
+                 </div>
+                 <!-- Property images  -->
+                <div class="col-xs-12  padding_0 inline-block">   
+                        <?
+                            if(isset($this->company_media))
+                            {
+                            foreach($this->company_media as $company_media)
+                            {
+                       ?>  
+                    
+                         <div class="inline-block business_image"  id="img_div_<?=$company_media['company_media']?>" >
+                                 <div class="image_div text-center" style="cursor:pointer; margin-bottom:20px;">
+                                         <input type="radio" name="select_banner[]" value="gallery<?=$company_media['company_media']?>" <? if($this->business_data['banner_img']==$company_media['company_media']){?> checked="checked" <? }?> />
+                                         <br/>
+                                        <img src="<?=HTTP_BUSINESS_IMAGES_PATH."/360/".$company_media['media_path']?>" class="img-responsive lazy center-block img_cnt_cls" style="border:solid #FFF 4px; display:inline-block;"/>
+                                       <a onclick="delete_media('<?=$company_media['company_media']?>');" class="image_close_div" > <img class="close_btn" alt="" src="<?=HTTP_IMG_PATH?>/close_button.png"/></a>
+                                </div>
+                         </div>
+                       <? } } ?>
+                </div>  
+             </div>                   
+            <!--===================================== * END ADD MORE IMAGES * ========================================-->
+            
+             <!--========================================== * END FILE TYPE INPUT * =======================================-->
+             
+              <!--====================================* START TEXT AND TEXAREA  TYPE INPUT * ==========================================-->           	 
+                         <? } else{?>
+                         
+                        <? if($field_type=='textarea'){ ?>
+                        
+                         <textarea rows="3" name="Textand_Area_<?=$form_element['c_form_id']?>" id="<?=$form_element['c_form_field_name'] ?>" value="" class="form-control <?=$required?>" required="" aria-required="true" aria-invalid="false"><? if($action_type=='0'){ if(isset($all_data['Textand_Area_'.$form_element['c_form_id']]) && !empty($all_data['Textand_Area_'.$form_element['c_form_id']])){ echo $all_data['Textand_Area_'.$form_element['c_form_id']];  } }?></textarea>
+                         
+                        <input type="hidden" name="Textand_Area_type_<?=$form_element['c_form_id']?>" value="<?=$form_element['c_form_field_type']?>" />
+                         <input type="hidden" name="Textand_Area_form_ID_<?=$form_element['c_form_id']?>" value="<?=$form_element['c_form_id']?>" />
+                         
+                        <? } }?>
+                        
+                        <? if($field_type=='text'){?>
+                        
+                         <input type="text" name="Textand_Area_<?=$form_element['c_form_id']?>" <? if($action_type=='0'){ if(isset($all_data['Textand_Area_'.$form_element['c_form_id']]) && !empty($all_data['Textand_Area_'.$form_element['c_form_id']])){?>value="<?=$all_data['Textand_Area_'.$form_element['c_form_id']]?>"  <? } }?> id="<?=$form_element['c_form_field_name'] ?>" value="" class="form-control <?=$required?>" required="" aria-required="true" aria-invalid="false"/>
+                        <input type="hidden" name="Textand_Area_type_<?=$form_element['c_form_id']?>" value="<?=$form_element['c_form_field_type']?>" />
+                         <input type="hidden" name="Textand_Area_form_ID_<?=$form_element['c_form_id']?>" value="<?=$form_element['c_form_id']?>" />
+                        
+                        <? } ?>
+                        <? } ?>
+                    </div>
+                    
+               </fieldset>   
+             </div>
+        <?  $i++; $step++; } ?>
+       <!--=============* END TEXT AND TEXAREA  TYPE INPUT * ==========================-->
+    
+                                                                    
+            <div id="tab<?=$step++?>" class="col-md-12 col-sm-12 col-xs-12 inline-block frm padding_0  tab-pane">
+                <fieldset>
+                    <?php echo $this->form->job_deadline;?>
+ 					<?php echo $this->form->job_deadline_date;?>
+                 </fieldset>
+            </div>
+            
+            <div id="tab<?=$step++?>" class="col-md-12 col-sm-12 col-xs-12 inline-block frm padding_0  tab-pane">
+                <fieldset>
+                    <?php echo $this->form->job_anything_else_know;?>
+                    <?php echo $this->form->yes_else_know;?>
+                </fieldset>
+            </div>
+            
+            <div id="tab<?=$step++?>" class="col-md-12 col-sm-12 col-xs-12 inline-block frm padding_0  tab-pane">
+                <fieldset>
+                    <?php echo $this->form->job_phone_client;?>
+                </fieldset>
+            </div>
+            
+            <div id="tab<?=$step++?>" class="col-md-12 col-sm-12 col-xs-12 inline-block frm padding_0  tab-pane">
+                <fieldset>
+                    <?php echo $this->form->client_zip_code;?>
+                    <p class="zipCheck"></p>
+                </fieldset>
+            </div>
+            
+            <div id="tab<?=$step++?>" class="col-md-12 col-sm-12 col-xs-12 inline-block frm padding_0  tab-pane">
+                <fieldset>
+                      <?php  echo $this->form->how_receive_quote;?>
+                </fieldset>
+            </div>
+</div>     
+            <div class="col-xs-12 inline-block padding_0">   
+                <ul class="pager wizard list-inline">
+                        <li class="previous">
+                              <input type="button" class="btn btn-warning"  id="previous" name="previous" value="<?php echo $this->translate('Previous')?>">
+                        </li>
+                        <li class="next">
+                             <input type="button"  class="btn btn-primary" name="next" id="next" value="<?php echo $this->translate('Save & Continue')?>">
+                        </li>
+                        <li>  <button class="btn btn-primary open2" type="button">Submit</button>  </li>
+                </ul>
+            </div>
+   </form>
+        </div>  
+    </div>  
+</div>
+<style type="text/css">
+</style>
+<link href="<?=APPLICATION_URL?>/public/plugins/rootwizard/progressbarcustom.css" rel="stylesheet" type="text/css">
+<link href="<?=APPLICATION_URL?>/public/admin_css/datepicker.css" media="screen" rel="stylesheet" type="text/css" >
+
+<script type="text/javascript" src="<?=APPLICATION_URL?>/public/plugins/rootwizard/jquery.bootstrap.wizard.js"></script>
+           
+<script type="text/javascript">
+
+
+$(document).ready(function(e) {
+	$('.RedioCheckboxStyle').closest("label").addClass('control control--radio');
+	$('.RedioCheckboxStyle').closest("label").append('<div class="control__indicator"></div>');
+})
+
+function chk_other_option(id)
+{
+	if($("input[name='post_field_value["+id+"]']:checked").val())
+	{	
+		var val=$("input[name='post_field_value["+id+"]']:checked").val();
+		
+		
+		if($("input[value='"+val+"']").hasClass('otherOptionClass'))
+		{
+		
+			
+			$("input[name='other_options["+id+"]']").addClass("required");
+			
+		}
+		else
+		{
+			
+			
+			$("input[name='other_options["+id+"]").removeClass("required");
+		}
+	}
+}
+
+ 
+   $(document).ready(function()
+	 {  $("#next").val("Next");
+	  	$('#rootwizard').bootstrapWizard
+		({
+			
+					onTabShow: function(tab, navigation, index) 
+					{
+							
+							var step=parseInt(index)+1;
+							if(step==1){
+							$('#previous').hide();
+							$('#bar').hide();
+							}else{
+							$('#previous').show();
+							$('#bar').show();
+							}
+							$('#step').val(step);
+							
+							
+							var $total = navigation.find('li').length;
+							var $current = index;
+	
+							var $percent = ($current/$total) * 100;
+							$('#rootwizard').find('.bar').css({width:$percent+'%'});
+							//alert(step);
+							if(step !='<?=$step?>')
+ 					 		{
+								$('.open2').hide();
+								$('#next').show();
+									if(step=='<?=$last_step?>')
+									{
+											$('.open2').show();
+											$('#next').hide();
+									}
+ 					 		}else{
+								$('.open2').show();
+ 					 			$('#next').hide();
+								}
+					},
+					onTabClick: function(tab, navigation, index) 
+					{
+							   if(!$('#fileupload').valid())
+								{
+									return false;
+								}
+					},
+				onPrevious: function (tab, navigation, index) 
+				{
+					var $current = index+1;
+					$('.stepLoadingImg').show();
+				},
+				onNext: function (tab, navigation, index) {
+					var $current = index+1;
+					$('.stepLoadingImg').show();
+				},
+				onTabChange: function (tab, navigation, index) {
+					$('.stepLoadingImg').hide();
+				},
+				
+		});
+
+		
+		$('#next').click(function(e) {
+			if($('#fileupload').hasClass('active'))
+			{
+				$('#next').prop('value','test');
+			}
+            if(!$('#fileupload').valid())
+			{//alert("not valid");
+				return false;
+			}
+			
+			if($('#tab<?=$last_step?>_li').hasClass('active') && $('#fileupload').valid())
+			{			//alert("final step");
+				$('.open2').click();
+			}	
+				return true;			
+        });
+		
+		$('#rootwizard .open2').click(function() {
+				 if($('#fileupload').valid()){
+					 $('#fileupload').submit();	
+				}
+		});
+});	
+
+$.validator.setDefaults({
+    highlight: function(element) {
+        $(element).closest('.form-group').addClass('has-error');
+    },
+    unhighlight: function(element) {
+        $(element).closest('.form-group').removeClass('has-error');
+    },
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function(error, element) {
+       // console.log(element.attr('class'));
+        if (element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else {
+            if (element.attr('type') == 'radio' || element.attr('type') == 'checkbox') {
+                error.insertAfter(element.parent().parent());
+            } else {
+                error.insertAfter(element);
+            }
+        }
+    }
+});
+$('#fileupload').validate({
+    errorPlacement: function errorPlacement(error, element) { 
+	
+	var ClassArray = $(element).attr("class").split(" ");
+	if(ClassArray[ClassArray.length-1]=="User_job_Post_Form")
+	{
+		$(element).closest('fieldset ').after(error); 
+	}
+	else if ($(element).hasClass('input-group')) {
+		 error.insertAfter(element.parent().parent().parent());
+	 }
+	 else{
+		element.before(error); 
+	}
+	},
+     rules: {
+				client_zip_code:{
+					validate_client_zip_code:true,
+				},
+				
+				job_phone_client:{
+					validate_job_phone:true,
+				}
+    	}
+});
+
+jQuery.validator.addMethod("validate_job_phone",
+			function ( value, element){
+				var inputphone = $('#job_phone_client').val();
+				 var valid_input = /^[0-9@ _!#\$\^%&*()+=\-\[\]\\\';,\.\/\{\}\|\":<>\?]+$/;
+				 if(inputphone.match(valid_input)){
+					 return true;
+					 } else {
+						 return false;
+						 }
+				},
+				"Please enter valid phone number"
+);
+
+
+
+
+jQuery.validator.addMethod("validate_client_zip_code",
+	  function ( value, element ) {
+	  var inputZip = $('#client_zip_code').val();
+	  var zip_len = inputZip.length;
+	   var digitss = /^[0-9]+$/;
+	   
+	 var res=checkzipcode();
+	 
+		if(inputZip.match(digitss) && (zip_len==5) && (res==1)){
+			return true;
+		}
+			return false;
+		}, "Please enter valid Zip Code of US" 
+);
+
+/*call ajax for match zip code with DB*/
+	function checkzipcode()
+	{	 var inputZip = $('#client_zip_code').val();
+			
+			var resp='';
+		$.ajax({
+				url:baseUrl+'/project/zipcodelist/inputZip/'+inputZip,
+				data : {id:inputZip},
+				async:false,
+				success: function(data) {
+					
+					 resp=data;
+				}
+			});
+			 return resp;
+	}
+/*call ajax for match zip code with DB*/
+
+
+$(document).ready(function(e) {
+	<? if($all_data['job_deadline_date']!=''){?>
+		$('#job_deadline_date').show();
+	<? } else { ?>
+		$('#job_deadline_date').hide();
+	<? } ?>
+	
+	<? if($all_data['yes_else_know']!=''){?>
+		$('#yes_else_know').show();
+	<? } else { ?>
+		$('#yes_else_know').hide();
+	<? } ?>
+
+	
+$('#job_deadline').change(function() {
+		 var element=document.getElementById('job_deadline_other_option');
+		 var val = document.getElementById('job_deadline');
+		 if(this.value==4)
+		   $('#job_deadline_date').show();
+		 else  
+		 $('#job_deadline_date').hide();
+})
+
+$('input[type=radio][name=job_anything_else_know]').change(function() {
+		 if(this.value==0){
+				   $('#yes_else_know').show(); 
+				  $('#yes_else_know').addClass("required");
+		 }else { 
+		 		   $('#yes_else_know').hide();
+				$('#yes_else_know').removeClass("required");
+
+		 }
+})
+
+
+$('.add_service_image').change(function() {
+	var IdArray = $(this).attr("id").split("_");
+	console.log(IdArray[IdArray.length-1]);
+		 if(this.value==1)
+		   $('#image_upload_btn_div').show();
+		 else  
+		 $('#image_upload_btn_div').hide();
+})
+})
+</script>
+<script type="text/javascript" src="<?php echo SITE_HTTP_URL ?>/public/front_js/bootstrap.min.js"></script>

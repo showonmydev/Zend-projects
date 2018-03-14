@@ -1,0 +1,200 @@
+<?php 
+$servics = $this->services;
+$jsonServices = json_encode($this->services);
+$RecentBlogs = $this->RecentBlogs; 
+?>
+<!--Discover Section-->
+<section class="discover-section">
+   <div class="discover-casa">
+   			 <div class="container">
+                    <div class="overflow">
+                          <h2 class="DiscoverHeading">Discover <span class="sub-heading">CasaAdvisor</span></h2>
+                          <a href="<?php echo $this->url(array(),'front_seeallservice')?>" class="DiscoverCategories">See All Services <img src="<?php echo HTTP_SITEIMG_PATH?>/see.png" alt=""></a>
+                    </div>
+                  	 <div  class="slider_outer_class_caterory overflow top_owl ">
+                     		<div class="prev_clk inline-block slider_arrow">
+                          		  <img id="prev_clk" src="<?=HTTP_SITEIMG_PATH?>/review_slider_left_arrow.png" alt="" />
+                            </div>
+                            <div class="middle_slider3_outter_div">
+                           			 <ul id="owl_category" class="slider3 owl-carousel owl-theme">
+                               <?php  foreach($servics as  $key => $servics) {?>
+                                     <li class="item active_service" id="service<? echo $servics['service_id']?>" onclick="changecategory(<? echo $servics['service_id']?>)">
+                                       <? echo $servics['service_name']?>
+                                    </li>
+                                     <? } ?>
+                            </ul>
+                            </div>
+                            <div class="next_clk inline-block slider_arrow">
+                          		  <img id="next_clk" src="<?=HTTP_SITEIMG_PATH?>/review_slider_right_arrow.png" alt="" />
+                            </div>
+                      </div>
+            </div>
+    </div>
+   <div class="discover_bg_div" >
+  	<div class="container">
+        <div class="col-sm-12 padding_10">
+    		 <div class="row effects text-center">
+          	 </div>
+        </div>
+    </div>
+  </div> 
+</section>
+<!--Explore section-->
+<section>
+<div class=" explore_div padding_zero ">
+      <div class="HowItWorksInnerDiv ">
+        <div class="col-md-6 ">
+         <?=$this->site_configs['explore_txt']?>
+        </div>
+      	<div class="col-md-6 mobile_img_padding"><img src="<?php echo HTTP_SITEIMG_PATH?>/tell_mobile.png"  alt="" class="img-responsive wow slideInRight"/></div>
+      </div>
+  </div>
+</section>
+<!--end explore-->
+<!--hurry section -->
+<section>
+    <div class="hurry_div_hand1">
+        <div class="container">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-sm-12 hurry_div_text">
+               <?=$this->site_configs['hurry_text']?>
+            </div>
+        </div>
+    </div>
+</section>
+<!--end hurry-->
+<!--latest blog section-->
+<section>
+  			 <div class="container">
+ <!--latest heading-->   
+              <div class="overflow latest_blog">
+                  <h2 class="DiscoverHeading latest_heading">Latest <span class="sub-heading">Blog Articles</span></h2>
+                  <a href="<?php echo $this->url(array(''),'front_blog')?>" class="DiscoverCategories">See more Blog Articles <img src="<?php echo HTTP_SITEIMG_PATH?>/see.png" alt=""></a>
+              </div>
+ <!--owl-->
+           <div class="padding_15 paddingMobileZero">
+            <!--  <div  class="slider_outer_class overflow padding_15 ">-->
+              <div class="slider_outer_class_Blog overflow top_owl">
+                    <div class="prev_clk_blog inline-block slider_arrow">
+                          <img id="prev_clk_blog" src="<?=HTTP_SITEIMG_PATH?>/review_slider_left_arrow.png" alt="" />
+                    </div>
+                    <div class="middle_slider3_outter_div_blog">
+                        <div class="slider2 owl-carousel owl-theme">
+                            <? foreach($RecentBlogs as $Blog){?>
+                            <div class="item">
+                                <div class="latest_blog_img">
+                                        <a href="<?php echo $this->url(array('blog_url'=>$Blog['blog_url']),'front_blog')?>">
+                                        <img src="<?php echo HTTP_BLOG_IMAGES_PATH?>/400/<?=$Blog['blog_image']?>" class="img-responsive" alt="" />
+                                        </a>
+                                        <div class=" latest_para_contant">
+                                             <h4 class="heading"><a href="<?php echo $this->url(array('blog_url'=>$Blog['blog_url']),'front_blog')?>"><? echo shortString( $Blog['blog_title'],$length=40,$addDots=true); ?></a> </h4>
+                                             <div class="headding_para_p">
+                                                 <? echo shortString( $Blog['blog_content'],$length=150,$addDots=true); ?>
+                                                 <p class="Spacer-2"></p>
+                                             </div>
+                                              <a class="read_more_a" href="<?php echo $this->url(array('blog_url'=>$Blog['blog_url']),'front_blog')?>">Read More...</a>
+                                        </div>
+                                  </div>
+                            </div>
+                            <? } ?>
+                        </div>
+                    </div>
+                    <div class="next_clk_blog inline-block slider_arrow">
+                          <img id="next_clk_blog" src="<?=HTTP_SITEIMG_PATH?>/review_slider_right_arrow.png" alt="" />
+                    </div>
+             </div>       
+             <!--</div>-->
+           </div>             
+    </div>               
+</section>   
+<!--end latest blog-->
+
+<script type="text/javascript">
+/*bx slider*/
+var window_len =  $(window).width();
+$(document).ready(function(e) {
+var owl1 = $(".slider2");
+  owl1.owlCarousel({
+   items : 4,
+   navigation : true,
+   loop:true,
+   pagination:false,
+   rewindSpeed : 1000,
+   slideSpeed : 1000,
+ //  navigationText : ["<img src='"+baseUrl+"/public/site_images/review_slider_left_arrow.png' alt='' />","<img alt='' src='"+baseUrl+"/public/site_images/review_slider_right_arrow.png' alt='' />"],
+  });
+  
+ /*category*/
+var owl1 = $(".slider3");
+  owl1.owlCarousel({
+   items : 5,
+   navigation : true,
+   autoWidth:true,
+   loop:true,
+   pagination:false,
+   rewindSpeed : 1000,
+   margin:10,
+   slideSpeed : 1000,
+  /* navigationText : ["<img src='"+baseUrl+"/public/img/review_slider_left_arrow.png' alt='' />","<img alt='' src='"+baseUrl+"/public/img/review_slider_right_arrow.png' alt='' />"],*/
+  });
+});
+$('.prev_clk').click(function(e) {
+	var owlnew = $(".slider3").data('owlCarousel');
+    $('.owl-prev').click();
+	owlnew.prev()
+});
+$('.next_clk').click(function(e) {
+	var owlnew = $(".slider3").data('owlCarousel');
+    $('.owl-next').trigger('click');
+	owlnew.next()
+});
+
+$('.prev_clk_blog').click(function(e) {
+	var owlnew = $(".slider2").data('owlCarousel');
+    $('.owl-prev').click();
+	owlnew.prev()
+});
+
+$('.next_clk_blog').click(function(e) {
+	var owlnew = $(".slider2").data('owlCarousel');
+    $('.owl-next').trigger('click');
+	owlnew.next()
+});
+
+</script>
+<script>
+ var JsonServices = JSON.parse('<?=$jsonServices?>');
+ 		$(document).ready(function(e)
+		{ changecategory(88);
+			$('a[data-title="<?php echo trim($this->show)?>"').addClass("option_class_active");
+		}
+		);
+function changecategory(category){
+	$.ajax({ 
+		url:baseUrl+'/index/getajaxcategory',
+		data : {id:category},
+		success:function(data){
+			$('.effects').html(data);	
+			$('#owl_category').find('.item').removeClass('active_service');	
+			$('#service'+category).addClass('active_service');	
+		}
+	});
+}
+ $(function(){
+           var choices = Array() ;
+			for(var i=0;i<JsonServices.length;i++){
+				choices.push(JsonServices[i].service_name);
+			}
+            $('#searchServices').autoComplete({
+                minChars: 1,
+                source: function(term, suggest){
+                    term = term.toLowerCase();
+                    var suggestions = [];
+                    for (i=0;i<choices.length;i++)
+                        if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                    suggest(suggestions);
+                }
+            });
+	 });
+ </script>
+
+

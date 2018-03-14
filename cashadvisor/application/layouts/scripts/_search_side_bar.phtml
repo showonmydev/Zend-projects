@@ -1,0 +1,103 @@
+
+<div class="list-group padding20 sidebarsearch" > 
+   
+    <form  name="login" id="validate-form" class="profile_form" method="post"   novalidate="novalidate" enctype="multipart/form-data">
+      <div class="row marginbottom20">
+      	<div class="col-md-12 margintop10">
+                <h4>Search by Title/Keyword</h4>
+         </div>
+        <div class="col-md-12 text-center"><?php echo $this->form->keyword_search;?></div>
+      </div>
+      
+      <div class="row marginbottom20">
+      	<div class="col-md-12 margintop10">
+                <h4>Search by Fee</h4>
+         </div>
+        <div class="col-md-12 text-center"><?php echo $this->form->price_range;?></div>
+      </div>
+      
+      <ul class="jobsearch-left-ul">
+        <li class="closed main marginbottom20">
+          <ul class="slimScrollDiv" id="industryUL" style="display:block;">
+            <div class="margintop10">
+                <h4>Search by Industry</h4>
+            </div>
+            <li> <?php echo $this->form->user_job_sector;?></li>
+          </ul>
+        </li>
+        
+        <li class="closed main marginbottom20">
+          <ul id="skillUl" style="padding-top: 10px; display:block;">
+            <div class="margintop10">
+            	<h4>Search by Department</h4>
+            </div>
+            <li><?php echo $this->form->user_skills;?></li>
+          </ul>
+        </li>
+        
+        <li class="closed main control-group">
+          <ul  style="padding:0;padding-top: 10px; list-style:none;display:block;">
+            <div class="margintop10">
+            	<h4>Search by Location</h4>
+            </div>
+            <li>
+               <div class="form-group">
+            <input type="text" name="location" id="location"  class="form-control" <? if(isset($_REQUEST['location']) and $_REQUEST['location']!='') { ?> value="<?=$_REQUEST['location']?>" <? } else { ?> value="" <? } ?> placeholder="Enter your location" style="margin-bottom:10px;" />
+            </div>
+            <div class="form-group">
+            <select name="miles" id="miles" class="form-control" onchange="getlatlong();">
+             <option value="">Select miles</option>
+             <option value="5" <? if(isset($_REQUEST['miles']) and $_REQUEST['miles']=='5') { ?> selected="selected" <? } ?>>5 miles</option>
+             <option value="10" <? if(isset($_REQUEST['miles']) and $_REQUEST['miles']=='10') { ?> selected="selected" <? } ?>>10 miles</option>
+             <option value="20" <? if(isset($_REQUEST['miles']) and $_REQUEST['miles']=='20') { ?> selected="selected" <? } ?>>20 miles</option>
+             <option value="50" <? if(isset($_REQUEST['miles']) and $_REQUEST['miles']=='50') { ?> selected="selected" <? } ?>>50 miles</option>
+             <option value="100" <? if(isset($_REQUEST['miles']) and $_REQUEST['miles']=='100') { ?> selected="selected" <? } ?>>100 miles</option>
+             <option value="0" <? if(isset($_REQUEST['miles']) and $_REQUEST['miles']=='0') { ?> selected="selected" <? } ?>>Greater than 100</option>
+            </select>
+            </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      
+      <div class="row" align="center" style="padding:10px 5px 25px;">
+        <!--<div class="span3 offset5"> <a href="#" class="btn mini gray">Clear</a> </div>-->
+      
+        <div class="text-center"><?php echo $this->form->bttnsubmit;?></div>
+          <input type="hidden" name="latitude" id="latitude" value="<? if(isset($_REQUEST['latitude']) and $_REQUEST['latitude']!='') { ?><?=$_REQUEST['latitude']?><? } ?>" />
+         <input type="hidden" name="longitude" id="longitude" value="<? if(isset($_REQUEST['longitude']) and $_REQUEST['longitude']!='') { ?><?=$_REQUEST['longitude']?><? } ?>" />
+         
+         <input type="hidden" name="sort_order" id="sort_order" value="<?=$_REQUEST['sort_order']?>" />
+      </div>
+    </form>
+  </div>
+
+
+
+<script>
+
+$(document).ready(function(e) {
+	
+	<? if(isset($_REQUEST['price_range'])){ ?>
+		var rate = <?=$_REQUEST['price_range']?>;
+		<? }else{ ?>
+		var rate = 0;
+		<? } ?>
+	
+	$("#price_range").ionRangeSlider({
+		grid: true,
+		min: 0,
+		max: 1000,
+		from: rate,
+		prefix: "$ ",
+		max_postfix: "+",
+		//step:1,
+		//prettify_enabled: false,
+		//values: ["0", "25", "50", "75", "100", "125"],
+		
+		//onChange: function (data) {
+			//$('#searchForm').submit();
+		//},
+		});
+});
+</script> 

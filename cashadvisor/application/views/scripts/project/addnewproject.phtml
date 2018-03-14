@@ -1,0 +1,231 @@
+<style type="text/css">
+.header .close { position: absolute; right: -7px;background-color: white; padding: 2px 6px;border-radius: 50%; opacity: 1; top: -2%;border:2px solid #0bb8e3;color:#0bb8e3;z-index: 1;}
+.job_post_outter_div .form-group>:first-child { text-align:left;font-weight: 700;font-family: 'PT Sans', sans-serif;display: inline-block;color:black;margin-bottom: 5px;padding:0px;font-size:17px;}	
+
+</style>
+<?php
+$EditJob = $this->jobedit;
+$job_id = $this->job_id;
+$pageContent = $this->pageContent;
+$lastStep = count($pageContent);
+?>
+
+	<div class="package_service_provider">
+            			<h1>Add New<span class="pay_paln_h1"> Project </span></h1>
+            </div>
+    <div class="container">
+<!--add Projects -->  
+    		<div class="package_wrap">
+            	<div class="col-sm-12">
+                	<p>&nbsp;</p>
+                    <h3 class="tell_us_h">Tell Us What You Need</h3>
+                    <p class="we_connect">We will connect you with best suitable and qualified service providers.</p>
+                </div>
+           <!-- Tell us-->
+            	<div class="col-sm-8 col-xs-12 job_post_outter_div">
+                 <form method="get" role="form" name="add_project" novalidate="novalidate" class="add_new_project" enctype="multipart/form-data"> 
+							<?php echo $this->form->service_parent_id;?>
+                            <?php echo $this->form->service_sub_parent_id;?>
+                            <?php echo $this->form->service_id;?>
+                            <a class="" ><?php echo $this->form->save_and_continue;?></a>
+                 </form>           
+                </div>
+            <!--steps-->    
+               	<div class="col-sm-4 ">
+                    <div class="col-sm-12">
+                            <h3 class="how_work_h3">How it works</h3>  
+                            <div class="padding_10_15">
+                                     <? $i = 1; foreach($pageContent as $step) {?>
+                                        <div class="col-xs-3">
+                                            <img class="img-responsive how_it_work_inner_img" alt="" src="<?php echo HTTP_JOB_PAGE_ICON_IMAGES_PATH?>/<?=$step['job_page_how_icon']?>">
+                                        </div>
+                                        <div class="col-xs-9 padding_zero">
+                                            <h5 class="steps_text_heading"><?=$step['job_page_how_step_heading']?> :</h5>
+                                            <span class="step_desc"><?=$step['job_page_step_desc']?></span>
+                                            <p>&nbsp;</p>
+                                        </div>
+                                        	<? if($i!=$lastStep){?>
+                                        	<hr class="clear overflow">
+                                            <? }?>
+                                     <? $i++; } ?>   
+                            </div>
+                    </div>   
+                         
+                </div>
+            </div>
+            <input type="hidden" name="job_id_for_edit" id="job_id_for_edit" value="<?=$job_id ?>" /> 
+    </div> 
+
+ <div class="modal fade" id="addprojectmodel" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="header">
+          <button type="button" class="close" data-dismiss="modal" onclick="closeJobModal()">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:0px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+ 
+
+<script type="text/javascript">
+
+
+$(document).ready(function(e) {
+    getcategorylist('<?=$this->all_data['service_parent_id']?>');
+	$("#service_sub_parent_id").val("<?=$this->all_data['service_sub_parent_id']?>");
+	
+	getsubcategorylist('<?=$this->all_data['service_sub_parent_id']?>');
+	$("#service_id").val("<?=$this->all_data['Cat_id']?>");
+});
+
+
+function getcatId(){
+	 var form = $(".add_new_project");
+	 form.validate();
+	if(form.valid())
+	{
+		var SubCat_ID = $('#service_id').val();
+		requestjobModel(SubCat_ID,1);
+	}
+	else
+	{
+		return false;
+	}
+}
+
+</script>
+
+<script type="text/javascript">
+var file_cnt=-1;
+var file_id;
+var FILE_PATH='<?=SITE_HTTP_URL."/public/resources/uploads/image_".$this->user->user_id;?>/';
+var THUMB_FILE_PATH='<?=SITE_HTTP_URL."/public/resources/uploads/image_".$this->user->user_id;?>/thumbnail/';
+var MEDIUM_FILE_PATH='<?=SITE_HTTP_URL."/public/resources/uploads/image_".$this->user->user_id;?>/medium/';
+<?php /*?>var APPLICATION_PATH_USER='<?=SITE_HTTP_URL?>/project/companymedia2/qa_id/59';<?php */?>
+</script>      
+
+<script id="template-upload" type="text/x-tmpl">
+
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+      	<td>
+            
+        </td>
+	    <td>
+            <span class="preview"></span>
+        </td>
+        <td  class="hidden-xs">
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td  class="hidden-xs">
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Start</span>
+                </button>
+            {% } %}
+            {% if (!i) { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+
+<script id="template-download" type="text/x-tmpl">
+
+   
+{% for (var i=0, file; file=o.files[i]; i++) { 
+file_cnt++;
+file_id="files_"+file_cnt;
+
+$(".banner_img_instruction").css('display','block');
+
+	if (file.error)
+	{
+		if(file.error=="Image requires a minimum width")
+		{
+			alert('Image should be of atleast 200 x 100 pixel.');
+		}
+		else
+		{
+	 		alert(file.error);
+		}
+	}
+	else
+	{
+		
+%}
+    <tr class="template-download fade">
+        <td>
+			<div class="radio">
+            <span class="preview" style="cursor:pointer;">
+                <input type="radio" name="select_banner[]" value="{%=file.name%}" style="margin-left:0px;"/>
+            </span>
+			</div>
+        </td>
+		<td>
+            <span class="preview" style="cursor:pointer;">
+                {% if (file.thumbnailUrl) { %}
+                    <img draggable="false"  src="{%=file.thumbnailUrl%}">
+                {% } %}
+            </span>
+        </td>
+        <td class="hidden-xs">
+            <p class="name">
+                {% if (file.url) { %}
+                    <a  title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td  class="hidden-xs">
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+                <button  class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>
+            {% } else { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% 
+		}
+} 
+		$('img').on('mousedown', function(e) {
+		e.preventDefault();
+		});
+		
+		$('img').bind("contextmenu", function(e) {
+		e.preventDefault();
+		});
+%}
+
+
+</script>
+
+
+

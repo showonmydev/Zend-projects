@@ -1,0 +1,155 @@
+<?php
+$this->modelsuper = new Application_Model_SuperModel();
+$viewjob = $this->getjob;
+$all_data = $this->all_data;
+$n = count($viewjob);
+$CurrentAction = $this->CurrentAction;
+
+//prn($all_data);	
+//prn($viewjob);				
+if($all_data['job_deadline']=='1'){
+		$JobDeadline = "I'm flexible";
+	}
+	elseif($all_data['job_deadline']=='2'){
+			$JobDeadline = "In the next few days";
+		}
+		elseif($all_data['job_deadline']=='3'){
+			 	$JobDeadline = "As soon as possible";
+			}
+			elseif($all_data['job_deadline']=='4'){
+						$JobDeadline = "on date";
+			}
+
+if($all_data['how_receive_quote']=='0'){
+	$receiveQuoteBy = "Email Only";
+}else{
+	$receiveQuoteBy = "Email and Message both";
+	}
+?>
+
+<div class="view_job_ajax_div">
+    <div class="view_job_client_img">
+                <!--/*<img class="img-responsive" style="display:inline-block;" src="<?php //echo getUserImage($viewjob['user_image'],'60') ;?>" />
+                <p><?  // echo $viewjob['user_name'];?></p>
+            	<p class="job_q_headings">Job Type:</p>*/-->
+            	<p class="job_title"><? echo $viewjob['service_name'];?></p>
+            
+     </div>
+	<div class="view_job_ajax_inner_div">
+        
+        <?	
+			if (array_key_exists('post_field_value', $all_data)) {
+			 foreach($all_data['post_field_value'] as $key => $Answer){
+				
+					$Question = $this->modelsuper->Super_Get('category_form','c_form_id= "'.$key.'"',"fetch");
+					if(is_array($all_data["post_field_value"][$key]))
+					{
+					$implode_optipons=implode(",",$all_data["post_field_value"][$key]);
+					}
+					else
+					{
+						$implode_optipons=$all_data["post_field_value"][$key];
+					}
+				
+				$ex_getdata=explode('other_options',$implode_optipons);
+				$test_check_id=$implode_optipons;
+				if(isset($ex_getdata[1]) && !empty($ex_getdata[1])){
+					$test_check_id=$ex_getdata[1];
+					if(isset($all_data['other_options'][$test_check_id]) &&  !empty($all_data['other_options'][$test_check_id])){
+							//echo $all_data['other_options'][$test_check_id];
+					}
+				}
+				$ans = $this->modelsuper->Super_Get('category_form_options','c_option_id IN ('.$test_check_id.')','fetchAll');
+				$totalAns = count($ans);
+		?>
+        <div>
+        	<p class="job_q_headings"><?=$Question['c_form_field_name'];?></p>  
+            <ul class="viewJobUL">
+            	<? if($totalAns!=0){ foreach($ans as $Ans){?>
+                	<li class="job_answers"><?=$Ans['option_text']?></li>                		
+                <?  }}else{ $otherAnswerVal = $all_data['other_options'][$key]; ?>
+                	<li class="job_answers"><?=$otherAnswerVal;?></li>                		
+                <? } ?>
+            </ul>
+           <p class="site_HR"></p>
+        </div>
+        
+        <? }  
+			}
+		?>
+        
+        <? 		if (array_key_exists('form_ID_and_Type ', $all_data)) {	
+				foreach($all_data['form_ID_and_Type'] as $key => $Answer){
+					if($Answer=='1' or $Answer=='0'){
+						$TextQuestion = $this->modelsuper->Super_Get('category_form','c_form_id= "'.$key.'"',"fetch");
+		?>
+         <div>
+        	<p class="job_q_headings"><?=$TextQuestion['c_form_field_name'];?></p>  
+            <ul>
+                	<li class="job_answers"><?=$this->all_data['Textand_Area_'.$key];?></li>                		
+            </ul>
+           <p class="site_HR"></p>
+        </div>
+        <? } } } ?>
+        
+        
+          <? 
+		  	if (array_key_exists('job_images', $viewjob)) {
+		  	if($viewjob['job_images']!=""){?>
+					<p class="job_q_headings">Would you like to add photos to describe your project? </p>
+                    <div class="col-sm-12 overflow clear_both">
+						<? 
+                             $image= array(); $image = explode(',',$viewjob['job_images']); 
+                             foreach($image as $img){
+                        ?>
+                                 <div class=" col-sm-4 col-xs-4 job_image_width overflow projectImgagesSendQuote">
+                                    <img src="<?=HTTP_CLIENT_JOB_IMAGES_PATH?>/150/<?=$img;?>" alt="" />
+                                    <div class="Spacer-2"></div>
+                                    <div class="Spacer-2"></div>
+                                </div>
+                        <? } ?>
+                    </div>
+                   <p class="site_HR"></p>
+		  <? }  }?> 
+          
+        <? if($all_data['job_anything_else_know']=='0'){?>
+         <div>
+        	<p class="job_q_headings">Service Provider Should Know:</p>
+            <p class="job_answers"><? echo $all_data['yes_else_know'];?></p>
+            <p class="site_HR"></p>
+        </div>
+        <? } ?>
+        <div>
+        	<p class="job_q_headings">When the work should be start:</p>
+            <p class="job_answers"><? echo $JobDeadline;?> &nbsp;<?=$all_data['job_deadline_date']?></p>
+            <p class="site_HR"></p>
+        </div>
+        
+       <div>
+        	<p class="job_q_headings">Phone Number:</p>
+            <p class="job_answers"><? echo $all_data['job_phone_client'];?></p>
+            <p class="site_HR"></p>
+        </div>
+        
+        <div>
+        	<p class="job_q_headings">How would you like to receive quotes?:</p>
+            <p class="job_answers"><? echo $receiveQuoteBy;?></p>
+            <p class="site_HR"></p>
+        </div>
+        
+        <div>
+        	<p class="job_q_headings">Posted On:</p>
+            <p class="job_answers"><? echo $viewjob['posted_job_created'];?></p>
+            <p class="site_HR"></p>
+        </div>
+    </div>
+   
+   <? if($CurrentAction=='index'){?> 
+   <div class="edit_job_button text-center">
+       <a href="<?php echo $this->url(array('job_id'=>$viewjob['job_id']),"front_editproject")?>" class="add_project">Edit Project</a>
+   </div>
+   <? } ?>
+
+    
+</div>
+

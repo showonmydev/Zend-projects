@@ -1,0 +1,30 @@
+
+<div class="custom-form-wrapper">
+<div class="client_profile_page">
+        <div class="col-sm-12 padding_zero">
+        	<h2 class="text-left">Settings</h2>
+           	<div class="setting_main_outter_div col-sm-12 text-center overflow">
+            
+            	<div class="col-sm-3 col-xs-6 width_xs ">
+                	<a href="<?php echo $this->url(array(),"front_user_accountpage")?>" class="block_display">
+                		<img src="<?=HTTP_SITEIMG_PATH?>/account_dummy.png" alt="" class="img-responsive MarginAuto">
+                        <p>&nbsp;</p>
+                        <h5>Account</h5>
+                    </a>
+                </div>
+                
+                <div class="col-sm-3 col-xs-6 width_xs ">
+                	 <? if($this->user->user_type=='service_provider'){ $allNotifications = $this->url(array(),"front_allNotification"); } else { $allNotifications = $this->url(array(),"front_NotifiClient");}?>   
+                	<a href="<?php echo $allNotifications; ?>" class="block_display">
+                		<img src="<?=HTTP_SITEIMG_PATH?>/notification_settings.png" alt="" class="img-responsive MarginAuto">
+                        <p>&nbsp;</p>
+                        <h5>Notifications</h5>
+                    </a>
+                </div> 
+                
+            </div>
+        </div>
+	</div>
+</div>
+
+ 

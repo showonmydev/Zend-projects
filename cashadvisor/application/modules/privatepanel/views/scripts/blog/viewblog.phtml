@@ -1,0 +1,52 @@
+<?php 
+$FullBlog = $this->GetFullBlog; 
+?>
+
+
+<div class="row">
+    <div class="col-sm-12 CasaBlogOutterDiv">
+  		<div class="col-sm-8 col-xs-12 CasaBlogRightDiv">
+        <? if($FullBlog!=''){?>
+            <div class="overflow FullBlogOuterDiv">
+                    <div class="CasaBlogHeadingDiv">
+                        <h2 class="CasaBlogHaedingA"><?=$FullBlog['blog_title']?></h2>
+                        <p class="blog_byDiv">
+                              <span class="byy_1">BY: </span>
+                              <span class="blogpostername"><?php echo "Casa Advisor Editors"; ?> </span>
+                              <span class="margin_list"> | </span>
+                              <span class="blogPostedDate"><?php echo date('F d, Y',strtotime($FullBlog['blog_modified_on'])); ?> </span> 
+                        </p>
+                    </div>
+                    
+                    <div class="CasaBlogImageDiv">
+                        <a>
+                         <img style="max-width:100%;"  src="<?=HTTP_BLOG_IMAGES_PATH?>/<?=$FullBlog['blog_image']?>" alt="" />
+                         </a>
+                    </div>
+                    
+                    <div class="CasaBlogDetailsDiv">
+                        <div class="overflow CasaBlogContent"><?=$FullBlog['blog_content']?></div>
+                        <div class="Spacer-1"></div>
+                    </div>
+                    
+                    <div class="blogUnderCat">
+                        <?php /*?><p class="undercat">Under Blog Category: <span> <a onclick="serachbycat(<?=$FullBlog['blog_cat_id']?>)" ><?=$FullBlog['blog_category_title']?></a></span></p><?php */?>
+                        <p class="undercat">Under Blog Category: <span> <a><?=$FullBlog['blog_category_title']?></a></span></p>
+                        <p class="undercat">Tagged with: 
+						<? $tag = explode(",",$FullBlog['blog_tag']); $totalTag = count($tag);  $i=0;
+							foreach($tag as $eachTag){?>
+							<span> 
+								 <a><?=$eachTag?></a>
+							</span><?   if(++$i!== $totalTag){?>,<? } ?>
+							<? } ?>
+                         </p>   
+                        <div class="Spacer-1"></div>
+                    </div>
+                    
+                    
+                    <div class="Spacer-1"></div>
+                    
+                    
+            </div>
+        <? } ?>    
+        </div>

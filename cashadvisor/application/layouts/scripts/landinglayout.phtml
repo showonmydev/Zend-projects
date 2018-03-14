@@ -1,0 +1,291 @@
+<?php echo $this->docType("HTML5");?>
+<html lang="en">
+<head>
+<?php 
+	echo $this->headMeta()."\n"; 
+	echo $this->headTitle()."\n";
+	echo $this->headLink()."\n";
+	global $myActionName,$myControllerName,$myModuleName;
+	global $is_mobile;
+	$myControllerName=Zend_Controller_Front::getInstance()->getRequest()->getControllerName();	
+	$myActionName=Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+	$myModuleName=Zend_Controller_Front::getInstance()->getRequest()->getModuleName();
+?>
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="<?php echo $this->baseUrl()?>/pu
+  <script src="<?php echo $this->baseUrl()?>/public/front_js/respond.min.js"></script>
+<![endif]-->
+<?
+     if($myControllerName=='homevaluation' || $myControllerName=='leadmagent' || $myControllerName=='leadmagenttwo' || $myControllerName=='leadmagent' )
+	 {
+		 $image=HTTP_TEMPLATE_IMAGES.'/'.$this->share_image;
+		 ?>
+<meta name="image_url" content="<?=$image?>" />
+<meta property="og:image" content="<?=$image?>" />
+<meta itemprop="image" content="<?=$image?>"/>
+<?
+		 
+	 }
+	
+	?>
+<script src="<?php echo $this->baseUrl('public/plugins/jquery-1.11.0.min.js')?>"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script>var baseUrl = SITEURL = SITE_URL = '<?php echo $this->baseUrl()?>';</script>
+<script>
+var controller='<?=$myControllerName?>';
+var action='<?=$myActionName?>';
+var module='<?=$myModuleName?>';
+
+
+</script>
+<script>
+$(window).load(function(e) {
+	$('#wrap').hide();
+});
+
+</script>
+</head>
+<?
+ if($myControllerName=='homevaluation')
+{
+	$class="homevaluation";
+	?>
+<style>
+.homevaluation {
+	background:url('<?=HTTP_TEMPLATE_IMAGES?>/<?=$this->bg_image?>') !important;
+	background-size: cover !important;
+	overflow-x: hidden;
+	background-position: center;
+}
+</style>
+<?
+}
+
+else if($myControllerName=='leadmagenttwo')
+{
+	$class="homevaluation2";
+	?>
+<style>
+.homevaluation2 {
+	background-color:#a8a8a9 !important;
+}
+</style>
+<?
+}
+else if($myControllerName=='leadmagent')
+{
+	$class="homevaluation2";
+	?>
+<style>
+.homevaluation2 {
+/*	background:url('<?=HTTP_SITE_IMAGES?>/girl_bg.png') !important;
+	background-size: cover !important;
+	overflow-x: hidden;
+	background-position: center;*/
+	background-color:#000 !important;
+}
+</style>
+<?
+}
+
+else if($myControllerName=='sellermagent')
+{
+	$class="homevaluation2";
+	?>
+<style>
+.homevaluation2 {
+	background-color:#000 !important;
+}
+</style>
+<?
+}
+
+else
+{
+	$class="";
+}
+
+?>
+
+<body  class="<?=$class?>">
+<?
+
+$mobile_class='';
+if($is_mobile==1)
+{
+	$mobile_class='hide';
+}
+
+?>
+<? if($is_mobile==1)
+{?>
+<link href="//vjs.zencdn.net/4.9.0/video-js.css" rel="stylesheet">
+<? }?>
+<div >
+  <div id="wrap" class="text-center"> <img src="<?=HTTP_SITE_IMAGES?>/loader.GIF" alt="loader" class="fa-spin" width="100" id="logo-preloader" /> </div>
+  
+  <!--========================================== //End PROJECT-NAME Menu Section-->
+  
+  <?php //echo $this->render("sub_home_slider.phtml");?>
+  <div class="text-center">
+    <div class="maxwidth">
+      <?php 
+				if(($myControllerName=='index' && $myActionName=='index') or ($myControllerName=='job' && $myActionName=='viewjob') or ($myControllerName=='user' ) or ($myControllerName=='static' ) or ($myControllerName=='error' ))
+				{
+					?>
+      <div class="container"><?php echo $this->getHelper('Messages')->getMessages();?> </div>
+      <?php echo $this->render("sub_show_messages.phtml");?>
+      <?php
+								echo $this->layout()->content;	
+								
+						?>
+      <?	
+				
+				}
+				else
+				{
+					?>
+      <div class="innerpage">
+        <?
+                                if($myControllerName=='leadmagent' || $myControllerName=='sellermagent'){ 
+								?>
+        <?
+                                if($is_mobile==1)
+								{
+									if($myControllerName=='leadmagent')
+									$poster=HTTP_SITE_IMAGES.'/girl_bg.png';
+									else
+									$poster=HTTP_SITE_IMAGES.'/kitchen_bg.png';
+								
+							
+									
+									?>
+                                    
+                                    <style>
+									.vjs-poster
+{
+	background-size:100% 100% !important;
+	background-image:url('<?=$poster?>') !important;
+}
+									</style>
+                                    
+                                    
+        <div>
+          <video id="example_video_1" class="video-js vjs-default-skin "
+                  controls preload="auto" width="100%" height="auto"
+                   poster="<?=$poster?>"
+                   data-setup='{"example_option":true,"poster":"<?=$poster?>"}'>
+                  
+            <source src="<?=HTTP_TEMPLATE_IMAGES?>/<?=$this->bg_image?>" type='video/mp4' />
+          </video>
+        </div>
+        <?
+								}
+								else{
+								?>
+        <? if($myControllerName=="sellermagent"){?>
+        <div class="video_overlay <?=$mobile_class?>"></div>
+        <? }?>
+        <? if($myActionName=="step2" && $myControllerName=="leadmagent"){?>
+        <div class="video_overlay <?=$mobile_class?>"></div>
+        <? }?>
+        <div  class="<?=$mobile_class?>" id="video_main_parent">
+          <div id="video_parent" style="position:absolute">
+            <video id="bgvid" preload="" autoplay loop onEnded="this.currentTime=0" height="100%" class="vjs-tech" src="<?=HTTP_TEMPLATE_IMAGES?>/<?=$this->bg_image?>">
+              <object autoplay="" loop="" onended="this.currentTime=0" name="html5_video_fallback" style="width:100%;" class="leanback-player-flash-fallback" id="html5_video_fallback" width="100%" height="100%" type="application/x-shockwave-flash" data="http://praegnanz.de/html5video/player/leanback/player.swf">
+                <param name="movie" value="http://praegnanz.de/html5video/player/leanback/player.swf">
+                <param name="allowfullscreen" value="true">
+                <param name="allowscriptaccess" value="always">
+                <param name="wmode" value="transparent">
+                <param name="aspectratio" value="16:9">
+                <param name="flashvars" value="autostart=true&amp;controlbar=false&amp;controls=false&amp;file=<?=HTTP_TEMPLATE_IMAGES?>/<?=$this->bg_image?>">
+              </object>
+            </video>
+          </div>
+        </div>
+        <? } }?>
+        <?
+                                if($myControllerName=='leadmagenttwo'){
+								?>
+        <?
+                                if($is_mobile==1)
+								{
+									//prd("vbcvn");
+									?>
+                                    
+                   <style>
+									.vjs-poster
+{
+	background-size:100% 100% !important;
+	background-image:url('<?=HTTP_SITE_IMAGES?>/key_bg.png') !important;
+}
+									</style>                    
+                                    
+        <div>
+          <video id="example_video_1" class="video-js vjs-default-skin "
+                  controls preload="auto" width="100%" height="auto"
+                  poster="<?=HTTP_SITE_IMAGES?>/key_bg.png"
+                   data-setup='{"example_option":true,"poster":"<?=HTTP_SITE_IMAGES?>/key_bg.png"}'>   
+            <source src="<?=HTTP_TEMPLATE_IMAGES?>/<?=$this->bg_image?>" type='video/mp4' />
+          </video>
+        </div>
+        <?
+								}else {
+								?>
+        <div class="video_overlay_light <?=$mobile_class?>"></div>
+        <div  class="<?=$mobile_class?>" id="video_main_parent">
+          <div id="video_parent" style="position:absolute">
+            <video id="bgvid" preload="" autoplay loop onEnded="this.currentTime=0" height="100%" class="vjs-tech" src="<?=HTTP_TEMPLATE_IMAGES?>/<?=$this->bg_image?>">
+              <object autoplay="" loop="" onended="this.currentTime=0" name="html5_video_fallback" style="width:100%;" class="leanback-player-flash-fallback" id="html5_video_fallback" width="100%" height="100%" type="application/x-shockwave-flash" data="http://praegnanz.de/html5video/player/leanback/player.swf">
+                <param name="movie" value="http://praegnanz.de/html5video/player/leanback/player.swf">
+                <param name="allowfullscreen" value="true">
+                <param name="allowscriptaccess" value="always">
+                <param name="wmode" value="transparent">
+                <param name="aspectratio" value="16:9">
+                <param name="flashvars" value="autostart=true&amp;controlbar=false&amp;controls=false&amp;file=<?=HTTP_TEMPLATE_IMAGES?>/<?=$this->bg_image?>">
+              </object>
+            </video>
+          </div>
+        </div>
+        <? }}?>
+        <div class="main_rel_div">
+          <div class="fullwidthdiv"><?php echo $this->getHelper('Messages')->getMessages();?> </div>
+          <?php echo $this->render("sub_show_messages.phtml");?> <br/>
+          <div class="container"> <?php echo $this->layout()->content?> </div>
+        </div>
+        <br/>
+      </div>
+      <?php	
+				}
+				?>
+    </div>
+  </div>
+</div>
+<!--========================================== //End PROJECT-NAME Layout Section-->
+
+<?php //echo $this->render("sub_full_map.phtml");?>
+<?php /*?>	<?php echo $this->render("sub_home_footer_top.phtml");?>
+	
+	<?php echo $this->render("sub_signup_social_buttons.phtml");?><?php */?>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.2.1/jquery-migrate.min.js"></script> 
+
+<?php echo $this->headScript();?>
+<? if($myControllerName=='homevaluation' && $myActionName=='step1'){?>
+<?php /*?><script type="text/javascript" src= "http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script><?php */?>
+<? }
+	
+	?>
+<script src="//vjs.zencdn.net/4.9.0/video.js"></script>
+<script>
+$(document).ready(function(e) {
+ 
+ if($('#example_video_1').length>0)
+ {
+  $('#example_video_1').addClass('vjs-big-play-centered');
+ }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<div class="row">
+	<div class="col-md-12">
+ 		<div class="portlet box purple">
+			<div class="portlet-title">
+				<div class="caption"><i class="<?php echo $this->pageIcon;?>"></i><?php echo $this->pageHeading;?></div>
+ 			</div>
+			<div class="portlet-body">
+				
+				<form method="post" action="<? echo $this->url(array("module"=>'privatepanel',"controller"=>"static","action"=>"removeaboutteam"),'default',true)?>"  onsubmit="return checkSelects();" >
+			
+				<div class="table-toolbar">
+					<div class="btn-group">
+						<a href="<? echo $this->url(array("module"=>'privatepanel',"controller"=>"static","action"=>"addaboutteam"),'default',true)?>" class="btn green"> <i class="fa fa-plus"></i> Add Team Member </a>
+					</div>
+					
+					<div class="btn-group">
+						<button id="sample_editable_1_new" class="btn red"> <i class="fa fa-trash-o"></i> Delete Selected </button>
+ 					</div>
+								
+				</div>
+			
+ 				<table id="sample_1" class="table table-striped table-bordered table-hover dataTable">
+					<thead>
+						<tr>
+							<th width="5%">S.No</th>
+							<th width="5%"><input type="checkbox" class="group-checkable"  data-set="#sample_1 .checkboxes"  name="deletebcchk" id="deletebcchk" /></th>
+                            <th>Member Image</th>
+                            <th>Member Name</th>
+							<th>Member About</th>
+							<th width="8%">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				
+				
+				</form>
+			
+			</div>
+		</div>		
+  	</div>
+ </div>
+
+<script type="text/javascript" charset="utf-8">
+
+$(document)	 .ready(function(e) {
+	$('#sample_1').dataTable( {
+		"bProcessing": true,
+		"bServerSide": true,
+		'bInfo':false,
+ 		"sAjaxSource": "<?php echo $this->baseUrl()?>/privatepanel/static/getaboutteam" ,
+		"aaSorting": [],/*[ 0, "desc" ]*/
+		"aoColumnDefs": 
+		 [
+			{ "bSortable": false, "aTargets": [0,1,2,3,4,5] },
+ 		 	
+		 ],
+		"iDisplayLength":50,
+	    "aLengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]],
+		"fnDrawCallback": function( oSettings ) {re_init();	}
+	} );
+});
+
+
+</script>

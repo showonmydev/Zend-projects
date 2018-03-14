@@ -1,0 +1,92 @@
+<div>
+	<? if($this->page_id=='2') { ?>
+   <!-- <br />
+	<h2 class="static-content-heading text-center" ><big><big><?php //echo $this->content['page_title'];?></big></big></h2>-->
+    <? } ?>
+    <?php echo $this->content['page_content']?>
+
+</div>
+
+<? if($this->page_id=='1'){
+	$TeamData = $this->TeamData;
+?>
+<style type="text/css">
+.header .close {
+    position: absolute;
+    right: -7px;
+    background-color: white;
+    padding: 2px 6px;
+    border-radius: 50%;
+    opacity: 1;
+    top: -2%;
+    border: 2px solid #0bb8e3;
+    color: #0bb8e3;
+    z-index: 1;
+}
+</style>
+
+
+<div class="container">
+    <div class="team_div">
+       <? foreach($TeamData as $team){?>
+            <div class="col-sm-12 col-md-4">
+                <div class="text-center member_div">
+                	<a class="Cursor" onclick="aboutteammember(<?=$team['ateam_member_id'];?>)" >
+                    	<img alt="" class="img-circle team_img " src="<? echo HTTP_TEAM_MEMBER_IMAGES_PATH?>/<?=$team['ateam_member_image']?>"> 
+                    </a>    
+                    <h5><b><?=$team['ateam_member_name']?></b></h5>
+                    <h6><a class="abtMember" onclick="aboutteammember(<?=$team['ateam_member_id'];?>)" >About Member</a></h6>
+                </div>
+            </div>
+        <? } ?>
+	</div>
+</div>
+
+<div class="container-fluid">
+<div class="meet_bottom">
+<div class="container">
+<p><b><b>Remember, we are here to solve your issues!</b></b></p>
+</div>
+</div>
+</div>
+
+    <div class="modal fade" id="aboutTeamMember" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+           
+             <button aria-label="Close" data-dismiss="modal" class="close" type="button"><img class="viewProjectClose" src="<?=HTTP_SITEIMG_PATH?>/close_image_x.png" alt="" /></button>
+            <div class="modal-body" style="padding:0px;">
+            </div> 
+          </div>
+        </div>
+    </div>
+<script type="text/javascript">
+
+function aboutteammember(team_id){
+	$.ajax({ 
+		url:baseUrl+'/static/aboutteammember/',
+		data : {member_id:team_id},
+		success:function(data){
+			$('#aboutTeamMember .modal-body').html(data);
+			$('#aboutTeamMember').modal('show');
+
+		}
+	});
+}
+
+</script>    
+<? } ?>
+
+<script>
+
+<? if($this->page_id=='3') { ?>
+function setFaqQuestion(type)
+{
+	$('.howBlockHead').removeClass('selected');
+	$('.FaqBlockPage').addClass('hide');
+	$('#accordion_'+type).removeClass('hide');
+	$('#'+type+'Div').addClass('selected');
+	
+}
+<? } ?>
+</script>

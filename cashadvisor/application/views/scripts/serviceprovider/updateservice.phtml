@@ -1,0 +1,103 @@
+<style>
+.signup01
+{
+	background:none !important;
+}
+label
+{
+	width:100%;
+}
+</style>
+<div class="custom-form-wrapper signup01">
+           
+           <div class=""> 
+            
+             <form name="update_form"  action="<?php echo APPLICATION_URL?>/serviceprovider/updateservice" method="post" id="update_form"  class="profile_form">
+             <input type="hidden" name="type"  value="<?=$this->type_id?>"/>
+        						
+<?
+								$j = 0;
+								$par_main_id = explode(',',$this->all_added['par_ids']);
+								$sub_main_id = explode(',',$this->all_added['ids']);
+								
+								foreach($this->Categories as $val){
+							
+									if(isset($this->subCategory[$val['service_id'].'_'.$j])){
+							?>
+                            		 <label   <? if(in_array($val['service_id'],$par_main_id)){ ?>  class="checked_label" <? }?> for="cat_<?=$val['service_id']?>" style="border-bottom:1px solid #d2d2d2" >
+                                            <input <? if(in_array($val['service_id'],$par_main_id)){ $p=1;?>   checked="checked" <? }else { $p=0;?>  <? }?> class="Service_main_cat" type="checkbox" value="<?=$val['service_id']?>" id="cat_<?=$val['service_id']?>" name="service_cat[]" />&nbsp;<?=$val['service_name']?>
+                                    </label>	
+                            		<div id="Cat_div_<?=$val['service_id']?>" class="Cat_Sub_Div" <? if($p==1){ ?> style="display:block" <? } ?>>
+                            <?
+										foreach($this->subCategory[$val['service_id'].'_'.$j] as $data){
+							?>
+                            			<label for="cat_<?=$val['service_id'].'_'.$data['service_id']?>" class="subCategory checked_label" style="border-bottom:1px solid #d2d2d2" >
+                                                <input <? if(in_array($data['service_id'],$sub_main_id)){ ?>  checked="checked"<? }?> type="checkbox" id="cat_<?=$val['service_id'].'_'.$data['service_id']?>" value="<?=$data['service_id']?>"  class="subCatCheckbox required" name="service_sub_cat_<?=$val['service_id']?>[]" />&nbsp;<?=$data['service_name']?>
+                                        </label>
+                            <?
+										}
+							?>
+                            		</div>
+                            <?
+										$j++;
+									}
+									
+								}
+							?>
+          						  <div class="form-actions text-right">
+                                        <button name="bttnsubmit" id="bttnsubmit" type="submit" value="Save" class="btn blue btn-primary site_button  btn btn-default">
+                                        Save</button>
+									</div>
+       					 </form>
+          </div>               
+ </div>
+
+
+                            
+<script>
+
+var form = $("#register_form");
+
+
+
+$(document).ready(function(e) {
+	
+
+
+$('.Service_main_cat:checkbox').change(function(e) {
+	var Id = e.target.id;
+	var CatId = Id.split("_");
+	
+	if($(this).prop("checked") == true){
+		$('#cat_'+CatId[1]).closest('label').addClass('checked_label');
+		$('.subCategory:checkbox').attr('checked', true);
+		$('#Cat_div_'+CatId[1]).slideDown('slow');
+	}
+	else {
+		$('#cat_'+CatId[1]).closest('label').removeClass('checked_label');
+		$('#Cat_div_'+CatId[1]).hide('slow');
+	}
+	
+});
+
+$('.subCatCheckbox').change(function(e) {
+	//alert("2");
+    var Id = e.target.id;
+	var CatId = Id.split("_");
+	
+	if($(this).prop("checked") == true){
+		$('#cat_'+CatId[1]+'_'+CatId[2]).closest('label').addClass('checked_label');
+	}
+	else {
+		$('#cat_'+CatId[1]+'_'+CatId[2]).closest('label').removeClass('checked_label');
+	}
+	
+});
+
+
+    });
+	
+	
+
+	
+</script>

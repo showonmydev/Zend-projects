@@ -1,0 +1,72 @@
+<?php 
+$this->modelStatic = new Application_Model_Static();
+$AllRequestedJobs = $this->AllRequestedJobs;
+$max_proposal_limit = $this->site_configs['max_proposal_limit'];
+$total_notificatin = count($AllRequestedJobs);
+//prn($max_proposal_limit); 
+?>
+
+<div class="containerfluid overflow ">
+	<div class="col-sm-8 col-sm-offset-2 notification_page_outter_div">
+   
+    	<p class="all_noti_p">All Requested Job</p>
+        <div class="col-xs-12 inline-block padding_zero text-center index_star_img">
+       		 <img src="<?=HTTP_SITEIMG_PATH?>/starSeries.png" class="">
+        </div>
+        	<? 
+			 if($this->paginator->getTotalItemCount() > 0)  {  ?>
+                <ul class="all_noti_ul">
+                        <?	foreach($this->paginator as $RequestedJob){ 
+                            $all_data=unserialize($RequestedJob['job_all_data']);
+                            $whereAdr = "zip='".$all_data['client_zip_code']."'";
+                            $clientAddress = $this->modelStatic->Super_Get("zips",$whereAdr,"fetch");
+                       		$get_new_proposal_limit = $this->modelStatic->Super_Get("more_quote","more_quote_job_id='".$RequestedJob['notification_job_id']."' && more_quote_status='1'","fetch");
+							if($get_new_proposal_limit['more_quote_admin_allowed']!='0'){
+								$max_proposal_limit = $this->site_configs['max_proposal_limit']+$get_new_proposal_limit['more_quote_admin_allowed'];
+							}else {
+								$max_proposal_limit = $this->site_configs['max_proposal_limit'];
+							}
+                        ?>
+                            <? if( ($RequestedJob['totalProposal'] < $max_proposal_limit)){?>
+                                <li class="overflow">
+                                        <div class="requestImg">
+                                                <img class="img-responsive img-circle MarginAuto RequestPageImage" src="<?php echo getUserImage($RequestedJob['user_image'],'60') ;?>" />
+                                        </div>
+                                      <? 
+                                        $where = "service_id='".$all_data['Cat_id']."'";
+                                        $extra=array('fields'=>'service_name');	
+                                        $getservice_name = $this->modelStatic->Super_Get("services",$where,"fetch",$extra);
+                                     ?>    
+                                        <div class="requestText">
+                                            <p class="li_inner_p_all_noti"><?=$RequestedJob['user_name']?> </p>
+                                            <p class="job_desc_all_noti"><?=$getservice_name['service_name']?>&nbsp; - &nbsp;<?=$clientAddress['city']?>(<?=$clientAddress['state']?>)</p>
+                                            <p class="job_desc_all_noti_address"><span>Requested on - </span> <span> <?php echo date('F d, Y',strtotime($RequestedJob['posted_job_created'])); ?></span></p>
+                                       </div>
+                                        <? if(isset($proposal) && !empty($proposal) && $proposal!=''){?> 
+                                                <a href="<?php echo $this->url(array('job_id'=>$RequestedJob['notification_job_id']),'front_view_quotemessage')?>" class="add_project">View</a> 
+                                        <? } else {?>
+                                                <a href="<?php echo $this->url(array('job_id'=>$RequestedJob['notification_job_id']),'front_bid')?>" class="add_project">Submit Quote</a>
+                                       <? }?>
+                                </li>
+                            <? }?> 
+                        <? } ?>
+                </ul>
+                 <div class="col-sm-12 padding_left_0 text-center margin_top_20"> 
+                     <?php echo $this->paginationControl($this->paginator,'Sliding','pagination-control.phtml');?> 
+                 </div>
+			<? 
+			} else {?>   
+                <div class="BlankPageouterDiv"> 
+                    <div class="BlankPageInnerDiv"> 
+                        <p class="no_noti_p BlankPagecontent">You have no Request</p>
+                    </div>    
+                </div>   
+  		  <? }  ?>
+    </div>
+</div>
+
+<script type="text/javascript">
+</script>
+
+
+

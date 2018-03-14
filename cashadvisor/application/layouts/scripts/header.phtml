@@ -1,0 +1,160 @@
+<?php global $myActionName,$myControllerName,$myModuleName;
+	$myControllerName=Zend_Controller_Front::getInstance()->getRequest()->getControllerName();	
+	$myActionName=Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+	$myModuleName=Zend_Controller_Front::getInstance()->getRequest()->getModuleName();
+	$this->modelStatic = new Application_Model_Static();  ?>
+    
+<? if($myControllerName!='index'){	$cls="header-inner";}else{	$cls="";}
+if(isset($this->user->user_id)){
+		$left="align_left_imp";
+	$extra = array(
+		'fields'=>array('totalMsg'=> new Zend_Db_Expr('ifnull(count(DISTINCT(notification_id)),0)')),
+		'groub'=>'notification_id'
+	);
+	$total_massages=$this->modelStatic->Super_Get("notifications","notification_reciver='".$this->user->user_id."' and notification_status='0'","fetch",$extra);
+	
+	$extra_sender= array(
+		'fields'=> array('notification_date','notification_message','notification_job_id','notification_type','notification_sender'),
+		'order'=>'notification_date desc'
+	);
+	$joinArr = array(
+		'0'=>array("users","user_id=notification_sender","left",array('CONCAT(user_first_name," ",user_last_name) as user_name','user_image')),
+		'1'=>array("job","job_id=notification_job_id","left",array('job_cat_id')),
+		'2'=>array("services","service_id=job_cat_id","left",array('service_name')),
+		);
+  $massages=$this->modelStatic->Super_Get("notifications","notification_reciver='".$this->user->user_id."' and notification_status='0' ","fetchAll",$extra_sender,$joinArr);
+}
+?>
+<header>
+<div id="top-header">
+<? if((isset($this->user->user_id)) && $myControllerName!='index'){$class='fixed_header_login';}else{$class='';}?>
+<div class="fixed_header <?=$class?> ">
+	<nav class="navbar box" role="navigation ">
+   		 <div class="container_div ">
+       <!--  togel btn and icon-->
+                <div  class=" navbar-header ">
+                    <button type="button" class="navbar-toggle collapsed toggle_box" data-toggle="collapse" data-target="#myNavbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>                        
+                    </button>
+                        <a class="header_responsive_padding" href="<?=$this->baseUrl()."/index"?>" >
+							<?php if((isset($this->user->user_id)) && $myControllerName!='index'){?>
+                           		 <img src="<?php echo HTTP_SITEIMG_PATH?>/footerlogo.png" class=" img-responsive casa_logo_img" alt=""/>
+                            <?php } else { ?>
+                           		 <img src="<?php echo HTTP_SITEIMG_PATH?>/logo.png" class=" img-responsive casa_logo_img" alt="" />
+                            <? } ?>
+                        </a>
+                   <?php if(isset($this->user->user_id)){?>
+                  		<li onclick="showNotice(<?=$this->user->user_id?>)" class="dropdown dropdown-extended dropdown-inbox responsiveNotifyBell" id="notify_li_header">
+                            <a class="dropdown-toggle username_color paddinh_header_un_a" href="#" data-title="find_more" data-toggle="dropdown">
+                            <i class="fa fa-bell-o fa-lg"></i><label class="notify_bell"><?php  echo $total_massages['totalMsg'];?></label></a>
+                             <ul class=" responsive_open_ul_bg_col dropdown-menu">
+                                    <li class="p5 youhaveTmsz"></li>
+                                        <ul class="dropdown-menu-list mszsz">
+                                         </ul>
+                                     <? if($this->user->user_type=='service_provider'){?>    
+                                    <li class="p5"><a class="seeAllNoti" href="<?php echo $this->url(array(),"front_allNotification")?>"><b>See all job request</b></a></li>
+                                    <? } else{ ?>
+                                    <li class="p5"><a class="seeAllNoti" href="<?php echo $this->url(array(),"front_NotifiClient")?>"><b>See all notifications</b></a></li>
+                                    <? } ?>
+                            </ul>
+                		</li>
+                   <? } ?>                 
+                </div>
+    <!--login in user central header-->            
+                <?php if(isset($this->user->user_id)){?>
+                <div class="col-lg-offset-1 col-md-offset-1  col-md-6 col-sm-6 client_header_center_div text-center hidden-xs">
+                	<ul class="client_header_center_ul">
+						<?   if($this->user->user_type=='service_provider'){ ?>
+                              <li><a href="<?php echo $this->url(array(),"front_allNotification")?>">Requests</a></li>
+                              <li><a href="<?php echo $this->url(array(),"front_myJob")?>">My job</a></li>
+                        <? } else {?>      
+                              <li><a href ="<?php echo APPLICATION_URL?>/projects">My Projects</a></li>
+                              <li class="addProjectLiResponsive"><a href ="<?php echo $this->url(array(),"front_addnewproject")?>">Add Project</a></li>
+                              <li><a href ="<?php echo $this->url(array(),"front_searchproviders")?>">Browse Providers </a></li>
+                         <? } ?>  
+                        <li onclick="showNotice(<?=$this->user->user_id?>)" class="dropdown dropdown-extended dropdown-inbox" id="notify_li_header">
+                            <a class="dropdown-toggle username_color paddinh_header_un_a" href="#" data-title="find_more" data-toggle="dropdown">
+                            <i class="fa fa-bell-o fa-lg"></i><label class="notify_bell"><?php  echo $total_massages['totalMsg'];?></label></a>
+                            <ul class=" responsive_open_ul_bg_col dropdown-menu">
+                                <li class="p5 youhaveTmsz"></li>
+                                    <ul class="mszsz">
+                                     </ul>
+                                 <? if($this->user->user_type=='service_provider'){?>    
+                                <li class="p5"><a class="seeAllNoti" href="<?php echo $this->url(array(),"front_allNotification")?>"><b>See all job request</b></a></li>
+                                <? } else{ ?>
+                                <li class="p5"><a class="seeAllNoti" href="<?php echo $this->url(array(),"front_NotifiClient")?>"><b>See all notifications</b></a></li>
+                                <? } ?>
+                            </ul>
+                       </li>
+                    </ul>
+                </div>
+                <? } ?>
+<!--visible on xs-->                
+                <div class="nav_div_left text-center <? //=$left?> collapse navbar-collapse"  id="myNavbar">
+                       		 <ul  class="nav navbar-nav navbar-right"> 
+								<?php 
+							if(isset($this->user->user_id)){
+									if($this->user->user_first_name!='' && $this->user->user_last_name!='' )
+                                    $n= $this->user->user_first_name.' '.$this->user->user_last_name;
+                                    else
+                                    $n= "User";
+								?>
+                            <li class="display_block">
+                                <a class="dropdown-toggle username_color paddinh_header_un_a" href="#" data-title="find_more" data-toggle="dropdown">
+                                    <img class="img-responsive img-circle user_img_loged_right display_inline " src="<?php echo getUserImage($this->user->user_image,'60')?>" alt="<?php echo $this->user->user_first_name?>" title="" /> <?=$n?> <span class="caret"></span>
+                                </a>
+                                <ul class="logoutUl dropdown-menu">
+                                    <?php /*?><li><a href="<?php echo $this->url(array('user_id'=>$this->user->user_id),"front_user_mainprofile")?>">Profile</a></li><?php */?>
+                                   <li><a href="<?php echo $this->url(array(),"front_user_accountpage")?>">My Account</a></li>
+
+								<? if($this->user->user_type=='service_provider'){ ?>
+                                    <li><a href="<?php echo $this->url(array('user_id'=>$this->user->user_id),"front_user_SPprofile")?>">Public Profile</a></li>
+                                    <li class="visible-xs"><a href="<?php echo $this->url(array(),"front_allNotification")?>">Requests</a></li>
+                                    <li class="visible-xs"><a href="<?php echo $this->url(array(),"front_myJob")?>">My job</a></li>
+                                 <? } else {?> 
+                                 <!--On 192 path will  be  cho  APPLICATION_URL?>/projects  --> 
+                                    <li class="visible-xs"><a href ="<?php echo  APPLICATION_URL?>/projects"> My Projects</a></li>
+                                    <li class="visible-xs"><a href ="<?php echo $this->url(array(),"front_addnewproject")?>">Add Project</a></li>
+                                    <li class="visible-xs"><a href ="<?php echo $this->url(array(),"front_searchproviders")?>">Browse Providers </a></li>
+                                <? } ?>  
+                                    <li><a href="<?php echo $this->url(array(),"front_logout")?>">Logout</a></li>
+                                </ul>
+                            </li>
+					<? } else {?>
+                        <li> <a href="<?php echo $this->url(array(),"become_pro")?>" class="btn btn-outline become_a  text-center ">Become A Pro <span class="sr-only">(current)</span></a>  </li>
+                        <li>  <a href="<?php echo $this->url(array(),"front_login")?>" class="btn btn-outline become_a text-center ">Sign In</a>  </li>
+                        <li> <a  href="<?php echo $this->url(array(),"front_register")?>" class="btn btn-outline become_a text-center ">Sign Up</a> </li>
+                   <? } ?>
+               </ul>
+                </div>
+        </div>
+    </nav>
+</div>
+</div>
+
+</header>
+<script type="text/javascript">
+
+function showNotice(userID){ 
+	$.ajax({ 
+		url:baseUrl+'/index/noticeul',
+		data : {id:userID},
+		success:function(data){
+			$('.mszsz .mCSB_container').html(data);	
+			var TotNotice = $('#totalReceivedNoti').val();
+			$('.notify_bell').html(TotNotice);
+			$('.youhaveTmsz').html('You have &nbsp;<b>'+ TotNotice +'</b>&nbsp; Notifications');
+		}
+	});
+}
+
+
+$(document).ready(function() {
+ 	setInterval(showNotice ,10000);   
+});			
+
+</script>
+

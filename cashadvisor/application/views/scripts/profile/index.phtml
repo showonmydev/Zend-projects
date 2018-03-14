@@ -1,0 +1,34 @@
+<div class="custom-form-wrapper">
+<?php if($this->current_controller=="profile" && $this->current_action=="index") {?>
+			<h3 class="profile_page_headings">Manage Profile</h3>
+<? } else { ?>
+			<h3 class="profile_page_headings">Change Password</h3>
+<? } ?>            
+            <?php echo $this->form?>
+</div>
+			<script>
+					$(document).ready(function(e) {
+					//alert('hello')
+					var presentstate = "<?php echo $this->user->user_state; ?>";
+					//console.log(presentstate);
+					var city = "<?php echo $this->user->user_city; ?>";
+					//alert(city);
+					getcity(presentstate);
+					window.setTimeout( function(e){
+							$('#user_city').val(city);
+					},4000);
+				});
+            </script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	  $('[data-toggle=offcanvas]').click(function() {
+		$('.row-offcanvas').toggleClass('active');
+	  });
+	});
+	
+	
+</script>
+
+
+ 

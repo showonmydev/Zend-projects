@@ -1,0 +1,183 @@
+<style>
+.pagination {
+text-align: center;
+/* width: 100%; */
+display: inline-block;
+margin:0px !important;
+padding-left: 13px;
+}
+.pagination ul li {
+display: inline-block;
+font-weight: 400 !important;
+ background: none;
+    border: 1px solid #c2c1c1;
+    color: #666;
+    font-size: 16px;
+   padding:1px 0;
+}
+.pagination ul li .active {
+    background-color: #ef5a29;
+    border: 1px solid #c2c1c1;
+    color: #FFF;
+    font-size: 16px;
+    padding: 2px 9px;
+}
+.pagination ul li.prev,.pagination ul li.next {
+	font-size:14px;
+	 border: 1px solid #c2c1c1;
+	padding:3px 0 2px;
+}
+
+.pagination ul
+{
+	margin:0px !important;
+	padding:0px !important;
+}
+.pagination ul li a
+{
+	 padding: 2px 9px;
+	text-decoration:none;
+}
+.text_algin_center
+{
+	text-align:center;
+}
+.display
+{
+	display:inline-block;
+}
+</style>
+
+<?php 
+
+	$params = array();	
+	$params=Zend_Controller_Front::getInstance()->getRequest()->getParams();
+	//prd($params);
+	//echo $_SERVER['REQUEST_URI'];die;
+$queryString = "";
+
+
+if(@count($this->getHelper('baseUrl')->view->queryString) > 0 && @is_array($this->getHelper('baseUrl')->view->queryString))
+$queryString = http_build_query($this->getHelper('baseUrl')->view->queryString); 
+
+ $page_vars=$this->getVars(); 
+ //prn($page_vars);
+  
+
+?>
+
+
+<div>
+	<div class="col-md-12 padding0">
+
+  
+         
+        
+        <?php if($this->pageCount){?>
+              <!--<div class="pull-left">
+            <select name="number_records" style="width:auto; height:2em" class="pull-left" onchange="changeItemCount(this)" >
+                <option value="10" <?php  if($this->itemCountPerPage == 10) echo "selected='selected'"; ?>>10</option>
+                <option value="25" <?php  if($this->itemCountPerPage == 25) echo "selected='selected'"; ?>>25</option>
+                <option value="50"	<?php  if($this->itemCountPerPage == 50) echo "selected='selected'"; ?>>50</option>
+                <option value="100"	<?php  if($this->itemCountPerPage == 100) echo "selected='selected'"; ?>>100</option>
+                <option value="150" <?php  if($this->itemCountPerPage == 150) echo "selected='selected'"; ?>>150</option>
+                <option value="200" <?php  if($this->itemCountPerPage == 200) echo "selected='selected'"; ?>>200</option>
+            </select>  
+         </div>-->
+         <div class="text-right">
+            
+            <div >
+            <ul class="pagination fontsize14 textupper">
+                <!-- Previous page link -->
+                <?
+                	if($this->current==$this->first)
+					{
+						$display_class_pre='';
+					}
+					else
+					{
+						$display_class_pre='';
+					}
+				
+				?>
+                
+                <?php /*?><?php if (isset($this->first)){ ?>
+                    <li class="prev <?=$display_class_pre?>"><a onclick="search_form_submit('<?=$this->first?>')" > First </a> </li>
+                <?php }else{ ?>
+                    <li class="disabled prev <?=$display_class_pre?>"><a style="cursor:default" >First</a> </li>
+                <?php } ?><?php */?>
+                <?php if (isset($this->previous)){ ?>
+                    <li class="prev <?=$display_class_pre?>"><a style="cursor:pointer;" onclick="search_form_submit('<?=$this->previous?>')"> « </a> </li>
+                <?php }else{ ?>
+                    <li class="disabled prev <?=$display_class_pre?>"><a  style="cursor:default">«</a> </li>
+                <?php } ?>
+
+                 <?php 
+                    foreach($this->pagesInRange as $page=>$pageno){
+                        if($this->current!=$pageno){ ?>		
+                            <li> <a style="cursor:pointer;" onclick="search_form_submit('<?=$pageno?>')" ><?=$pageno?></a></li>
+                        <?php }else{ ?>
+                        <li class="disabled"><a  class="active"  style="cursor:default" ><?=$pageno?></a></li>
+                        <?php }
+                    }
+                ?>
+                
+                 <?
+				 
+                	if(($this->current==$this->next)||($this->next==''))
+					{
+						$display_class_next='';
+					}
+					else
+					{
+						$display_class_next='';
+					}
+				
+				?>
+                
+                <?php if(isset($this->next)){?>
+                    <li class="next <?=$display_class_next?>"><a style="cursor:pointer;" onclick="search_form_submit('<?=$this->next?>')" >»</a></li>  
+                 <?php }else{ ?>
+                    <li class="disabled next <?=$display_class_next?>"><a style="cursor:default" >»</a></li>  
+                <?php } ?>
+                 <?php /*?><?php if(isset($this->last)){?>
+                    <li class="next <?=$display_class_next?>" ><a onclick="search_form_submit('<?=$this->last?>')" >Last</a></li>  
+                 <?php }else{ ?>
+                    <li class="disabled next <?=$display_class_next?>"><a  style="cursor:default">Last</a></li>  
+                <?php } ?><?php */?>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12 text-right">
+            	<h5 style="font-weight:600"><?php echo $this->firstItemNumber; ?> - <?php echo $this->lastItemNumber; ?> of  <?php echo $this->totalItemCount; ?></h5>
+            </div>
+        </div>
+        </div>
+        
+        <?php }?>
+     </div>
+</div>
+
+ 
+<script type="text/javascript">
+function changeItemCount(sel){
+	var currUrl='<?php echo $this->url();?>';	
+	var currUrl='<?php echo $this->url(array('itemcountpage' => 'setitemcount')) ?>';	
+	if(currUrl.indexOf("?")>=0){
+		currUrl="<?php $this->url() ?>?itemcountpage="+sel.value ;
+	}else{
+		var currUrl='<?php echo $this->url(array('itemcountpage' => 'setitemcount')).(($queryString!="")?"?".$queryString:""); ?>';	
+		currUrl=currUrl.replace("setitemcount",sel.value);	
+	}
+
+	window.location=currUrl ;
+}
+function search_form_submit(page){
+	
+	var pageAction='<?=$this->baseurl()?>/search/index?'; 
+	
+	document.login.action=pageAction+'&page='+page;
+	document.login.submit();
+}
+</script>

@@ -1,0 +1,315 @@
+<?
+$getimage= $this->service_image;
+$getjobPageIconImage= $this->job_page_how_icon;
+//prd(isset($this->blog_image));
+?>
+<style type="text/css">
+.upload_div{ height:150px; width:150px;}
+.upload_div img{ height:100%; width:100%;}
+.upload_job_page_icon_div{ height:60px; width:60px;}
+.upload_job_page_icon_div img{ height:100%; width:100%;}
+
+</style>
+<div class="row">
+	<div class="col-md-12">
+		<!-- BEGIN SAMPLE FORM PORTLET-->
+		<div class="portlet box purple">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="<?php echo $this->pageIcon?>"></i><?php echo $this->pageHeading?>  
+				</div>
+				
+			</div>
+			<div class="portlet-body form">
+				<div class="form-body">
+					<?php echo $this->form ;?>
+				</div>
+			</div>
+		</div>
+		<!-- END SAMPLE FORM PORTLET-->
+	</div>
+</div>
+<!--show uploades image in div by js-->
+<?php /*?><?php  if($this->current_controller=='service' && $this->current_action=='index'){
+if(!empty($this->blogsedit['service_image'])){  ?>
+
+               <div class=" img_p upload_img col-sm-4">
+                     <img id="new_img" class="edit_image" src="<?php echo HTTP_SITEIMG_PATH;?>/300/<?php echo $this->blogsedit['b_image'];?>" /> 
+              </div>        
+<?php
+	} }
+?>
+<?php */?>
+<?php  if($this->current_controller=='service' && $this->current_action=='edithomecategories'){?>
+<script type="text/javascript">
+var limit = 9;
+$('.form-group input').on('change', function(evt) {
+//	var max_check_limit = document.querySelectorAll('input[type="checkbox"]:checked').length;
+   if($('.form-group input:checked').length > limit) {
+	   alert('You Can Select Only 9 Categories.');
+	   this.checked = false;/*return false;*/
+	     $(this).attr('checked',false);
+ 		 $(this).closest('span').removeClass('checked');
+   }
+    if($('.form-group input:checked').length == 0 ) {
+	   alert('select atleast one category');
+	   this.checked = true;/*return false;*/
+	     $(this).attr('checked',true);
+ 		 $(this).closest('span').addClass('checked');
+   }
+});
+</script>
+<? }?>
+
+
+
+
+<?php  if($this->current_controller=='service' && ($this->current_action=='editservices' || $this->current_action=='editservicecategory')){?>
+<? if(isset($this->service_image)){?>
+
+<div class="upload_div form-group" id="image_div">
+
+ <img id="new_img" src="<?=HTTP_SERVICE_IMAGES_PATH?>/<?=$this->service_image?>" />
+
+</div>
+
+<script type="text/javascript">
+  $('#service_image').removeClass('required');
+  $('#image_div').insertBefore($('#service_image'));
+  
+/*function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#new_img').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#service_image").change(function(){
+    readURL(this);
+});
+
+*/
+</script>
+
+<? } }?>
+
+<?php  if($this->current_controller=='static' && ($this->current_action=='addaboutteam' && $this->TeamMemberID!='')){?>
+<? if(isset($this->ateam_member_image)){?>
+
+<div class="upload_div form-group" id="image_divTM">
+
+ <img id="new_img_TM" src="<?=HTTP_TEAM_MEMBER_IMAGES_PATH?>/thumb/<?=$this->ateam_member_image?>" />
+
+</div>
+
+<script type="text/javascript">
+  $('#image_divTM').insertBefore($('#ateam_member_image'));
+</script>
+
+
+<? } }?>
+
+
+
+<?php  if($this->current_controller=='blog' && ($this->current_action=='addblog' && $this->blog_id!='')){?>
+<? if(isset($this->blog_image)){?>
+
+<div class="upload_div form-group" id="image_divblog">
+
+ <img id="new_img" src="<?=HTTP_BLOG_IMAGES_PATH?>/<?=$this->blog_image?>" />
+
+</div>
+
+<script type="text/javascript">
+  $('#image_divblog').insertBefore($('#blog_image'));
+</script>
+
+
+<? } }?>
+
+<?php  if($this->current_controller=='blog' && ($this->current_action=='addblog')){?>
+<script type="text/javascript">
+var blog_id=0;
+$(document).ready(function(e) {  
+
+<?
+if(isset($this->blog_id))
+{?>
+blog_id='<?=$this->blog_id?>';
+<?
+}
+?>
+	if(blog_id>0)
+	{
+		$('.validate').validate({
+			rules:{
+				blog_url:{required:true,remote:baseUrl+"/privatepanel/blog/blogurl/blog_id/"+blog_id},
+				},
+		});
+	//jQuery.validator.addClassRules("checkblogUrl",{remote: baseUrl+"privatepanel/blog/blogurl/blog_id/"+blog_id});
+	}
+	else
+	{
+		$('.validate').validate({
+			rules:{
+				blog_url:{required:true,remote:baseUrl+"/privatepanel/blog/blogurl"},
+				},
+		});
+	//jQuery.validator.addClassRules("checkblogUrl",{remote:baseUrl+"/privatepanel/blog/blogurl"});	
+	}
+});
+</script>
+
+<? } ?>
+
+<?php  if( $this->current_controller=='job' && $this->current_action=='editjobpage'){?>
+
+<? if(isset($this->job_page_how_icon)){?>
+
+<div class="upload_job_page_icon_div form-group" id="image_div">
+
+ <img id="new_img" src="<?=HTTP_JOB_PAGE_ICON_IMAGES_PATH?>/<?=$this->job_page_how_icon?>" />
+
+</div>
+
+<script type="text/javascript">
+  $('#job_page_how_icon').removeClass('required');
+  $('#image_div').insertBefore($('#job_page_how_icon'));
+  
+</script>
+
+<? }?>
+
+<? }?>
+
+
+
+
+<?php  if($this->current_controller=='service' && $this->current_action=='addsubcategory' && $this->serviceID!=''){ //prd($this->serviceData); ?> 
+           <? $a = $this->serviceID;?>
+			<script>
+					$(document).ready(function(e) {
+					//	alert(<? //echo $a; ?>)
+					var presentservice = <?php echo $this->serviceData['service_parent_id']; ?>;
+					var SubCat = <?php echo $this->serviceData['service_sub_parent_id']; ?>;
+					getcategorylist(presentservice);
+					window.setTimeout( function(e){
+							$('#service_sub_parent_id').val(SubCat);
+					},2000);
+				});
+            </script>
+<?php } ?>
+
+<?php 
+
+if(isset($this->cust_show_image) and $this->cust_show_image ){
+	
+	
+	if(isset($this->prefix)){/* For Custmoization Steps */
+ 		
+		include(ROOT_PATH."/private/customizer_contstant.php");
+	 
+		global $_options_array_customizer , $_parent_child_relation_customization ;
+		
+ 	
+		$prefix = $this->prefix ;
+		
+		$_settings = $_options_array_customizer[$_parent_child_relation_customization[$prefix]];
+			
+		$image_key = $_settings['child'][$prefix]['prefix']."_child_thumb";
+		
+		if(!isset($this->page_content[$image_key])){
+			$image_key = $_settings['child'][$prefix]['prefix']."_cust_thumb";
+		}
+  	
+	
+		if(isset($this->page_content[$image_key]) and !empty($image_key) and file_exists($_settings['directory_path']['directory_path']."/".$this->page_content[$image_key])){
+			 
+			$http_image_name = $_settings['directory_path']['http_path']."/thumb/".$this->page_content[$image_key];
+			$element_image = '<p><img src="'.$http_image_name.'" alt="$image_name" /></p>';
+			 
+			?>
+			<script type="text/javascript">
+				$(document).ready(function(e) {
+					$('#<?php echo $image_key?>').parent().after('<?php echo $element_image ?>');
+				});
+			</script>
+		<?php		 
+		}
+		
+	}else{
+		/* Show thumbs for other  */	
+		
+		$image_fields = array_flip (array("product_thumb","product_banner_image"));
+		
+		$current_image_fields = array_intersect_key($this->page_content,$image_fields);
+		
+		foreach($current_image_fields as $image_key=>$values){
+ 			
+			if(isset($this->page_content[$image_key]) and !empty($image_key) and file_exists(PRODUCT_IMAGES_PATH."/1x1/".$this->page_content[$image_key])){
+			 
+				$http_image_name =HTTP_PRODUCT_IMAGES_PATH."/1x1/".$this->page_content[$image_key];
+				$element_image = '<p><img src="'.$http_image_name.'" alt="$image_name" /></p>';
+			 
+			?>
+			<script type="text/javascript">
+				$(document).ready(function(e) {
+					$('#<?php echo $image_key?>').parent().after('<?php echo $element_image ?>');
+				});
+			</script>
+		<?php		 
+		}
+ 		
+			
+		}
+		
+  		
+	}
+ }
+?>
+
+<? if(isset($this->company_logo)){?>
+<div class="form-group" id="image_div">
+	<img src="<?=HTTP_LOGO_IMAGES_PATH?>/100/<?=$this->company_logo?>" />
+</div>
+<script>
+		$('#company_logo').removeClass('required');
+    	$('#image_div').insertAfter($('#company_logo').parent());
+    
+ </script>
+<? }?>
+
+<?php
+if(isset($this->slider_image_info) && $this->slider_image_info['slider_image_path']!='')
+{
+	
+	
+	?>
+    
+    
+<div class="form-group" id="slider_image_banner" style="overflow:hidden;width:100%">
+<br />
+
+
+
+	<img  style="max-height:100%" src="<?=HTTP_SLIDER_IMAGES_PATH?>/300/<?=$this->slider_image_info['slider_image_path']?>" />
+
+
+
+</div>
+<script>
+	$('#slider_image_banner').insertAfter($('#slider_image_path_image').parent());
+</script>
+
+    <?php	
+}
+ ?>
+ 
+ 
+
+ 

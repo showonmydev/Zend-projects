@@ -1,0 +1,163 @@
+<style type="text/css">
+</style>
+<?php 
+$this->modelsuper = new Application_Model_SuperModel();
+$AllProviders = $this->provider_data;
+$service_type = $this->service_type;
+$post_code1=$this->post_code;
+?>
+<div class="pro_searchpage">
+<div class="home_banner" style="background-image:url(<?=HTTP_SITEIMG_PATH?>/home_banner.jpg)">
+        <div class= "container p0">
+            <div class="captionDiv wow pulse animated">
+            	<p class="tagline">A tradition of quality servicing</p>
+            </div>
+        </div>
+        <div class="searchForm">
+        	<div class="container">
+                 <form method="post"  name="searchForm" class="search_form">
+                    <div class="col-md-6 col-sm-6 col-xs-12 margin_bottom_res">
+                    	<input id="service_type" name="service_type" class="required form-control" value="<?=$this->service_type?>" placeholder="What service do you need?">
+                    </div>
+                    <div class="col-md-4 col-sm-4  col-xs-12 respPlnew pl0 margin_bottom_res">
+                    	<input id="post_code" name="post_code" class="required form-control" placeholder="Zip Code" value="<?=$this->post_code?>">
+                    </div>
+                   <div class="col-md-2 col-sm-2 col-xs-12 respP0 pl0">
+                   		<button type="submit" name="getstartedButton" class="btn btn-default getstartedButton">Search</button>
+                    </div>
+                </form>
+            </div>
+         </div>
+ </div>
+    
+    
+<div class="container">
+    <div class="Spacer-1"></div>
+    <div class="Spacer-1"></div>
+    <div class="Spacer-1"></div>
+    
+   <? if(count($AllProviders)!=0){?> 
+    <? foreach($AllProviders as $provider) { 
+		$AboutPro = $this->modelsuper->Super_Get("users","user_id='".$provider['user_id']."'","fetch",array('fields'=>array('user_business_desc as aboutPro')));
+		$extra = array(
+					"fields"=>array("total_reviews"=>new Zend_Db_Expr("COUNT(DISTINCT(review_id))"))
+					);
+		$GetTotalReviews= $this->modelsuper->Super_Get("reviews","review_sp='".$provider['user_id']."'","fetch",$extra);
+		
+			$extraReview = array();
+			$AllReview=$this->modelsuper->Super_Get("reviews","review_sp='".$provider['user_id']."'","fetchAll");
+			
+			$TotalRate = '';
+			foreach($AllReview as $eachReview){
+				$TotalRate += $eachReview['review_ratings'];
+			}
+			
+			if(count($AllReview)!=0){
+				$AvegargeRate = $TotalRate/count($AllReview);
+			}else{
+				$AvegargeRate = 0;
+				}
+	?>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="SpSearchBlock">
+                <div class="Image text-center">
+                    <a href="<?php echo $this->url(array('user_id'=>$provider['user_id']),"front_user_SPprofile")?>" target="_blank">
+                        <img class="img-responsive MarginAuto img-circle" src="<?php echo getUserImage($provider['user_image'],'60') ;?>" alt="">
+                    </a>
+                </div>
+                
+                <div class="Name text-center">
+                    <a class="SearchedProName" href="<?php echo $this->url(array('user_id'=>$provider['user_id']),"front_user_SPprofile")?>" target="_blank"><?=$provider['user_name']?> </a>
+                </div>
+                
+                <div class="Desc text-center"><?=$provider['user_business_name']?></div>
+                
+                <div class="Rate text-center">&nbsp; &nbsp;
+                		<span class="inline_block"> 
+						
+                        
+						<input id="input-2_<?php echo $provider['user_id'] ?>" name="input-2" type="hidden" class="rating " data-size="xm" data-min="0" data-max="5" value="<?=$AvegargeRate?>" data-step="0.1" readonly="readonly">
+                        </span>
+                        
+                        <span class="RateCount">(<? if($GetTotalReviews['total_reviews']==''){?> <? echo '0';?> <? }else{?><?=$GetTotalReviews['total_reviews'];}?> Reviews)</span>
+                </div>
+                
+                <div class="Text overflow">
+                  <p><? echo substr($AboutPro['aboutPro'],0,120).'...'; $AboutPro['aboutPro'];?></p>
+                </div>
+                
+                <div class="More">
+                    <a href="<?php echo $this->url(array('user_id'=>$provider['user_id']),"front_user_SPprofile")?>" target="_blank">
+                   		 SEE MORE
+                    </a>
+                </div>
+            </div>
+        </div>
+    <? } ?>
+   <? } else{?>
+   			<p>No result Found</p>
+   <? } ?> 
+    <div class="Spacer-1"></div>
+    <div class="Spacer-1"></div>
+</div>
+
+</div>
+        
+<script type="text/javascript">
+$(document).ready(function(e) {
+    $('.rating').rating();
+});
+
+$(document).ready(function(e) {
+$( "#post_code" ).autocomplete({
+   minLength: 2,
+    source: function( request, response ) {
+    $.ajax({
+    
+    url: baseUrl+"/search/allzipcodes/zip/"+request.term,
+    success: function(data) {
+   
+ var parsed = JSON.parse(data);
+                var newArray = new Array(parsed.length);
+                var i = 0;
+
+                parsed.forEach(function (entry) {
+                    var newObject = {
+                        //label: entry.kwrdKeyWord
+      label: entry.zip+','+entry.city+','+ entry.state,
+                        zip_id: entry.zip_id,
+                    };
+                    newArray[i] = newObject;
+                    i++;
+                });
+
+                response(newArray);
+  
+    },
+    error: function(data) {
+     
+    }
+    });
+    }, 
+    focus: function( event, ui ) {
+    $( "#post_code" ).val( ui.item.label );
+    return false;
+    },
+    select: function( event, ui ) {
+    $( "#post_code_id" ).val( ui.item.zip_id );
+    
+    return false;
+    },
+    change: function(event, ui) {
+    if (ui.item) {
+     //$("#post_code").text(ui.item.value);
+    } else {
+     $("#post_code_id").val('');
+    }
+   }
+   });
+});
+</script>
+
+
+

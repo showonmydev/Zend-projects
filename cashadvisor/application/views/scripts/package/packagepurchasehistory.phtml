@@ -1,0 +1,53 @@
+<style type="text/css">
+.add_more_point_div{overflow: hidden;clear: both;padding-top: 20px; text-align:right; padding-right:0px;}
+</style>
+<?php 
+$history= array();
+$history= $this->package_history;
+//prn($history);               
+$n=count($history);
+$wallet= $this->wallet;
+//prd($wallet);
+?>
+    <div class="">
+    		<div class=" col-sm-offset-6 col-sm-5  wallet_div">
+            	<img src="<?php echo HTTP_SITEIMG_PATH?>/wallet1.png" alt=""></a>
+                	<div class="current_point">
+                        <h3 class="">Your Current Credit </h3>
+                        <p class="point_val" ><?php if($wallet>0){ echo $wallet;} else echo "0";?></p>
+                    </div>
+            </div>
+            
+            <div class=" col-sm-offset-6 col-sm-5 add_more_point_div">
+                        	<a class="btn view_cerdit_history btn-lg"  href ="<?php  echo $this->url(array(),"front_purchase")?>"> Add more credit</a>
+            </div>
+<!--Package  Table -->  
+    		<div class="package_wrap">
+                    <div id="no-more-tables">
+                            <table class="col-sm-12 table-bordered table-striped table-condensed cf">
+                                    <thead class="cf">
+                                         <tr class="tab_head">
+                                           <th  colspan="7"><span>Credit History</span></th>
+                                        </tr>
+                                        <tr class="table_headings">
+                                            <th>Description</th>
+                                            <th>Credit/Debit</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                     <?php  foreach($history as  $key => $package){ ?>
+                                        <tr class="package_list">
+                                            <td class="package_title" data-title="Package Title"><? echo $package['package_desc']; ?></td>
+                                            <? if($package['pp_pay_status']=="0"){ $AmtType = "-";} else{ $AmtType = "+"; }?>
+                                            <td data-title="Package Price"><? echo $AmtType; echo $package['package_points'];?></td>
+                                            <td data-title="Purchased On"><? echo $package['pp_request_date'];?></td>
+                                        </tr>
+                                      <?php  	} ?>  
+                                    </tbody>
+                            </table>
+       				 </div>
+            </div>
+    </div> 
+
+

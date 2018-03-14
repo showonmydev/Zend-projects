@@ -1,0 +1,52 @@
+<?
+if(count($this->refresh_data)>0){ 
+$refresh_data1 = $this->refresh_data;
+$getCount  = count($this->refresh_data)-1;
+
+foreach($refresh_data1 as $key => $refresh_data){
+	if($key==$getCount){ 
+	?>
+    <input type="hidden" value="<?=$refresh_data['communication_id']?>" id="temp_last_msg_<?=$refresh_data['c_sender_id']?>" />
+    <?
+	}
+?>
+<style type="text/css">
+.comments_ul{ margin:0px;}
+</style>
+<div class="comment_body comnt12">  
+    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto;">
+        <div class="scroller" style="padding: 0px; margin: 0px; padding-right: 12px; overflow: hidden;    width: auto; ;">
+            <ul class="comments_ul">
+                <li class="in">
+                    <img class=" hidden-xs img-responsive img-thumbnail user_image user_comment_img" style="max-width:60px;" src="<?php echo getUserImage($refresh_data['sender_image'],'60') ;?>" />
+                    <div class="message">
+                   			<span class="comment_arrow"></span>
+                            <p class="name_ago_msz">
+                            
+                                <span class="msz_user_name_in_req capitalize"><?=$refresh_data['user_name']?></span>	 
+                                <span class="show_messz_time_P pull-right"><? echo showPostTime($refresh_data['c_date']); ?> ago</span>
+                            </p>
+                            <p class="comment_show_p"><?=$refresh_data['c_massage'] ?></p>
+                    </div>
+                   
+            </li>  
+            </ul> 
+        </div> 
+    </div>
+</div>
+<? } ?>
+
+<script type="text/javascript">
+setTimeout(function(){
+	$("#allComments").mCustomScrollbar("scrollTo","bottom");
+},100);
+</script>
+
+
+<? } ?>
+<?php 
+$this->modelsuper = new Application_Model_SuperModel();
+$where = "notification_reciver='".$this->user->user_id."' and notification_type='10' and notification_status='0'";
+$changeStatus['notification_status']=1; 
+$change_mszStatus = $this->modelsuper->Super_Insert("notifications",$changeStatus,$where);
+?>

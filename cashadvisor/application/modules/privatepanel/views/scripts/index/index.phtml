@@ -1,0 +1,239 @@
+<?php $modelStatic  = new Application_Model_Static();
+$s=$modelStatic->Super_Get("users",'user_type="service_provider"','fetch',array('fields'=>array('count(user_id) as count')));
+$c=$modelStatic->Super_Get("users",'user_type="client"','fetch',array('fields'=>array('count(user_id) as count')));
+$TotalJob=$modelStatic->Super_Get("job",'1','fetch',array('fields'=>array('count(job_id) as jobcount')));
+$TotalRevenue=$modelStatic->Super_Get("proposal",'1','fetch',array('fields'=>array('sum(proposal_casa_revenue) as Revenue')));
+?>
+		
+		
+		
+		<!-- BEGIN DASHBOARD STATS -->
+		<div class="row">
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="dashboard-stat red-pink">
+					<div class="visual">
+						<i class="fa fa-users"></i>
+					</div>
+					<div class="details">
+						<div class="number">
+							<?php echo $s['count'];?>
+						</div>
+						<div class="desc">
+							Service Providers
+						</div>
+					</div>
+					<a class="more"  href="<?php echo $this->baseUrl()?>/privatepanel/user/serviceproviders">
+					View more <i class="m-icon-swapright m-icon-white"></i>
+					</a>
+				</div>
+			</div>
+			
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="dashboard-stat blue-madison">
+					<div class="visual">
+						<i class="fa fa-users"></i>
+					</div>
+					<div class="details">
+						<div class="number">
+							<?php echo $c['count'];?>
+						</div>
+						<div class="desc">
+							Clients
+						</div>
+					</div>
+					<a class="more"  href="<?php echo $this->baseUrl()?>/privatepanel/user">
+					View more <i class="m-icon-swapright m-icon-white"></i>
+					</a>
+				</div>
+			</div>
+			
+			 
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="dashboard-stat green-haze">
+					<div class="visual">
+						<i class="fa fa-handshake-o" aria-hidden="true"></i>
+					</div>
+					<div class="details">
+						<div class="number">
+							<?php echo $TotalJob['jobcount'];?>
+						</div>
+						<div class="desc">
+							Total Jobs
+						</div>
+					</div>
+					<a class="more"  href="<?php echo $this->baseUrl()?>/privatepanel/job">
+					View more <i class="m-icon-swapright m-icon-white"></i>
+					</a>
+				</div>
+			</div>
+            
+			<!--<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+				<div class="dashboard-stat purple-plum">
+					<div class="visual">
+						<i class="fa fa-usd" aria-hidden="true"></i>
+					</div>
+					<div class="details">
+						<div class="number">
+							<?php //echo round($TotalRevenue['Revenue'],2);?>
+						</div>
+						<div class="desc">
+							Revenue
+						</div>
+					</div>
+					<span class="more">
+					&nbsp;
+					</span>
+				</div>
+			</div>-->
+		</div>
+		<!-- END DASHBOARD STATS -->
+		
+		
+		<div class="clearfix"></div>
+		
+	 
+		<div class="row ">
+			<?php /*?><div class="col-md-6 col-sm-6">
+				<!-- BEGIN PORTLET-->
+				<div class="portlet box blue-madison calendar">
+					<div class="portlet-title">
+						<div class="caption">
+							<i class="fa fa-calendar"></i>Calendar
+						</div>
+					</div>
+					<div class="portlet-body light-grey">
+						<div id="calendar">
+						</div>
+					</div>
+				</div>
+				<!-- END PORTLET-->
+			</div><?php */?>
+			
+		</div>
+
+
+<!-- BEGIN DASHBOARD visitors STATS -->
+    <div class="row">
+            <div class="col-sm-6" id="monthly_visitor" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            
+  <!-- BEGIN DASHBOARD JOBS STATS -->
+            <div class="col-sm-6" id="monthly_jobs" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
+
+
+
+<style>
+.highcharts-button{
+	display:none;
+}
+</style>
+<script type="text/javascript">
+var gmarkers = [];
+$(document).ready(function(e) {
+	
+	var allVisitorsArr =JSON.parse('<?php echo $this->allVisitorsArr; ?>');
+    $('#monthly_visitor').highcharts({
+					chart: {
+						type: 'spline'
+					},
+					title: {
+						text: 'Monthly Unique Visitors'
+					},
+					xAxis: {
+						categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+					},
+					yAxis: {
+						title: {
+							text: 'Sum of Total Visitors'
+						},
+						labels: {
+							formatter: function () {
+								return this.value ;
+							}
+						}
+					},
+					tooltip: {
+						crosshairs: true,
+						shared: true
+					},
+					plotOptions: {
+						spline: {
+							marker: {
+								radius: 4,
+								lineColor: '#ffcc00',
+								lineWidth: 1
+							}
+						}
+					},
+					series: [{
+						name: 'Total Visitors',
+						marker: {
+							symbol: 'square'
+						},
+						data: allVisitorsArr
+					
+					}]
+				});
+});
+</script>	
+
+
+<script type="text/javascript">
+				   
+var gmarkers = [];
+$(document).ready(function(e) {
+	
+	var alljobsArr =JSON.parse('<?php echo $this->alljobsArr; ?>');
+//var allRevenueArr =JSON.parse('<?php // echo $this->allRevenueArr; ?>');
+    $('#monthly_jobs').highcharts({
+					chart: {
+						type: 'spline'
+					},
+					title: {
+						text: 'Monthly Job '
+					},
+					xAxis: {
+						categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+					},
+					yAxis: {
+						title: {
+							text: 'Sum of Total Jobs posted at CasaAdvisor'
+						},
+						labels: {
+							formatter: function () {
+								return this.value ;
+							}
+						}
+					},
+					tooltip: {
+						crosshairs: true,
+						shared: true
+					},
+					plotOptions: {
+						spline: {
+							marker: {
+								radius: 4,
+								lineColor: '#ffcc00',
+								lineWidth: 1
+							}
+						}
+					},
+					series: [{
+						name: 'Total Job Posted',
+						marker: {
+							symbol: 'square'
+						},
+						data: alljobsArr
+					},/*{
+						name: 'Total Revenue',
+						marker: {
+							symbol: 'square'
+						},
+						data: allRevenueArr
+			
+					}*/]
+				});
+});
+</script>	
+
+ 

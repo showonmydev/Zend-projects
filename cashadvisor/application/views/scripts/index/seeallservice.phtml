@@ -1,0 +1,148 @@
+<?php
+$this->modelSuper = new Application_Model_SuperModel();
+$services = $this->services;
+$jsonServices = json_encode($this->services);
+ $modelSuper=new Application_Model_SuperModel();  
+?>
+<section>
+	<div class="containerfluid home_improve_bg">
+    	<h3>Casa Advisor</h3>
+        <p>Complete your project with the right professionals</p>
+        <div class="search_form_outter_div">
+       		 <form method="get" action="#" class="profile_form">
+                            <div class="row search_form">
+                                    <div class="rewilla_home_service_div">
+                                        <input  type="text" name="services"  placeholder="What service do you need?" id="searchservicesServices" class="form-control what_need service_serach_box" />
+                                        
+                                        <img class="search_img " src="<?php echo HTTP_SITEIMG_PATH?>/search_icon.png"  />
+                                    </div>
+                                    
+                                    <div class="rewilla_home_service_button_div">
+                                         <button type="submit" class="btn-custom get_start">Get Started</button>
+                                    </div>
+                            </div>
+                        </form>
+        </div>                
+        
+    </div>
+    <div class="allservice" >
+        <div class="container padding_bottom_40">
+            <div class="col-sm-12 padding_10">
+            	<div class="popular_home_div">
+                	<h3>Popular Services</h3>
+                </div>
+              
+                <div class="row effects text-center">
+                <?  foreach($services as  $key => $service) {?>
+
+                    <div class="casa_9_img" style="background-image:url(<?php echo HTTP_SERVICE_IMAGES_PATH.'/'.$service['service_image'];?>);"> 
+                        <div class="overlay_service_name">
+                             <a href="<?php  echo $this->url(array('service_id'=>$service['service_id'],"service_name"=>$service['service_name']),'front_seeallcategory')?>" class="expand"> <?php echo $service['service_name']  ?></a>
+                        </div>       
+                    </div>
+                 <? } ?>
+                </div>
+            	<div class="popular_home_div">
+                	<h3>More Services</h3>
+                </div>
+                <div class="main_container">
+               
+               		    <? foreach($services as $key =>  $services1) {  ?>
+                        	<div class="pin">
+                            	<div class="holder">
+                                        <a class="category_heading" href=" <?php  echo $this->url(array('service_id'=>$services1['service_id'],"service_name"=>$services1['service_name']),'front_seeallcategory')?>"> <?php echo $services1['service_name'];?></a>
+                                        <? $service_cat=$modelSuper->Super_Get("services","service_parent_id='".$services1['service_id']."' && service_sub_parent_id=0","fetchAll"); ?>
+                                        <ul>
+                                            <? foreach($service_cat as  $service_cat) { ?>
+                                                <li> 
+                                                    <p>
+														<a href="<?php  echo $this->url(array('service_id'=>$service_cat['service_id'],"service_name"=>$service_cat['service_name'],'service_parent_id'=>$service_cat['service_parent_id']),'front_seeallsubcategory')?>"><?php  echo $service_cat['service_name'];?></a> 
+                                                        
+                                                          
+                                                          
+                                                       <?php /*?> <a class="serviceName_<?=$service_cat['service_id']?>" onclick="category_dropdown(<?=$service_cat['service_id']?>)"><?php  echo $service_cat['service_name'];?>
+                                                       	<i class="fa fa-angle-right"></i>
+                                                       </a>
+                                                       <ul id="innerUl_<?=$service_cat['service_id']?>" class="overflow" style="display:none;">
+                                                       <?
+		$extra=array(
+			'order'=>'service_name asc',
+			'fields'=>array('service_id','service_name'),
+			);
+	
+		$subcategories=$this->modelSuper->Super_Get("services","service_parent_id='".$service_cat['service_parent_id']."' && service_sub_parent_id='".$service_cat['service_id']."'","fetchAll",$extra);
+                                                       ?>
+                                                       <? foreach($subcategories as $subCat){?>
+                                                       		<li><?=$subCat['service_name']?></li>
+                                                       <? } ?>
+                                                       </ul>
+													   <?php */?>
+                                                    </p>
+                                                </li>
+                                            <?  } ?>
+                                        </ul>
+                                 </div>    
+                             </div>  
+                        <? }?>
+                        
+               </div>
+            </div>
+            
+          
+        </div>
+    </div>
+</section> 
+<script type="text/javascript">
+
+/*function category_dropdown(service_id){
+	if($("#innerUl_"+service_id).length!=''){ 
+		if($(".serviceName_"+service_id+" i").hasClass('fa-angle-right')){
+			$(".serviceName_"+service_id+" i").removeClass('fa-angle-right');
+			$(".serviceName_"+service_id+" i").addClass('fa-angle-down');
+			$(".serviceName_"+service_id).css('color','#0bb8e3');
+			$("#innerUl_"+service_id).css('display','block');
+		} else if($(".serviceName_"+service_id+" i").hasClass('fa-angle-down')){
+			$(".serviceName_"+service_id+" i").removeClass('fa-angle-down');
+			$(".serviceName_"+service_id+" i").addClass('fa-angle-right');
+			$(".serviceName_"+service_id).css('color','#3e3e3e');
+			$("#innerUl_"+service_id).css('display','none');
+		}
+	}
+}
+*/
+</script>
+<script type="text/javascript">
+var JsonServices = JSON.parse('<?=$jsonServices?>'); //alert(JsonServices)
+$(document).ready(function(e) {
+  $('.main_container').masonry
+ ({
+        // options
+        itemSelector : '.pin',
+        isAnimated: true,
+        isFitWidth: true
+    });
+	
+ 
+ 
+});
+
+ $(function(){
+           var choices = Array() ;
+			for(var i=0;i<JsonServices.length;i++){
+				choices.push(JsonServices[i].service_name);
+			}
+            $('#searchservicesServices').autoComplete({
+                minChars: 1,
+                source: function(term, suggest){
+                    term = term.toLowerCase();
+                    var suggestions = [];
+                    for (i=0;i<choices.length;i++)
+                        if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                    suggest(suggestions);
+                }
+            });
+	 });
+</script>
+
+
+

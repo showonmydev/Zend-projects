@@ -1,0 +1,113 @@
+<?php
+$faqdata = $this->faqdata;
+$total_questions = count($faqdata);
+
+?>
+<div class="container-fluid">
+    <div class="inner_about faq_background_img ">
+    	<h3>CASA ADVISOR</h3>
+    </div>
+</div>
+
+<div class="container-fluid about_casa">
+    <div class="meet_inner">
+   		 <h3>FAQ</h3>
+    </div>
+</div>
+
+<div class="container">
+
+<div class="row MarginZero FaqBlockMain">
+                    		<div class="col-sm-12  padding_zero overflow FaqMainBlock FloatNone">
+                                    <div class="col-sm-6 col-sm-offset-3 padding_zero overflow FaqMainTypeBlock">
+                                    		<div class="col-sm-6 col-xs-6 text-center">
+                                                 <div class="row MarginZero Cursor FaqBlockHead selected box_ribbon " onclick="setFaqQuestion('sp')" id="spDiv"> 
+                                                  <div class="ribbon"><span><img src="<?=HTTP_SITEIMG_PATH?>/operator_tick.png" class="operator_tick_img" alt="" /></span></div>
+                                                <img src="<?=HTTP_SITEIMG_PATH?>/operator.png" class="img-responsive MarginAuto" alt="" />
+                                                </div>
+                                                <div class="sp_faq_name">Service Provider</div>
+                                             </div>
+                                            <div class="col-sm-6 col-xs-6 text-center">
+                                            	<div class="row MarginZero Cursor FaqBlockHead box_ribbon" onclick="setFaqQuestion('client')" id="clientDiv">
+                                                <div class="ribbon"><span><img src="<?=HTTP_SITEIMG_PATH?>/operator_tick.png" class="operator_tick_img" alt="" /></span></div>
+                                                <img src="<?=HTTP_SITEIMG_PATH?>/client_operator.png" class="img-responsive MarginAuto" alt="" />
+                                                </div>
+                                                <div class="sp_faq_name">Client</div>
+                                            </div>    
+                                    </div>
+                                    <p class="Clear">&nbsp;</p>
+                                    
+                                    <div class="col-sm-8 col-sm-offset-2 col-xs-12 Overflow padding_top_30">
+                                  	
+                                     <div class="col-sm-12 panel-group accordion FaqPage Clear FaqBlockPage" id="accordion_sp">
+                                                 <? if(count($this->faqdata)>0) { $i=1; 
+															   foreach($faqdata as $faq) { 
+															 //  prd($faq);
+																   if($faq['faq_for']==1){
+																   ?> 
+                                                        <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title homecampcamp-in-title" align="left">
+                                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion_sp" href="#collapse_type<?=$i?>">
+                                                                            <label><i class="fa fa-home" aria-hidden="true"></i> <?php /*?><img src="<?php echo HTTP_SITEIMG_PATH?>/c_casa_letter.png" alt=""><?php */?></label>&nbsp;<?=$faq['faq_question']?></a>
+                                                                            </h4>
+                                                                             
+                                                                        </div>
+                                                                        <div id="collapse_type<?=$i?>" class="panel-collapse collapse">
+                                                                            <div class="panel-body home-blog-desc" align="left">
+                                                                               <?=$faq['faq_answer']?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                        <? $i++; } } }?>
+                                     </div>
+                                     
+                                     <div class="col-sm-12 panel-group accordion FaqPage Clear FaqBlockPage hide " id="accordion_client">
+                                                 <? if(count($this->faqdata)>0) { $i=1; 
+                                                         foreach($this->faqdata as $faq1) { 
+														 if($faq1['faq_for']==0){
+														 ?>
+                                                        <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title homecampcamp-in-title" align="left">
+                                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion_client" href="#collapse_<?=$i?>">
+                                                                            <label><i class="fa fa-home" aria-hidden="true"></i></label>&nbsp;<?=$faq1['faq_question']?></a>
+                                                                            </h4>
+                                                                             
+                                                                        </div>
+                                                                        <div id="collapse_<?=$i?>" class="panel-collapse collapse">
+                                                                            <div class="panel-body home-blog-desc" align="left">
+                                                                               <?=$faq1['faq_answer']?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                        <? $i++; } } } ?>
+                                                               
+                                     </div>
+                                     
+                                 </div>
+                            </div>
+                    </div>
+
+</div>
+
+<script>
+$(document).ready(function(e) {
+    $('.FaqMainDiv .nav-tabs li').click(function(e) { 
+		$('html, body').animate({ scrollTop: $('.tab-content').offset().top -75 }, 'slow');
+    });
+});
+
+
+function setFaqQuestion(type)
+{
+	$('.FaqBlockHead').removeClass('selected');
+	$('.FaqBlockPage').addClass('hide');
+	/*$('.FaqBlockPage .selected').siblings('.sp_faq_name').addClass('col_theme');
+	$('.selected').parent().siblings().find('sp_faq_name').addClass('col_theme');*/
+	$('#accordion_'+type).removeClass('hide');
+	$('#'+type+'Div').addClass('selected');
+	
+}
+
+</script>

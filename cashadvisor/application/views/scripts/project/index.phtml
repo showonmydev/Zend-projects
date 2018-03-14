@@ -1,0 +1,183 @@
+<style type="text/css">
+</style>
+<?php 
+$this->modelStatic = new Application_Model_Static();
+$page_desc=$this->page_desc;
+$posted_jobs = $this->posted_jobs;
+$NoticeForJob = $this->NoticeForJob;
+
+//$proposal_received = $this->proposal_received;
+$n=count($posted_jobs);
+//prn($posted_jobs);
+?>
+    <div class="container">
+    		<div class="heading_project overflow">
+            	<div class="col-sm-6 project_text_h">
+            		<h3 class="project_h">Projects</h3>
+                </div>
+                <div class="col-sm-6 add_project_div">
+                	<a href="<?php echo $this->url(array(),"front_addnewproject")?>" class="add_project">Add Project</a>
+                </div>
+            </div>
+<!--Posted Projects -->  
+    		<div class="projects_wrap">
+            	
+                <div class="col-sm-12">
+            		<p>&nbsp;</p>
+            		<p> <?=$page_desc['project_page_desc']?></p>
+                    <p>&nbsp;</p>
+                 </div> 
+
+<!--02-09-->  
+			<? if($n!=0){?>            
+               <div class="col-sm-12 overflow margin_b_30 padding_t_20 p_media_0 p_media_top_10">      
+                     <?
+					 	foreach($posted_jobs as  $key => $jobs){ 
+						if($jobs['notification_main_status']=='0' && $jobs['notification_message']=='Proposal arrived' && ($NoticeForJob==$jobs['job_id'])){
+								$highlightJob = "highlightJob";
+							}else {
+								$highlightJob = "";
+								}
+						
+							
+					 ?>
+                    <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 width_xs_33 job<?=$jobs['job_id']?>">
+                    	  <a onclick="sureremovejob(<?=$jobs['job_id']?>)"  href="#" data-toggle="modal"  data-target="#<?php  echo $jobs["job_id"] ?>"><span id="remove_job" title="Remove Job"><i class="fa fa-times fa-lg"></i></span></a>
+                        <div class="posted_project_div <?=$highlightJob?>">
+                        		<div class="postedJobHeading">
+                                    <h3 class="service_title"><?=$jobs['service_name']?></h3>
+                                    <h4 class="date_col date_font"><?=date('d M, Y',strtotime($jobs['posted_job_created']));?></h4>
+                                </div>
+                               <div class="site_HR"></div>
+                               
+							 <? if($jobs['totalProposal']==0){ ?> 
+                                       <div class="on_way_quote posted_project_bottom">
+                                        <div class="Spacer-2"></div>
+                                        <div class="Spacer-2"></div>
+                                        <p class="SPready">Quotes are on the way. We reached out to service providers in your area.</p>
+                                        <div class="Spacer-2"></div>
+                                        <div class="Spacer-2"></div>
+                                        <p class="SPready">Service provider will call you soon.</p>
+                                      </div>
+                                       <div class="view_all_btn_div">
+                                        <div class="viewAllInnerBtnDiv">  
+                                            <a onclick="viewproject(<?=$jobs['job_id']?>)" class="add_project">View Project</a>  
+                                        </div>
+                                      </div>  
+                              <? } else {?>
+                              
+                                    <div class="posted_project_bottom p_10 text-center">
+                                      <ul>
+                                        <?
+                                            $extra_pro= array(
+                                                    'limit'=> 4
+                                                    );
+                                            $join = array(
+                                                    '0'=>array("users","user_id=sender_id","left",array('CONCAT(user_first_name," ",user_last_name) as user_name','user_image')),
+                                                    );
+                                            $proposal_received=$this->modelStatic->Super_Get("proposal","p_job_id='".$jobs['job_id']."'","fetchAll",$extra_pro,$join);	
+                                            foreach($proposal_received as  $key => $proposal_by){
+                                              //  $extraMsz= array(
+                                                  //  'fields'=> array('totalMsg'=> new Zend_Db_Expr('ifnull(count(DISTINCT(communication_id)),0)')),
+                                                 //   );
+                                          //  $totalMsz=$this->modelStatic->Super_Get("communication","c_job_id='".$jobs['job_id']."' && c_sender_id='".$proposal_by['sender_id']."' && c_main_status='0'","fetch",$extraMsz);	
+                                        ?>
+                                        <li>
+                                            <img class="img-responsive img-circle ProviderImgProjectIndex" src="<?php echo getUserImage($proposal_by['user_image'],'60') ;?>" />
+                                            <?php /*?><? if($totalMsz['totalMsg']>0){?>
+                                             <label class="MszNoticIndex"><?=$totalMsz['totalMsg']?></label>
+                                            <? } ?><?php */?>
+                                            <? if(($jobs['job_status']=='running' || $jobs['job_status']=='completed')&& $jobs['hired_provider_id']==$proposal_by['sender_id']){?>
+                                             <label class="hireNotice"><i class="fa fa-check" aria-hidden="true"></i></label>
+                                            <? } ?>
+                                        </li>
+                                        <?  } ?>
+                                       
+                                      </ul>
+                                      <p class="SPready"><span class="capitalize"><? echo int_to_words($jobs['totalProposal'])?></span> service providers <? if($jobs['totalProposal']>1){?>are<? }else {?>is<? } ?> ready to help you.</p>
+                                     
+                                    </div>
+                                    
+                                    <div class="view_all_btn_div">
+                                        <div class="viewAllInnerBtnDiv">  
+                                             <a href="<?php echo $this->url(array('job_id'=>$jobs['job_id']),"front_viewquote")?>" class="add_project">View <?=$jobs['totalProposal']?> <? if($jobs['totalProposal']>1){?> Quotes <? } else {?> Quote <? }?></a>  
+                                       </div>
+                                    </div>
+                                <? } ?>
+                        </div>
+                    </div>
+                    <? } ?>
+                </div>
+            <? } else {?>    
+                <div class="BlankPageouterDiv"> 
+                    <div class="BlankPageInnerDiv"> 
+                        <p class="no_noti_p BlankPagecontent">You had not posted any projects yet</p>
+                    </div>    
+                </div>   
+            <? } ?>
+                
+    		</div>
+    </div>    
+    
+<!--Model for delete cnfrm-->
+
+<div class="modal fade" id="remove_job_model" role="dialog" data-backdrop="" aria-hidden="true">
+ <div class="modal-dialog">
+         <div class="modal-content">
+            <form name="remove_project" method="post" action="<? echo APPLICATION_URL?>/project/removejob/">
+              <div class="modal-header ">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
+              </div>
+              <div class="modal-body">
+                <h4 class="text-center">Are you sure, you want to remove this job.</h4>
+                <input type="hidden" value="<?=$jobs['job_id']?>" id="job_id_to_remove" name="job_id"> 
+                <div class="text-center">
+                    <button data-dismiss="modal" class="btn btn-default" type="button"> No</button>
+                    <button class="btn btn-info" type="submit">Yes</button>
+                </div>
+              </div>
+             </form>
+         </div>
+         
+     </div>
+</div>
+
+
+ <div class="modal fade" id="viewprojectmodel" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+       
+         <button aria-label="Close" data-dismiss="modal" class="close" type="button"><img class="viewProjectClose" src="<?=HTTP_SITEIMG_PATH?>/close_image_x.png" alt="" /></button>
+         
+        <div class="modal-body" style="padding:0px;">
+        </div> 
+      </div>
+    </div>
+</div>
+
+
+        
+<script type="text/javascript">
+
+function sureremovejob(job_id){
+		$("#job_id_to_remove").val(job_id);
+		$("#remove_job_model").modal('show');
+}
+
+function viewproject(job_id){
+	$.ajax({ 
+		url:baseUrl+'/project/viewproject/cur_action/'+action,
+		data : {id:job_id},
+		success:function(data){
+			$('#viewprojectmodel .modal-body').html(data);
+			$('#viewprojectmodel').modal('show');
+
+		}
+	});
+}
+
+
+</script>
+
+
+

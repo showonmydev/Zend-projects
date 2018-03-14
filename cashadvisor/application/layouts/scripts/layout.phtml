@@ -1,0 +1,172 @@
+<?php echo $this->docType("HTML5");?>
+<html lang="en">
+<head>
+<?php 
+	echo $this->headMeta()."\n"; 
+	echo $this->headTitle()."\n";
+	echo $this->headLink()."\n";
+	global $myActionName,$myControllerName,$myModuleName;
+	$myControllerName=Zend_Controller_Front::getInstance()->getRequest()->getControllerName();	
+	$myActionName=Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+	$myModuleName=Zend_Controller_Front::getInstance()->getRequest()->getModuleName();
+//	prn($myControllerName);
+	//prn($myActionName);
+?>
+
+<script  src="<?php echo $this->baseUrl('public/plugins/jquery-1.12.3.min.js')?>"></script>
+<script defer src="<?php echo $this->baseUrl('public/plugins/jquery-migrate-1.2.1.min.js')?>"></script>
+<script  defer="defer" src="<?php echo $this->baseUrl('public/plugins/jquery-ui.min.js')?>"></script>
+
+<?php /*?><script src="https://code.jquery.com/jquery-migrate-1.2.1.js"></script><?php */?>
+<?php /*?><script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script><?php */?>
+<script>var baseUrl = SITEURL = SITE_URL = '<?php echo $this->baseUrl()?>';</script>
+<script>
+var controller='<?=$myControllerName?>';
+var action='<?=$myActionName?>';
+var module='<?=$myModuleName?>';
+var facebook_appid='1637930056519294';
+
+var Logged_user='0';
+var Logged_email_verified;
+var Logged_user_type;
+<?
+if(isset($this->user->user_id) && $this->user->user_id!="")
+{
+?>
+Logged_user='<?=$this->user->user_id?>';
+
+Logged_email_verified='<?=$this->user->user_email_verified?>';
+Logged_user_type='<?=$this->user->user_type?>';
+<?
+}?>
+
+</script>	
+<script>
+$(window).load(function(e) {
+	$('#wrap').hide();
+});
+
+</script>
+
+<? if(($myControllerName=='user' and $myActionName=='registerbusniess') or ($myControllerName=='static' and $myActionName=='contact') or ($myControllerName=='project' and $myActionName=='quotemessage') or ($myControllerName=='project' and $myActionName=='sendquote') or ($myControllerName=='search' and $myActionName=='providerprofile'))
+	{ ?>
+<?php /*?><script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALGHJNQVXKXw_l_fibv4wu-Uv418nn0Fg"  type="text/javascript"></script><?php */?>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALGHJNQVXKXw_l_fibv4wu-Uv418nn0Fg"  type="text/javascript"></script>
+<? } ?>
+
+ <?=$this->site_configs['google_analytic_script']?>
+
+</head>
+<?
+	
+    global $bdy_class;
+	if($myControllerName=='user' and $myActionName=='register') 
+	{
+		$bdy_class='choose_signup_class';
+	}
+	else if($myControllerName=='user' and $myActionName=='login') 
+	{
+		$bdy_class='choose_login_class';
+	}
+	else if($myControllerName=='user' and $myActionName=='forgotpassword') 
+	{
+		$bdy_class='choose_forgotpass_class';
+	}
+	else if($myControllerName=='user' and $myActionName=='resetpassword') 
+	{
+		$bdy_class='choose_forgotpass_class';
+	}
+	else if($myControllerName=='profile' or $myControllerName=='error') 
+	{
+		$bdy_class='';
+	}
+	else if($myControllerName=='static') 
+	{
+		$bdy_class='';
+	}
+	else
+	{
+		$bdy_class='';
+	}
+		
+	?>
+<body class="<?=$bdy_class?>">
+<?php /*?>	<div id="wrap" align="center">
+	<img src="<?=HTTP_SITE_IMAGES?>/loader.gif" alt="loader"   id="logo-preloader" />
+</div><?php */?>
+	<? if(trim($bdy_class)==''){?>
+	<?php echo $this->render('header.phtml'); ?>
+	<!--========================================== //End PROJECT-NAME Menu Section-->
+	<? } ?>
+    
+	<?php echo $this->render("sub_home_slider.phtml");?>
+	<?
+	
+		
+	?>
+  	<div class="main-container-outer">
+		<div class=" ">
+			
+        <?
+     	 if($myControllerName=='profile' or $myControllerName=='serviceprovider' or ($myControllerName='package' && $myActionName=='packagepurchasehistory')) {
+		?>
+        
+        <div class="innerpage">
+                        <div class="container" >
+                            <div class="row"><?php echo $this->getHelper('Messages')->getMessages();?> </div>
+                            <?php echo $this->render("sub_show_messages.phtml");?>
+                        <br/>
+                        	<div class="row row-offcanvas row-offcanvas-left">
+
+								<? if($this->user->user_id && ($this->current_controller=="profile" && ($this->current_action!="accountsettings" && $this->current_action!="accountpage"  && $this->current_action!="mainprofile")) || $this->current_controller=="serviceprovider" ||  ($this->current_controller=="package" && $this->current_action=="packagepurchasehistory"))  { ?>
+                                <div class="col-sm-3" id="sidebar" role="navigation" >
+                                  <?php echo $this->render("_profile_side_bar.phtml");?>
+                                </div>
+                                <? } ?>
+                            
+                                <div class="<? if($this->user->user_id && ($this->current_controller=="profile" && ($this->current_action!="accountsettings" && $this->current_action!="accountpage" && $this->current_action!="mainprofile")) || $this->current_controller=="serviceprovider"  ||  ($this->current_controller=="package" && $this->current_action=="packagepurchasehistory")) { ?>col-sm-9<? } else { ?>col-sm-12 <? } ?>">
+                                <?php echo $this->layout()->content?>
+                            	</div>
+                            
+                            </div>
+                            
+                        </div>
+                        <br/>
+                    </div>
+        
+         <? }else if($myControllerName=='static'){?>
+					<?php echo $this->getHelper('Messages')->getMessages();?> 
+ 					<?php echo $this->render("sub_show_messages.phtml");?>
+					<?php echo $this->layout()->content?>
+        <? }else{?>
+           
+					<?php echo $this->getHelper('Messages')->getMessages();?> 
+ 					<?php echo $this->render("sub_show_messages.phtml");?>
+					<?php echo $this->layout()->content?>
+          
+        <? } ?>    
+         
+		</div>
+	</div>
+	
+ 	
+	<!--========================================== //End PROJECT-NAME Layout Section-->
+	
+	
+	
+	<?php //echo $this->render("sub_signup_social_buttons.phtml");?>
+ 	<? if(trim($bdy_class)==''){?>
+	<?php echo $this->render('footer.phtml');?>
+ 	 <? } ?>
+	<!--========================================== //End PROJECT-NAME Footer Section-->
+	
+    
+	<?php echo $this->headScript();?>
+    
+<?php if($this->current_controller=='index' && $this->current_action=='index'){ ?>	
+     <script>
+	    new WOW().init();
+	 </script>
+<? } ?>     
+  </body>
+</html>

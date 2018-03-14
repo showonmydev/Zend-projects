@@ -1,0 +1,58 @@
+<?
+$UserInfo = $this->user_information;
+?>
+<div class="row profile">
+	<div class="col-md-12">
+		<!--BEGIN TABS-->
+		<div class="tabbable tabbable-custom tabbable-full-width">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab_1_3" data-toggle="tab">Account </a></li>
+			</ul>
+			<div class="tab-content">
+				<!--tab_1_2-->
+				<div class="tab-pane active" id="tab_1_3">
+					<div class="row profile-account">
+						<div class="col-md-3">
+							<ul class="ver-inline-menu tabbable margin-bottom-10">
+                                <li><img class="img-responsive" src="<?php echo getUserImage($UserInfo['user_image'],'thumb')?>" alt="<?php echo $this->user->user_first_name?>" title="" /></li>
+                                <li><a data-title="update_password_admin" href="<?php echo $this->url(array('user_id'=>$UserInfo['user_id']),'update_user_info')?>"><i class="fa fa-lock"></i>User Information </a></li>
+                               <?php /*?> <li><a data-title="update_password_admin" href="<?php echo $this->url(array('user_id'=>$UserInfo['user_id']),'update_user_pswd')?>"><i class="fa fa-lock"></i> Change Password </a></li><?php */?>
+                                 <li><a data-title="update_password_admin" href="<?php echo $this->url(array('user_id'=>$UserInfo['user_id']),'send_user_email_verify_mail')?>"><i class="fa fa-envelope" aria-hidden="true"></i> Send Verification Mail</a></li>
+                            </ul>
+
+
+						</div>
+						<div class="col-md-9">
+							 <div class="custom-form-wrapper">
+                             		<?php echo $this->form;?>
+							 </div>
+ 						</div>
+						<!--end col-md-9-->
+					</div>
+				</div>
+				<!--end tab-pane-->
+			</div>
+		</div>
+		<!--END TABS-->
+	</div>
+</div>
+
+<script>
+		$(document).ready(function(e) {
+			var presentstate = "<?php echo $UserInfo['user_state']; ?>";
+			var city = "<?php echo $UserInfo['user_city']; ?>";
+			getcity(presentstate);
+			window.setTimeout( function(e){
+					$('#user_city').val(city);
+			},1000);
+		
+	user_id = <?=$this->user_id?>;
+			
+	jQuery.validator.addClassRules("checkemail_exclude", {
+		remote: baseUrl + "/privatepanel/user/checkemail?exclude=1&user_id="+user_id
+	});
+
+
+				
+	});
+</script>
